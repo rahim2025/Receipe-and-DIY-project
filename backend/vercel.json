@@ -4,15 +4,5 @@
   "installCommand": "npm install",
   "env": {
     "NODE_ENV": "production"
-  },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x",
-      "memory": 512,
-      "maxDuration": 10
-    }
   }
 }

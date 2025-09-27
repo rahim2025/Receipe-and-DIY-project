@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "name": "recipe-diy-app",
+  "builds": [
+    {
+      "src": "frontend/vite.config.js",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/frontend/dist/$1" }
+  ],
+  "env": {
+    "VITE_API_BASE_URL": "https://your-backend-domain/api"
+  },
+  "ignoreCommand": "echo 'Custom ignore not set'"
+}

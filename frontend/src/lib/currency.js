@@ -1,0 +1,55 @@
+// Currency formatting utilities
+
+export const getCurrencySymbol = (currency) => {
+  const symbols = {
+    USD: '$',
+    EUR: '€',
+    GBP: '£',
+    CAD: 'C$',
+    AUD: 'A$',
+    INR: '₹',
+    JPY: '¥',
+    CNY: '¥'
+  };
+  return symbols[currency] || '$';
+};
+
+export const formatCurrency = (amount, currency = 'USD', options = {}) => {
+  const {
+    showDecimals = true,
+    compact = false
+  } = options;
+
+  if (!amount || amount === 0) return null;
+
+  const symbol = getCurrencySymbol(currency);
+  const numericAmount = parseFloat(amount);
+  
+  if (compact && numericAmount >= 1000) {
+    if (numericAmount >= 1000000) {
+      return `${symbol}${(numericAmount / 1000000).toFixed(1)}M`;
+    } else if (numericAmount >= 1000) {
+      return `${symbol}${(numericAmount / 1000).toFixed(1)}K`;
+    }
+  }
+  
+  if (showDecimals) {
+    return `${symbol}${numericAmount.toFixed(2)}`;
+  } else {
+    return `${symbol}${Math.round(numericAmount)}`;
+  }
+};
+
+export const getCurrencyName = (currency) => {
+  const names = {
+    USD: 'US Dollar',
+    EUR: 'Euro',
+    GBP: 'British Pound',
+    CAD: 'Canadian Dollar',
+    AUD: 'Australian Dollar',
+    INR: 'Indian Rupee',
+    JPY: 'Japanese Yen',
+    CNY: 'Chinese Yuan'
+  };
+  return names[currency] || 'US Dollar';
+};

@@ -1,0 +1,76 @@
+# --- Root Git Ignore for Monorepo (frontend + backend) ---
+
+############################
+# Node / JavaScript
+############################
+node_modules/
+**/node_modules/
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+# (Keep lockfiles if you want reproducible builds; remove above line if desired)
+
+############################
+# Build Artifacts
+############################
+frontend/dist/
+frontend/.vite/
+**/.turbo/
+**/.next/
+.vercel/
+coverage/
+
+############################
+# Environment & Secrets
+############################
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+*.local
+
+############################
+# Logs & Diagnostics
+############################
+logs/
+*.log
+*.log.*
+*.pid
+*.seed
+*.tgz
+
+############################
+# System / Editor
+############################
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+############################
+# Uploads / User Generated
+############################
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+############################
+# Misc
+############################
+*.bak
+*.tmp
+.cache/
+.temp/
+
+# Prevent committing large design exports
+*.psd
+*.ai
+*.sketch
+
+# Local test artifacts
+playwright-report/

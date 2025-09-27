@@ -50,9 +50,13 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-    console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
-    connectDB();
-});
+// Only start a local server when running outside Vercel serverless
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server (local) running on port ${PORT}`);
+        console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
+        connectDB();
+    });
+}
+
+export default app;

@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "recipe-diy-backend",
-  "buildCommand": "npm install",
   "installCommand": "npm install",
   "env": {
     "NODE_ENV": "production"
@@ -15,6 +14,5 @@
       "memory": 512,
       "maxDuration": 10
     }
-  },
-  "ignoreCommand": "echo 'Adjust backend to serverless functions before deploying'"
+  }
 }

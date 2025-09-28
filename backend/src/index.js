@@ -19,8 +19,7 @@ const PORT = process.env.PORT || 5001;
 
 const rawOrigins = [
     process.env.FRONTEND_URL,
-    process.env.FRONTEND_URLS,
-    process.env.FRONTEND_PREVIEW_URL
+    
 ].filter(Boolean);
 
 const allowedOrigins = [

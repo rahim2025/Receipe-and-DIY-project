@@ -70,7 +70,10 @@ export const signup = async (req, res) => {
     });
 
     await newUser.save(); 
-    genToken(newUser._id, res);
+    const token = genToken(newUser._id, res);
+
+    // Also send token in response header as backup for cross-origin issues
+    res.setHeader('Authorization', `Bearer ${token}`);
 
     return res.status(201).json({
       _id: newUser._id,
@@ -83,7 +86,8 @@ export const signup = async (req, res) => {
       bio: newUser.bio,
       interests: newUser.interests,
       userType: newUser.userType,
-      createdAt: newUser.createdAt
+      createdAt: newUser.createdAt,
+      token: token // Include token in response body as well
     });
 
   } catch (error) {
@@ -129,7 +133,10 @@ export const login = async (req, res) => {
       });
     }
     
-    genToken(user._id, res);
+    const token = genToken(user._id, res);
+    
+    // Also send token in response header as backup for cross-origin issues
+    res.setHeader('Authorization', `Bearer ${token}`);
     
     res.status(200).json({
       _id: user._id,
@@ -142,7 +149,8 @@ export const login = async (req, res) => {
       bio: user.bio,
       interests: user.interests,
       userType: user.userType,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      token: token // Include token in response body as well
     });
 
   } catch (error) {
@@ -154,11 +162,14 @@ export const login = async (req, res) => {
 }
 export const logout = async (req, res) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
+    
     res.cookie("jwt", "", { 
       maxAge: 0,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict"
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "strict",
+      domain: isProduction ? ".vercel.app" : undefined
     });
     
     return res.status(200).json({

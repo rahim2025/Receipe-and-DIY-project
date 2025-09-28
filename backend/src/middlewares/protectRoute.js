@@ -2,9 +2,18 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 export const protectRoute = async (req, res, next) => {
     try {
-        const token = req.cookies.jwt;
+        // Try to get token from cookies first, then Authorization header
+        let token = req.cookies.jwt;
+        
+        // Fallback to Authorization header for cases where cookies don't work
+        if (!token && req.headers.authorization) {
+            token = req.headers.authorization.startsWith('Bearer ') 
+                ? req.headers.authorization.slice(7) 
+                : req.headers.authorization;
+        }
         
         if (!token) {
+            console.log('No token found in cookies or headers');
             return res.status(401).json({
                 message: "Please login first"
             });

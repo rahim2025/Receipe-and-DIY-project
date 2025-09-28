@@ -69,13 +69,25 @@ app.use(async (req, res, next) => {
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
             return callback(null, true);
         }
+        
+        // Allow any .vercel.app subdomain in production
+        if (process.env.NODE_ENV === 'production' && origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
+        
+        console.log('CORS rejected origin:', origin);
         return callback(new Error(`Origin ${origin} not allowed by CORS`));
     },
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }))
 
 // Routes

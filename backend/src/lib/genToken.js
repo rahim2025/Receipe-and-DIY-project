@@ -5,11 +5,14 @@ export const genToken = (userId, res) => {
         expiresIn: "7d"
     });
 
+    const isProduction = process.env.NODE_ENV === "production";
+    
     res.cookie("jwt", token, { 
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-        sameSite: "strict" // CSRF protection
+        secure: isProduction, // Use secure cookies in production
+        sameSite: isProduction ? "none" : "strict", // Allow cross-origin in production
+        domain: isProduction ? ".vercel.app" : undefined // Allow subdomain sharing on Vercel
     });
     
     return token;

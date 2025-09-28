@@ -23,6 +23,12 @@ export const useAuthStore = create((set) =>({
         set({isSigningUp:true })
         try {
             const res = await axiosInstance.post("api/auth/signup",data);
+            
+            // Store token if provided in response
+            if (res.data.token) {
+                localStorage.setItem('jwt-token', res.data.token);
+            }
+            
             set({authUser:res.data})
             toast.success("Account created successfully! Welcome to CraftyCook!")     
         } catch (error) {
@@ -37,6 +43,12 @@ export const useAuthStore = create((set) =>({
         set({isLoggingIn:true});
         try {
             const res = await axiosInstance.post("api/auth/login",data)
+            
+            // Store token if provided in response
+            if (res.data.token) {
+                localStorage.setItem('jwt-token', res.data.token);
+            }
+            
             set({authUser:res.data})
             toast.success("Welcome back to CraftyCook!");
         } catch (error) {
@@ -48,11 +60,15 @@ export const useAuthStore = create((set) =>({
     logout: async() =>{
         try {
             const res = await axiosInstance.post("api/auth/logout");
+            
+            // Clear stored token on logout
+            localStorage.removeItem('jwt-token');
+            
             set({authUser:null});
             toast.success("Logout successfully");   
         } catch (error) {
-            console.log("Error in signup auth",error)
-            toast.error(error.response.data.errors)
+            console.log("Error in logout auth",error)
+            toast.error(error.response?.data?.message || "Failed to logout")
         }
         
     },

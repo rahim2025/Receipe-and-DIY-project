@@ -462,6 +462,18 @@ export const deletePost = async (req, res) => {
 
 export const uploadMedia = async (req, res) => {
   try {
+    console.log('=== UPLOAD MEDIA DEBUG ===');
+    console.log('User:', req.user ? req.user._id : 'No user');
+    console.log('File:', req.file ? req.file.originalname : 'No file');
+    console.log('Body:', req.body);
+
+    if (!req.user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: "Please login first" 
+      });
+    }
+
     const { type = 'image' } = req.body;
 
     if (!req.file) {

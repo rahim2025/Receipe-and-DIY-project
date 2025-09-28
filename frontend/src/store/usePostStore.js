@@ -182,15 +182,14 @@ export const usePostStore = create((set, get) => ({
       formData.append('media', file);
       formData.append('type', type);
 
-  const res = await axiosInstance.post('api/posts/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      // Don't set Content-Type manually for FormData - let browser set it with boundary
+      const res = await axiosInstance.post('api/posts/upload', formData);
 
       if (res.data.success) {
         set({ isUploading: false });
         return res.data.url;
+      } else {
+        throw new Error(res.data.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Error uploading media:', error);
@@ -198,9 +197,7 @@ export const usePostStore = create((set, get) => ({
       set({ isUploading: false });
       throw error;
     }
-  },
-
-  // Like/Unlike post
+  },  // Like/Unlike post
   likePost: async (postId) => {
     try {
   const res = await axiosInstance.post(`api/posts/${postId}/like`);

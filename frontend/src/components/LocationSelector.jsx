@@ -8,7 +8,8 @@ const LocationSelector = ({
   initialLocation = null, 
   showManualEntry = true,
   showCurrentLocation = true,
-  className = ""
+  className = "",
+  forceLightTheme = true // ensures readable dark text on light / white panels
 }) => {
   const [location, setLocation] = useState(initialLocation);
   const [isDetecting, setIsDetecting] = useState(false);
@@ -224,17 +225,21 @@ const LocationSelector = ({
     setError('');
   };
 
+  const lightTextClasses = forceLightTheme ? 'text-gray-800' : '';
+  const lightInputClasses = forceLightTheme ? 'bg-white text-gray-900 placeholder-gray-400' : '';
+  const lightButtonText = forceLightTheme ? 'text-gray-700' : '';
+
   return (
-    <div className={`space-y-3 ${className}`}>
+    <div className={`space-y-3 ${lightTextClasses} ${className}`}>
       <div className="flex items-center justify-between">
-        <label className="block text-sm font-medium text-gray-700">
+        <label className={`block text-sm font-medium ${forceLightTheme ? 'text-gray-700' : 'text-gray-100'}`}>
           Location (Optional)
         </label>
         {location && (
           <button
             type="button"
             onClick={clearLocation}
-            className="text-xs text-red-600 hover:text-red-800"
+            className={`text-xs ${forceLightTheme ? 'text-red-600 hover:text-red-700' : 'text-red-300 hover:text-red-200'}`}
           >
             Clear
           </button>
@@ -273,7 +278,7 @@ const LocationSelector = ({
               type="button"
               onClick={detectCurrentLocation}
               disabled={isDetecting || permissionStatus === 'denied'}
-              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg ${lightButtonText} bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {isDetecting ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -289,14 +294,14 @@ const LocationSelector = ({
             <button
               type="button"
               onClick={() => setShowDropdown(!showDropdown)}
-              className="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className={`w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 ${lightButtonText}`}
             >
-              <span>Choose from common locations</span>
+              <span className="text-sm font-medium">Choose from common locations</span>
               <ChevronDown className="h-4 w-4" />
             </button>
 
             {showDropdown && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto text-gray-700">
                 <div className="p-2">
                   <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                     US Cities
@@ -306,7 +311,7 @@ const LocationSelector = ({
                       key={key}
                       type="button"
                       onClick={() => selectCommonLocation(key, value)}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm"
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700"
                     >
                       {key}
                     </button>
@@ -322,7 +327,7 @@ const LocationSelector = ({
                       key={key}
                       type="button"
                       onClick={() => selectCommonLocation(key, value)}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm"
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700"
                     >
                       {key}
                     </button>
@@ -339,7 +344,7 @@ const LocationSelector = ({
                 <button
                   type="button"
                   onClick={() => setShowManualInput(true)}
-                  className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm text-gray-600"
+                  className={`w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 text-sm ${lightButtonText}`}
                 >
                   <Search className="h-4 w-4 mr-2" />
                   {isMapboxEnabled ? 'Search for location' : 'Enter location manually'}
@@ -353,7 +358,7 @@ const LocationSelector = ({
                         value={manualAddress}
                         onChange={handleAddressInputChange}
                         placeholder={isMapboxEnabled ? "Search for city, state or address..." : "Enter city, state or address"}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+                        className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8 ${lightInputClasses}`}
                         onKeyPress={(e) => e.key === 'Enter' && handleManualAddress()}
                         autoComplete="off"
                       />
@@ -384,7 +389,7 @@ const LocationSelector = ({
                           clearTimeout(searchTimeout.current);
                         }
                       }}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                      className={`px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 ${lightButtonText}`}
                     >
                       Cancel
                     </button>
@@ -392,13 +397,13 @@ const LocationSelector = ({
 
                   {/* Search Suggestions */}
                   {showSuggestions && searchSuggestions.length > 0 && (
-                    <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto text-gray-700">
                       {searchSuggestions.map((suggestion, index) => (
                         <button
                           key={suggestion.id || index}
                           type="button"
                           onClick={() => selectSuggestion(suggestion)}
-                          className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 flex items-start"
+                          className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 flex items-start text-gray-700"
                         >
                           <MapPin className="h-4 w-4 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
                           <div className="flex-1 min-w-0">

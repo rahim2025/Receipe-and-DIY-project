@@ -21,22 +21,20 @@ router.get("/", getPosts);
 router.get("/location", getPostsByLocation);
 router.get("/:id", getPostById);
 
-// Protected routes
-router.use(protectRoute);
-
+// Protected routes - apply protection individually to avoid conflicts
 // Post CRUD operations
-router.post("/", createPost);
-router.put("/:id", updatePost);
-router.patch("/:id/publish", publishPost);
-router.delete("/:id", deletePost);
+router.post("/", protectRoute, createPost);
+router.put("/:id", protectRoute, updatePost);
+router.patch("/:id/publish", protectRoute, publishPost);
+router.delete("/:id", protectRoute, deletePost);
 
-// Media upload
-router.post("/upload", upload.single('media'), handleUploadError, uploadMedia);
+// Media upload - explicitly protect this route
+router.post("/upload", protectRoute, upload.single('media'), handleUploadError, uploadMedia);
 
 // Post interactions
-router.post("/:id/like", likePost);
+router.post("/:id/like", protectRoute, likePost);
 
 // Draft management
-router.get("/user/drafts", getUserDrafts);
+router.get("/user/drafts", protectRoute, getUserDrafts);
 
 export default router;

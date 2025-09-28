@@ -109,7 +109,8 @@ const VendorsPage = () => {
   const loadVendors = async () => {
     setLoading(true);
     try {
-      let endpoint = '/vendors';
+  // Backend vendor router is mounted at /api/vendors
+  let endpoint = '/api/vendors';
       const params = new URLSearchParams();
       
       // Only add location parameters if we have coordinates
@@ -161,7 +162,7 @@ const VendorsPage = () => {
   const addVendor = async () => {
     try {
       console.log('Sending vendor data:', newVendor); // Debug log
-      const response = await axiosInstance.post('/vendors', newVendor);
+  const response = await axiosInstance.post('/api/vendors', newVendor);
       console.log('Vendor created successfully:', response.data); // Debug log
       
       toast.success('Vendor added successfully!');
@@ -207,7 +208,7 @@ const VendorsPage = () => {
 
   const toggleFollowVendor = async (vendorId) => {
     try {
-      await axiosInstance.post(`/vendors/${vendorId}/follow`);
+  await axiosInstance.post(`/api/vendors/${vendorId}/follow`);
       loadVendors();
     } catch (error) {
       console.error('Error following vendor:', error);

@@ -17,14 +17,36 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+const rawOrigins = [
+    process.env.FRONTEND_URL,
+    process.env.FRONTEND_URLS,
+    process.env.FRONTEND_PREVIEW_URL
+].filter(Boolean);
+
+const allowedOrigins = [
+    ...rawOrigins.flatMap((value) =>
+        value.split(',').map((origin) => origin.trim()).filter(Boolean)
+    ),
+    'https://receipe-and-diy-project.vercel.app',
+    'http://receipe-and-diy-project.vercel.app',
+    'receipe-and-diy-project.vercel.app',
+    'http://localhost:5173',
+    'https://localhost:5173'
+];
+
 // Middleware
 app.use(cookieParser())
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 app.use(cors({
-    origin: [process.env.FRONTEND_URL ],
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     credentials: true,
-    optionsSuccessStatus: 200 // For legacy browser support
+    optionsSuccessStatus: 200
 }))
 
 // Routes

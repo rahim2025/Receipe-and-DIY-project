@@ -9,23 +9,64 @@
 
 /* NOTE: Imports moved above to satisfy PostCSS rule. If you need to override Tailwind utilities, increase specificity or use @layer within those imported files. */
 
+/* Enhanced text readability across all components */
+.text-readable-always {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8) !important;
+  font-weight: 500 !important;
+}
+
+.label-readable {
+  color: rgba(255,255,255,0.9) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7) !important;
+  font-weight: 600 !important;
+}
+
+.text-on-glass {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8) !important;
+}
+
+/* Force all labels to be readable */
+label {
+  color: rgba(255,255,255,0.9) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7) !important;
+  font-weight: 600 !important;
+}
+
+/* Force all text inputs to have readable placeholders and text */
+input, textarea, select {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255,255,255,0.7) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6) !important;
+}
+
+/* Enhanced visibility for all buttons */
+button {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
 /* Global liquid glass theme overrides */
 /* We can't use @apply for custom non-Tailwind classes here because Tailwind doesn't know them; duplicate core styles instead. */
 @layer components {
   .glass-card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
   }
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2), 0 0 32px rgba(59, 130, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     transform: translateY(-4px) scale(1.01);
     border-color: rgba(255, 255, 255, 0.3);
   }

@@ -301,18 +301,18 @@ const SimplePostCreate = () => {
               <h2 className="text-3xl font-semibold text-white mb-8 font-['Poppins']">Tell us about your {postType}</h2>
               <div className="space-y-8">
                 <div>
-                  <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Title *</label>
+                  <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Title *</label>
                   <input
                     type="text"
                     value={formData.title}
                     onChange={(e) => handleInputChange('title', e.target.value)}
                     placeholder={`What's the name of your ${postType}?`}
-                    className="glass-input glass-input-force w-full"
+                    className="glass-input glass-input-force w-full text-readable-always"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Description *</label>
+                  <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Description *</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => handleInputChange('description', e.target.value)}
@@ -324,11 +324,11 @@ const SimplePostCreate = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Category *</label>
+                    <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Category *</label>
                     <select
                       value={formData.category}
                       onChange={(e) => handleInputChange('category', e.target.value)}
-                      className="glass-input glass-input-force w-full"
+                      className="glass-input glass-input-force w-full text-readable-always"
                     >
                       <option value="">Choose category</option>
                       {categories[postType]?.map(cat => (
@@ -338,7 +338,7 @@ const SimplePostCreate = () => {
                   </div>
 
                   <div>
-                    <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Difficulty</label>
+                    <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Difficulty</label>
                     <select
                       value={formData.difficulty}
                       onChange={(e) => handleInputChange('difficulty', e.target.value)}
@@ -355,17 +355,17 @@ const SimplePostCreate = () => {
                 {postType === 'recipe' && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block flex items-center gap-1"><Clock className="w-4 h-4" /> Cooking Time</label>
+                      <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block flex items-center gap-1"><Clock className="w-4 h-4" /> Cooking Time</label>
                       <input
                         type="text"
                         value={formData.cookingTime}
                         onChange={(e) => handleInputChange('cookingTime', e.target.value)}
                         placeholder="e.g., 30 minutes"
-                        className="glass-input glass-input-force w-full"
+                        className="glass-input glass-input-force w-full text-readable-always"
                       />
                     </div>
                     <div>
-                      <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Servings</label>
+                      <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Servings</label>
                       <input
                         type="text"
                         value={formData.servings}
@@ -379,30 +379,30 @@ const SimplePostCreate = () => {
 
                 {postType === 'diy' && (
                   <div>
-                    <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block flex items-center gap-1"><Clock className="w-4 h-4" /> Estimated Time</label>
+                    <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block flex items-center gap-1"><Clock className="w-4 h-4" /> Estimated Time</label>
                     <input
                       type="text"
                       value={formData.estimatedTime}
                       onChange={(e) => handleInputChange('estimatedTime', e.target.value)}
                       placeholder="e.g., 2 hours"
-                      className="glass-input w-full"
+                      className="glass-input glass-input-force w-full text-readable-always"
                     />
                   </div>
                 )}
 
                 {/* Cost Estimation Section */}
                 <div className="pt-8 border-t border-white/10">
-                  <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2"><span className="text-teal-300">💰</span> Cost Estimation <span className="text-xs text-white/40 font-normal">(Optional)</span></h3>
-                  <p className="text-sm text-white/50 mb-6">Help others estimate the total cost for this {postType === 'recipe' ? 'recipe' : 'project'}</p>
+                  <h3 className="text-lg font-semibold text-ultra-readable mb-2 flex items-center gap-2"><span className="text-teal-300">💰</span> Cost Estimation <span className="text-xs readable-secondary font-normal">(Optional)</span></h3>
+                  <p className="text-sm readable-secondary mb-6">Help others estimate the total cost for this {postType === 'recipe' ? 'recipe' : 'project'}</p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Total Cost Estimate</label>
+                      <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Total Cost Estimate</label>
                       <div className="flex rounded-xl overflow-hidden border border-white/10 bg-white/5">
                         <select
                           value={formData.costCurrency}
                           onChange={(e) => handleInputChange('costCurrency', e.target.value)}
-                          className="glass-input !rounded-none !border-0 !border-r !border-white/10 w-24 bg-transparent"
+                          className="glass-input !rounded-none !border-0 !border-r !border-white/10 w-24 bg-transparent text-readable-always"
                         >
                           <option value="USD">$</option>
                           <option value="EUR">€</option>
@@ -420,13 +420,13 @@ const SimplePostCreate = () => {
                           value={formData.totalCostEstimate}
                           onChange={(e) => handleInputChange('totalCostEstimate', e.target.value)}
                           placeholder="0.00"
-                          className="glass-input !rounded-none flex-1 bg-transparent border-0"
+                          className="glass-input !rounded-none flex-1 bg-transparent border-0 text-readable-always"
                         />
                       </div>
                     </div>
                     
                     <div>
-                      <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Cost Notes</label>
+                      <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Cost Notes</label>
                       <input
                         type="text"
                         value={formData.costNotes}
@@ -440,25 +440,26 @@ const SimplePostCreate = () => {
                 </div>
 
                 {/* Location and Cultural Information */}
-                <div className="pt-8 border-t border-white/10">
-                  <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2"><span className="text-violet-300">🌍</span> Location & Culture <span className="text-xs text-white/40 font-normal">(Optional)</span></h3>
-                  <p className="text-sm text-white/50 mb-6">Help others discover {postType === 'recipe' ? 'regional cuisines' : 'local crafts'} and find materials near them</p>
+                <div className="pt-8 border-t border-white/10 bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
+                  <h3 className="text-lg font-semibold text-ultra-readable mb-2 flex items-center gap-2"><span className="text-violet-300">🌍</span> Location & Culture <span className="text-xs readable-secondary font-normal">(Optional)</span></h3>
+                  <p className="text-sm readable-secondary mb-6">Help others discover {postType === 'recipe' ? 'regional cuisines' : 'local crafts'} and find materials near them</p>
                   
                   <div className="space-y-4">
                     <LocationSelector
                       onLocationChange={(location) => handleInputChange('location', location)}
                       initialLocation={formData.location}
                       className="mb-4"
+                      forceLightTheme={false}
                     />
                     
                     {postType === 'recipe' && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Cuisine Type</label>
+                          <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Cuisine Type</label>
                           <select
                             value={formData.cuisine}
                             onChange={(e) => handleInputChange('cuisine', e.target.value)}
-                            className="glass-input glass-input-force w-full"
+                            className="glass-input glass-input-force w-full text-readable-always"
                           >
                             <option value="">Select cuisine (optional)</option>
                             {CUISINES.map((cuisine) => (
@@ -470,7 +471,7 @@ const SimplePostCreate = () => {
                         </div>
                         
                         <div>
-                          <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">Cultural Origin</label>
+                          <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">Cultural Origin</label>
                           <select
                             value={formData.culturalOrigin}
                             onChange={(e) => handleInputChange('culturalOrigin', e.target.value)}
@@ -495,12 +496,12 @@ const SimplePostCreate = () => {
           {/* Step 3: Content */}
           {step === 3 && (
             <div>
-              <h2 className="text-3xl font-semibold text-white mb-8 font-['Poppins']">Add your content</h2>
+              <h2 className="text-3xl font-semibold text-ultra-readable mb-8 font-['Poppins']">Add your content</h2>
               <div className="space-y-8">
                 {/* Ingredients/Materials */}
                 <div>
-                  <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">{postType === 'recipe' ? 'Ingredients' : 'Materials'} *</label>
-                  <p className="text-[11px] text-white/40 mb-2">Write each {postType === 'recipe' ? 'ingredient' : 'material'} on a new line</p>
+                  <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">{postType === 'recipe' ? 'Ingredients' : 'Materials'} *</label>
+                  <p className="text-[11px] readable-secondary mb-2">Write each {postType === 'recipe' ? 'ingredient' : 'material'} on a new line</p>
                   <textarea
                     value={postType === 'recipe' ? formData.ingredientsText : formData.materialsText}
                     onChange={(e) => handleInputChange(
@@ -518,8 +519,8 @@ const SimplePostCreate = () => {
 
                 {/* Steps */}
                 <div>
-                  <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 block">{postType === 'recipe' ? 'Cooking Steps' : 'Instructions'} *</label>
-                  <p className="text-[11px] text-white/40 mb-2">Write each step on a new line</p>
+                  <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-2 block">{postType === 'recipe' ? 'Cooking Steps' : 'Instructions'} *</label>
+                  <p className="text-[11px] readable-secondary mb-2">Write each step on a new line</p>
                   <textarea
                     value={formData.stepsText}
                     onChange={(e) => handleInputChange('stepsText', e.target.value)}
@@ -538,11 +539,11 @@ const SimplePostCreate = () => {
           {/* Step 4: Photos & Final Details */}
           {step === 4 && (
             <div>
-              <h2 className="text-3xl font-semibold text-white mb-8 font-['Poppins']">Add photos & finishing touches</h2>
+              <h2 className="text-3xl font-semibold text-ultra-readable mb-8 font-['Poppins']">Add photos & finishing touches</h2>
               <div className="space-y-10">
                 {/* Photo Upload */}
                 <div>
-                  <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-3 block">Photos</label>
+                  <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-3 block">Photos</label>
                   <div className="relative rounded-2xl p-8 border border-dashed border-white/15 hover:border-teal-400/50 transition group text-center bg-white/5 backdrop-blur-sm">
                     <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-teal-400/10 via-violet-400/10 to-pink-400/10 opacity-0 group-hover:opacity-100 transition" />
                     <Upload className="w-10 h-10 mx-auto mb-4 text-teal-300 group-hover:scale-110 transition-transform" />
@@ -578,7 +579,7 @@ const SimplePostCreate = () => {
 
                 {/* Tags */}
                 <div>
-                  <label className="text-xs uppercase tracking-wider text-white/50 font-medium mb-3 block">Tags (optional)</label>
+                  <label className="text-xs uppercase tracking-wider readable-strong font-medium mb-3 block">Tags (optional)</label>
                   <div className="flex gap-2 mb-4">
                     <input
                       type="text"

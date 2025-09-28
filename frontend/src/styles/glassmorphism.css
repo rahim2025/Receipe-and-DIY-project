@@ -102,9 +102,14 @@ h4 { font-size: 1.25rem; }
 h5 { font-size: 1.1rem; }
 h6 { font-size: 1rem; }
 
-/* Paragraph & list readability */
-p, li { color: var(--glass-text-secondary); font-size: 0.95rem; }
-p strong, li strong { color: var(--glass-text-primary); }
+/* Enhanced paragraph & list readability */
+p, li { color: var(--glass-text-secondary); font-size: 0.95rem; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+p strong, li strong { color: var(--glass-text-primary); text-shadow: 0 1px 3px rgba(0,0,0,0.6); font-weight: 600; }
+
+/* Enhanced text visibility for all content */
+.text-visible { color: #ffffff !important; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.text-visible-soft { color: rgba(255,255,255,0.9) !important; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+.text-visible-medium { color: rgba(255,255,255,0.95) !important; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
 
 /* Anchor contrast */
 a { color: #5eead4; text-decoration: none; font-weight:500; }
@@ -121,10 +126,18 @@ a:focus { outline: none; box-shadow: var(--glass-focus-outline); border-radius:4
 [class*="text-[11px"], [class*="text-[10px"] { font-size: 12.5px !important; line-height:1.3 !important; letter-spacing:0.25px; }
 @media (min-width: 768px) { [class*="text-[11px"], [class*="text-[10px"] { font-size: 13px !important; } }
 
-/* High readability utilities */
-.readable { color: var(--glass-text-primary) !important; text-shadow: var(--glass-text-shadow-soft); }
+/* Enhanced readability utilities */
+.readable { color: var(--glass-text-primary) !important; text-shadow: var(--glass-text-shadow-soft); font-weight: 500; }
 .readable-secondary { color: var(--glass-text-secondary) !important; text-shadow: var(--glass-text-shadow-soft); }
+.readable-strong { color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 600; }
 .contrast-on-glass { text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+.contrast-strong { color: #ffffff !important; text-shadow: 0 2px 6px rgba(0,0,0,0.9); }
+.contrast-medium { color: rgba(255,255,255,0.95) !important; text-shadow: 0 1px 4px rgba(0,0,0,0.7); }
+.text-ultra-readable { color: #ffffff !important; text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.8); font-weight: 600; letter-spacing: 0.25px; }
+
+/* Force readable text on glass backgrounds */
+.glass-panel .readable-force { color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.glass-card .readable-force { color: #ffffff !important; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
 
 /* Improve placeholder contrast slightly while staying subtle */
 ::placeholder { color: rgba(255,255,255,0.62) !important; }
@@ -642,46 +655,51 @@ select.glass-input option[value=""], select.glass-select option[value=""] { colo
 
 /* Badges with Neon Effects */
 .glass-badge {
-  background: var(--glass-bg-medium);
+  background: rgba(0,0,0,0.4);
   backdrop-filter: var(--glass-blur-light);
   -webkit-backdrop-filter: var(--glass-blur-light);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 20px;
   padding: 4px 12px;
   font-size: 12px;
-  font-weight: 500;
-  color: white;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  letter-spacing: 0.3px;
 }
 
 .glass-badge-teal {
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.3), rgba(20, 184, 166, 0.1));
-  border-color: rgba(20, 184, 166, 0.4);
-  color: rgba(20, 184, 166, 1);
-  text-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.6), rgba(13, 148, 136, 0.4));
+  border-color: rgba(20, 184, 166, 0.8);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 12px rgba(20, 184, 166, 0.6);
+  font-weight: 700;
 }
 
 .glass-badge-violet {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(124, 58, 237, 0.1));
-  border-color: rgba(124, 58, 237, 0.4);
-  color: rgba(124, 58, 237, 1);
-  text-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.6), rgba(109, 40, 217, 0.4));
+  border-color: rgba(124, 58, 237, 0.8);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 12px rgba(124, 58, 237, 0.6);
+  font-weight: 700;
 }
 
 .glass-badge-blue {
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.3), rgba(14, 165, 233, 0.1));
-  border-color: rgba(14, 165, 233, 0.4);
-  color: rgba(14, 165, 233, 1);
-  text-shadow: 0 0 8px rgba(14, 165, 233, 0.5);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.6), rgba(59, 130, 246, 0.4));
+  border-color: rgba(14, 165, 233, 0.8);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 12px rgba(14, 165, 233, 0.6);
+  font-weight: 700;
 }
 
-/* Semantic badges */
-.glass-badge-success { background:rgba(16,185,129,0.25); border-color:rgba(16,185,129,0.5); color:#6ee7b7; }
-.glass-badge-warn { background:rgba(245,158,11,0.25); border-color:rgba(245,158,11,0.5); color:#fcd34d; }
-.glass-badge-danger { background:rgba(239,68,68,0.25); border-color:rgba(239,68,68,0.55); color:#fecaca; }
-.glass-badge-neutral { background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.25); color:#fff; }
+/* Enhanced Semantic badges */
+.glass-badge-success { background:rgba(16,185,129,0.5); border-color:rgba(16,185,129,0.8); color:#ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; }
+.glass-badge-warn { background:rgba(245,158,11,0.5); border-color:rgba(245,158,11,0.8); color:#ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; }
+.glass-badge-danger { background:rgba(239,68,68,0.5); border-color:rgba(239,68,68,0.8); color:#ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; }
+.glass-badge-neutral { background:rgba(0,0,0,0.4); border-color:rgba(255,255,255,0.4); color:#ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; }
 
 /* Toggle group */
 .glass-toggle-group { display:inline-flex; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:14px; padding:4px; gap:4px; }
@@ -872,17 +890,18 @@ select.glass-input option[value=""], select.glass-select option[value=""] { colo
 
 /* Post Card Badges - Enhanced */
 .glass-post-badge {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 12px;
   padding: 6px 12px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   transition: all 0.2s var(--glass-ease);
+  letter-spacing: 0.3px;
 }
 
 .glass-post-badge:hover {
@@ -891,15 +910,19 @@ select.glass-input option[value=""], select.glass-select option[value=""] { colo
 }
 
 .glass-post-badge-recipe {
-  background: rgba(251, 146, 60, 0.3);
-  border-color: rgba(251, 146, 60, 0.5);
-  color: #fed7aa;
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.7), rgba(234, 88, 12, 0.5));
+  border-color: rgba(251, 146, 60, 0.9);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 12px rgba(251, 146, 60, 0.5);
+  font-weight: 700;
 }
 
 .glass-post-badge-diy {
-  background: rgba(139, 92, 246, 0.3);
-  border-color: rgba(139, 92, 246, 0.5);
-  color: #ddd6fe;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.7), rgba(124, 58, 237, 0.5));
+  border-color: rgba(139, 92, 246, 0.9);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9), 0 0 12px rgba(139, 92, 246, 0.5);
+  font-weight: 700;
 }
 
 /* Post Card Text Styles - High Contrast */

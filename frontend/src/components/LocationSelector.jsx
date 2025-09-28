@@ -230,212 +230,243 @@ const LocationSelector = ({
   const lightButtonText = forceLightTheme ? 'text-gray-700' : '';
 
   return (
-    <div className={`space-y-3 ${lightTextClasses} ${className}`}>
-      <div className="flex items-center justify-between">
-        <label className={`block text-sm font-medium ${forceLightTheme ? 'text-gray-700' : 'text-gray-100'}`}>
-          Location (Optional)
-        </label>
-        {location && (
-          <button
-            type="button"
-            onClick={clearLocation}
-            className={`text-xs ${forceLightTheme ? 'text-red-600 hover:text-red-700' : 'text-red-300 hover:text-red-200'}`}
-          >
-            Clear
-          </button>
+<div className={`space-y-4 `}>
+  <div className="flex items-center justify-between">
+    <label
+      className={`block text-sm font-semibold tracking-wide text-ultra-readable ${
+        forceLightTheme ? "text-gray-700" : ""
+      }`}
+    >
+      📍 Location (Optional)
+    </label>
+    {location && (
+      <button
+        type="button"
+        onClick={clearLocation}
+        className={`text-xs font-medium transition-colors ${
+          forceLightTheme
+            ? "text-red-500 hover:text-red-700"
+            : "text-red-300 hover:text-red-200"
+        }`}
+      >
+        Clear
+      </button>
+    )}
+  </div>
+
+  {/* Current Location Display */}
+{location && (
+  <div
+    className={`flex items-center gap-3 p-4 rounded-xl shadow-md transition 
+      ${
+        forceLightTheme
+          ? "bg-green-600 border border-green-700"
+          : "bg-green-800 border border-green-600 backdrop-blur-sm"
+      }`}
+  >
+    <MapPin
+      className="h-5 w-5 text-white drop-shadow-lg"
+    />
+    <div className="flex-1">
+      <p className="text-sm font-semibold text-white text-ultra-readable">
+        {location.displayLocation}
+      </p>
+      {location.isCurrentLocation && (
+        <p className="text-xs text-green-100 readable-secondary">Current location detected</p>
+      )}
+    </div>
+  </div>
+)}
+
+
+
+  {/* Error Display */}
+  {error && (
+    <div className="flex items-center gap-3 p-4 bg-red-900/30 backdrop-blur-sm border border-red-500/50 rounded-xl shadow-sm">
+      <AlertCircle className="h-5 w-5 text-red-400" />
+      <p className="text-sm font-medium text-red-100 readable-strong">{error}</p>
+    </div>
+  )}
+
+  {/* Location Options */}
+  {!location && (
+    <div className="space-y-3">
+      {/* Current Location Button */}
+      {showCurrentLocation && (
+        <button
+          type="button"
+          onClick={detectCurrentLocation}
+          disabled={isDetecting || permissionStatus === "denied"}
+          className={`w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium transition-all transform text-ultra-readable ${
+            isDetecting
+              ? "bg-gray-500/50 text-white/70"
+              : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:scale-[1.02]"
+          } disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          {isDetecting ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <MapPin className="h-5 w-5" />
+          )}
+          {isDetecting ? "Detecting..." : "Use Current Location"}
+        </button>
+      )}
+
+      {/* Common Locations Dropdown */}
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setShowDropdown(!showDropdown)}
+          className="w-full flex items-center justify-between px-5 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm text-sm font-medium hover:bg-white/15 transition text-ultra-readable"
+        >
+          <span>🌍 Choose from common locations</span>
+          <ChevronDown className="h-4 w-4" />
+        </button>
+
+        {showDropdown && (
+          <div className="absolute z-10 w-full mt-2 bg-gray-900/95 backdrop-blur-md border border-white/20 rounded-xl shadow-lg max-h-64 overflow-y-auto">
+            <div className="p-3">
+              <h4 className="text-xs font-bold text-white/80 readable-strong uppercase mb-2">
+                US Cities
+              </h4>
+              {Object.entries(COMMON_LOCATIONS.US).map(([key, value]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => selectCommonLocation(key, value)}
+                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm text-white readable-secondary"
+                >
+                  {key}
+                </button>
+              ))}
+            </div>
+
+            <div className="border-t border-white/10 p-3">
+              <h4 className="text-xs font-bold text-white/80 readable-strong uppercase mb-2">
+                International
+              </h4>
+              {Object.entries(COMMON_LOCATIONS.INTERNATIONAL).map(
+                ([key, value]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => selectCommonLocation(key, value)}
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm text-white readable-secondary"
+                  >
+                    {key}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
         )}
       </div>
 
-      {/* Current Location Display */}
-      {location && (
-        <div className="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
-          <MapPin className="h-4 w-4 text-green-600 mr-2" />
-          <div className="flex-1">
-            <p className="text-sm font-medium text-green-800">
-              {location.displayLocation}
-            </p>
-            {location.isCurrentLocation && (
-              <p className="text-xs text-green-600">Current location detected</p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Error Display */}
-      {error && (
-        <div className="flex items-center p-3 bg-red-50 border border-red-200 rounded-lg">
-          <AlertCircle className="h-4 w-4 text-red-600 mr-2" />
-          <p className="text-sm text-red-800">{error}</p>
-        </div>
-      )}
-
-      {/* Location Options */}
-      {!location && (
-        <div className="space-y-2">
-          {/* Current Location Button */}
-          {showCurrentLocation && (
+      {/* Manual Entry */}
+      {showManualEntry && (
+        <div className="relative">
+          {!showManualInput ? (
             <button
               type="button"
-              onClick={detectCurrentLocation}
-              disabled={isDetecting || permissionStatus === 'denied'}
-              className={`w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg ${lightButtonText} bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed`}
+              onClick={() => setShowManualInput(true)}
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15 text-sm font-medium transition text-ultra-readable"
             >
-              {isDetecting ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <MapPin className="h-4 w-4 mr-2" />
-              )}
-              {isDetecting ? 'Detecting...' : 'Use Current Location'}
+              <Search className="h-4 w-4" />
+              {isMapboxEnabled ? "Search for location" : "Enter manually"}
             </button>
-          )}
-
-          {/* Common Locations Dropdown */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowDropdown(!showDropdown)}
-              className={`w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 ${lightButtonText}`}
-            >
-              <span className="text-sm font-medium">Choose from common locations</span>
-              <ChevronDown className="h-4 w-4" />
-            </button>
-
-            {showDropdown && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto text-gray-700">
-                <div className="p-2">
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                    US Cities
-                  </h4>
-                  {Object.entries(COMMON_LOCATIONS.US).map(([key, value]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => selectCommonLocation(key, value)}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700"
-                    >
-                      {key}
-                    </button>
-                  ))}
+          ) : (
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    value={manualAddress}
+                    onChange={handleAddressInputChange}
+                    placeholder={
+                      isMapboxEnabled
+                        ? "Search for city, state or address..."
+                        : "Enter city, state or address"
+                    }
+                    className="w-full px-4 py-2 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8 text-sm text-ultra-readable"
+                    onKeyPress={(e) =>
+                      e.key === "Enter" && handleManualAddress()
+                    }
+                  />
+                  {isSearching && (
+                    <Loader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-gray-400" />
+                  )}
                 </div>
-                
-                <div className="border-t border-gray-100 p-2">
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                    International
-                  </h4>
-                  {Object.entries(COMMON_LOCATIONS.INTERNATIONAL).map(([key, value]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => selectCommonLocation(key, value)}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700"
-                    >
-                      {key}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Manual Entry with Mapbox Search */}
-          {showManualEntry && (
-            <div className="relative">
-              {!showManualInput ? (
                 <button
                   type="button"
-                  onClick={() => setShowManualInput(true)}
-                  className={`w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 text-sm ${lightButtonText}`}
+                  onClick={handleManualAddress}
+                  disabled={isSearching || !manualAddress.trim()}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:scale-[1.02] transition disabled:opacity-50"
                 >
-                  <Search className="h-4 w-4 mr-2" />
-                  {isMapboxEnabled ? 'Search for location' : 'Enter location manually'}
-                </button>
-              ) : (
-                <div>
-                  <div className="flex space-x-2">
-                    <div className="flex-1 relative">
-                      <input
-                        type="text"
-                        value={manualAddress}
-                        onChange={handleAddressInputChange}
-                        placeholder={isMapboxEnabled ? "Search for city, state or address..." : "Enter city, state or address"}
-                        className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8 ${lightInputClasses}`}
-                        onKeyPress={(e) => e.key === 'Enter' && handleManualAddress()}
-                        autoComplete="off"
-                      />
-                      {isSearching && (
-                        <Loader2 className="absolute right-2 top-2.5 h-4 w-4 animate-spin text-gray-400" />
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleManualAddress}
-                      disabled={isSearching || !manualAddress.trim()}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSearching ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        'Add'
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowManualInput(false);
-                        setManualAddress('');
-                        setShowSuggestions(false);
-                        setSearchSuggestions([]);
-                        if (searchTimeout.current) {
-                          clearTimeout(searchTimeout.current);
-                        }
-                      }}
-                      className={`px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 ${lightButtonText}`}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-
-                  {/* Search Suggestions */}
-                  {showSuggestions && searchSuggestions.length > 0 && (
-                    <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto text-gray-700">
-                      {searchSuggestions.map((suggestion, index) => (
-                        <button
-                          key={suggestion.id || index}
-                          type="button"
-                          onClick={() => selectSuggestion(suggestion)}
-                          className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 flex items-start text-gray-700"
-                        >
-                          <MapPin className="h-4 w-4 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              {suggestion.place_name}
-                            </p>
-                            {suggestion.city && (
-                              <p className="text-xs text-gray-500">
-                                {[suggestion.city, suggestion.state, suggestion.country].filter(Boolean).join(', ')}
-                              </p>
-                            )}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
+                  {isSearching ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Add"
                   )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowManualInput(false);
+                    setManualAddress("");
+                    setShowSuggestions(false);
+                    setSearchSuggestions([]);
+                    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+                  }}
+                  className="px-4 py-2 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15 text-sm font-medium text-ultra-readable"
+                >
+                  Cancel
+                </button>
+              </div>
+
+              {/* Suggestions */}
+              {showSuggestions && searchSuggestions.length > 0 && (
+                <div className="absolute z-20 w-full mt-2 bg-gray-900/95 backdrop-blur-md border border-white/20 rounded-xl shadow-lg max-h-64 overflow-y-auto">
+                  {searchSuggestions.map((suggestion, index) => (
+                    <button
+                      key={suggestion.id || index}
+                      type="button"
+                      onClick={() => selectSuggestion(suggestion)}
+                      className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-white/10 border-b border-white/10 last:border-b-0 transition text-sm"
+                    >
+                      <MapPin className="h-4 w-4 text-white/60 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-white readable-strong truncate">
+                          {suggestion.place_name}
+                        </p>
+                        {suggestion.city && (
+                          <p className="text-xs text-white/70 readable-secondary">
+                            {[suggestion.city, suggestion.state, suggestion.country]
+                              .filter(Boolean)
+                              .join(", ")}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
           )}
         </div>
       )}
-
-      {/* Permission Help */}
-      {permissionStatus === 'denied' && showCurrentLocation && (
-        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-xs text-yellow-800">
-            Location access is disabled. Enable it in your browser settings to use current location.
-          </p>
-        </div>
-      )}
     </div>
+  )}
+
+  {/* Permission Help */}
+  {permissionStatus === "denied" && showCurrentLocation && (
+    <div className="p-3 bg-yellow-900/30 border border-yellow-500/50 rounded-xl shadow-sm backdrop-blur-sm">
+      <p className="text-xs font-medium text-yellow-100 readable-strong">
+        ⚠️ Location access is disabled. Enable it in your browser settings.
+      </p>
+    </div>
+  )}
+</div>
+
   );
 };
 

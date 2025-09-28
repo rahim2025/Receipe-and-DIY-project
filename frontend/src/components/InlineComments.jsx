@@ -107,22 +107,22 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
           <img
             src={comment.user.profilePic || '/default-avatar.png'}
             alt={comment.user.username}
-            className="w-6 h-6 rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
           />
         </div>
 
         {/* Comment Content */}
         <div className="flex-1 min-w-0">
-          <div className="bg-gray-50 rounded-lg p-3">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-medium text-sm text-gray-900">
+          <div className="glass-card p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-medium text-sm text-white readable contrast-on-glass">
                 {comment.user.firstName} {comment.user.lastName}
               </span>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-white/80 readable">
                 {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
               </span>
               {comment.isEdited && (
-                <span className="text-xs text-gray-500">(edited)</span>
+                <span className="text-xs text-white/70 readable">(edited)</span>
               )}
             </div>
             
@@ -131,21 +131,22 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
                 <textarea
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="glass-input w-full p-3 text-sm resize-none"
                   rows={2}
                   maxLength={500}
+                  placeholder="Edit your comment..."
                 />
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleSaveEdit(comment._id)}
-                    className="flex items-center gap-1 px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                    className="glass-btn-primary flex items-center gap-1 px-3 py-1.5 text-xs"
                   >
                     <Check className="h-3 w-3" />
                     Save
                   </button>
                   <button
                     onClick={handleCancelEdit}
-                    className="flex items-center gap-1 px-2 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600"
+                    className="glass-btn flex items-center gap-1 px-3 py-1.5 text-xs"
                   >
                     <X className="h-3 w-3" />
                     Cancel
@@ -153,28 +154,28 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-gray-800 whitespace-pre-wrap">
+              <p className="text-sm text-white/90 whitespace-pre-wrap readable contrast-on-glass">
                 {comment.text}
               </p>
             )}
           </div>
 
           {/* Comment Actions */}
-          <div className="flex items-center gap-4 mt-1 text-xs">
+          <div className="flex items-center gap-4 mt-2 text-xs">
             <button
               onClick={() => handleCommentLike(comment._id)}
-              className={`flex items-center gap-1 transition-colors ${
-                comment.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
+              className={`flex items-center gap-1 transition-colors px-2 py-1 rounded-full ${
+                comment.isLiked ? 'text-red-400 bg-red-500/10' : 'text-white/70 hover:text-red-400 hover:bg-red-500/10'
               }`}
             >
               <Heart className={`h-3 w-3 ${comment.isLiked ? 'fill-current' : ''}`} />
-              <span>{comment.likeCount || 0}</span>
+              <span className="readable">{comment.likeCount || 0}</span>
             </button>
 
             {!isReply && (
               <button
                 onClick={() => setReplyingTo(comment._id)}
-                className="text-gray-500 hover:text-blue-500 transition-colors"
+                className="text-white/70 hover:text-teal-400 transition-colors px-2 py-1 rounded-full hover:bg-teal-500/10 readable"
               >
                 Reply
               </button>
@@ -184,13 +185,13 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
               <>
                 <button
                   onClick={() => handleEditComment(comment)}
-                  className="text-gray-500 hover:text-blue-500 transition-colors"
+                  className="text-white/70 hover:text-blue-400 transition-colors px-2 py-1 rounded-full hover:bg-blue-500/10 readable"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDeleteComment(comment._id)}
-                  className="text-gray-500 hover:text-red-500 transition-colors"
+                  className="text-white/70 hover:text-red-400 transition-colors px-2 py-1 rounded-full hover:bg-red-500/10 readable"
                 >
                   Delete
                 </button>
@@ -215,9 +216,9 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
     <div className="space-y-4">
       {/* Comments List */}
       {postComments.length === 0 ? (
-        <div className="text-center py-4">
-          <MessageCircle className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-          <p className="text-gray-500 text-sm">No comments yet. Be the first to comment!</p>
+        <div className="text-center py-6">
+          <MessageCircle className="h-10 w-10 text-white/40 mx-auto mb-3" />
+          <p className="text-white/70 text-sm readable">No comments yet. Be the first to comment!</p>
         </div>
       ) : (
         <>
@@ -230,7 +231,7 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
           {postComments.length > limit && !showAllComments && (
             <button
               onClick={() => setShowAllComments(true)}
-              className="text-blue-500 hover:text-blue-600 text-sm font-medium"
+              className="glass-btn text-sm font-medium px-4 py-2 text-teal-300 hover:text-teal-200"
             >
               View all {postComments.length} comments
             </button>
@@ -239,7 +240,7 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
           {showAllComments && postComments.length > limit && (
             <button
               onClick={() => setShowAllComments(false)}
-              className="text-gray-500 hover:text-gray-600 text-sm font-medium"
+              className="glass-btn text-sm font-medium px-4 py-2 text-white/70 hover:text-white/90"
             >
               Show less
             </button>
@@ -249,15 +250,15 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
 
       {/* Comment Form */}
       {showAddComment && authUser && (
-        <div className="border-t pt-4">
+        <div className="border-t border-white/20 pt-4">
           {replyingTo && (
-            <div className="mb-3 p-2 bg-blue-50 rounded-lg flex items-center justify-between">
-              <span className="text-sm text-blue-700">
+            <div className="mb-3 p-3 glass-card flex items-center justify-between" style={{ background: 'rgba(20, 184, 166, 0.15)' }}>
+              <span className="text-sm text-teal-300 readable font-medium">
                 Replying to comment
               </span>
               <button
                 onClick={() => setReplyingTo(null)}
-                className="text-blue-500 hover:text-blue-700"
+                className="text-teal-400 hover:text-teal-200 transition-colors readable"
               >
                 Cancel
               </button>
@@ -268,7 +269,7 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
             <img
               src={authUser.profilePic || '/default-avatar.png'}
               alt={authUser.username}
-              className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+              className="w-8 h-8 rounded-full object-cover flex-shrink-0 border-2 border-white/20"
             />
             <div className="flex-1">
               <div className="flex gap-2">
@@ -277,18 +278,18 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder={replyingTo ? "Write a reply..." : "Write a comment..."}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="glass-input flex-1 text-sm"
                   maxLength={500}
                 />
                 <button
                   type="submit"
                   disabled={!newComment.trim() || loadingStates.comment}
-                  className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-sm"
+                  className="glass-btn-primary px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm"
                 >
                   {loadingStates.comment ? (
-                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
-                    <Send className="h-3 w-3" />
+                    <Send className="h-4 w-4" />
                   )}
                 </button>
               </div>
@@ -298,8 +299,8 @@ const InlineComments = ({ post, limit = 3, showAddComment = true }) => {
       )}
 
       {!authUser && showAddComment && (
-        <div className="border-t pt-4 text-center">
-          <p className="text-gray-500 text-sm">Please login to leave a comment</p>
+        <div className="border-t border-white/20 pt-4 text-center">
+          <p className="text-white/70 text-sm readable">Please login to leave a comment</p>
         </div>
       )}
     </div>

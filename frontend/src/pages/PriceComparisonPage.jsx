@@ -48,7 +48,7 @@ const PriceComparisonPage = () => {
 
   const loadPopularItems = async () => {
     try {
-      const response = await axiosInstance.get('/price-comparison/popular');
+      const response = await axiosInstance.get('/api/price-comparison/popular');
       if (response.data.success) {
         setPopularItems(response.data.data);
       }
@@ -71,7 +71,7 @@ const PriceComparisonPage = () => {
         ...(userLocation ? { userLocation: `${userLocation.lng},${userLocation.lat}` } : {})
       });
 
-      const response = await axiosInstance.get(`/price-comparison/search?${params}`);
+      const response = await axiosInstance.get(`/api/price-comparison/search?${params}`);
       
       if (response.data.success) {
         setComparisonResults(response.data.data.results);
@@ -104,7 +104,7 @@ const PriceComparisonPage = () => {
         ...(filters.type && { type: filters.type })
       });
 
-      const response = await axiosInstance.get(`/price-comparison/stats?${params}`);
+      const response = await axiosInstance.get(`/api/price-comparison/stats?${params}`);
       if (response.data.success) {
         setPriceStats(response.data.data);
       }

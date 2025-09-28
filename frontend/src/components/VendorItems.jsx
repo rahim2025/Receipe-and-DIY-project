@@ -76,7 +76,7 @@ const VendorItems = ({ vendor, onClose }) => {
       if (showInStockOnly) params.append('inStock', 'true');
       if (searchTerm) params.append('search', searchTerm);
       
-      const response = await axiosInstance.get(`/vendor-items/vendor/${vendor._id}/items?${params}`);
+      const response = await axiosInstance.get(`/api/vendor-items/vendor/${vendor._id}/items?${params}`);
       setItems(response.data.items || []);
     } catch (error) {
       console.error('Error loading vendor items:', error);
@@ -105,7 +105,7 @@ const VendorItems = ({ vendor, onClose }) => {
         }
       };
 
-      const response = await axiosInstance.post(`/vendor-items/vendor/${vendor._id}/items`, itemData);
+      const response = await axiosInstance.post(`/api/vendor-items/vendor/${vendor._id}/items`, itemData);
       
       setItems(prev => [response.data.item, ...prev]);
       setShowAddItem(false);
@@ -187,13 +187,26 @@ const VendorItems = ({ vendor, onClose }) => {
           )}
         </div>
 
-        <div className="flex items-center space-x-2 text-xs text-gray-500">
-          <span>Added by {item.addedBy?.firstName || 'Unknown'}</span>
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-gray-600 font-medium">Added by {item.addedBy?.firstName || 'Unknown'}</span>
           {item.tags && item.tags.length > 0 && (
-            <div className="flex items-center">
-              <Tag className="h-3 w-3 mr-1" />
-              <span>{item.tags.slice(0, 2).join(', ')}</span>
-              {item.tags.length > 2 && <span>+{item.tags.length - 2}</span>}
+            <div className="flex items-center gap-1">
+              <Tag className="h-3 w-3 text-blue-600" />
+              <div className="flex flex-wrap gap-1">
+                {item.tags.slice(0, 2).map((tag, index) => (
+                  <span 
+                    key={index}
+                    className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200"
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {item.tags.length > 2 && (
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                    +{item.tags.length - 2}
+                  </span>
+                )}
+              </div>
             </div>
           )}
         </div>

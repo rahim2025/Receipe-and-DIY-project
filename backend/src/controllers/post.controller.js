@@ -504,7 +504,9 @@ export const uploadMedia = async (req, res) => {
     });
 
     // Clean up temporary file
-    cleanupTempFile(req.file.path);
+    if (req.file?.path) {
+      cleanupTempFile(req.file.path);
+    }
 
     if (!uploadResult.success) {
       return res.status(500).json({
@@ -527,7 +529,7 @@ export const uploadMedia = async (req, res) => {
     console.log("Error in uploadMedia controller: ", error.message);
     
     // Clean up temporary file in case of error
-    if (req.file && req.file.path) {
+    if (req.file?.path) {
       cleanupTempFile(req.file.path);
     }
     

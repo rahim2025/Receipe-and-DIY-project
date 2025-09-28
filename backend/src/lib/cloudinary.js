@@ -13,12 +13,34 @@ cloudinary.config({
 // Helper function to upload file to Cloudinary
 export const uploadToCloudinary = async (file, options = {}) => {
   try {
-    const result = await cloudinary.uploader.upload(file.path, {
-      resource_type: 'auto', // Automatically detect file type (image/video)
-      folder: options.folder || 'recipe-diy-hub', // Organize uploads in folders
-      public_id: options.public_id, // Optional custom public ID
-      transformation: options.transformation, // Optional transformations
-    });
+    const uploadOptions = {
+      resource_type: 'auto',
+      folder: options.folder || 'recipe-diy-hub',
+      public_id: options.public_id,
+      transformation: options.transformation,
+    };
+
+    if (file.buffer) {
+      return await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+            return resolve({ success: false, error: error.message });
+          }
+          resolve({
+            success: true,
+            url: result.secure_url,
+            public_id: result.public_id,
+            resource_type: result.resource_type,
+            format: result.format,
+          });
+        });
+
+        stream.end(file.buffer);
+      });
+    }
+
+    const result = await cloudinary.uploader.upload(file.path, uploadOptions);
 
     return {
       success: true,

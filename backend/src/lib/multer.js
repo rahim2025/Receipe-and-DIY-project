@@ -6,24 +6,30 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '../../uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+const isServerless = !!process.env.VERCEL;
 
-// Configure multer for temporary file storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    // Generate unique filename
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const extension = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+let uploadsDir = null;
+let storage;
+
+if (isServerless) {
+  storage = multer.memoryStorage();
+} else {
+  uploadsDir = path.join(__dirname, '../../uploads');
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
   }
-});
+
+  storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, uploadsDir);
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const extension = path.extname(file.originalname);
+      cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+    }
+  });
+}
 
 // File filter function
 const fileFilter = (req, file, cb) => {
@@ -84,6 +90,7 @@ export const handleUploadError = (error, req, res, next) => {
 // Clean up temporary files after upload
 export const cleanupTempFile = (filePath) => {
   try {
+    if (!filePath || isServerless) return;
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }

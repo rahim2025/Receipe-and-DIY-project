@@ -17,6 +17,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// Initialize database connection
+let dbConnected = false;
+const initializeDB = async () => {
+  if (!dbConnected) {
+    try {
+      await connectDB();
+      dbConnected = true;
+      console.log('✅ Database connected successfully');
+    } catch (error) {
+      console.error('❌ Failed to connect to database:', error);
+      throw error;
+    }
+  }
+};
+
 const rawOrigins = [
     process.env.FRONTEND_URL,
     process.env.FRONTEND_URLS,
@@ -37,6 +52,21 @@ const allowedOrigins = [
 app.use(cookieParser())
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ extended: true, limit: '50mb' }))
+
+// Add middleware to ensure DB connection on each request (for serverless)
+app.use(async (req, res, next) => {
+  try {
+    await initializeDB();
+    next();
+  } catch (error) {
+    console.error('Database initialization error:', error);
+    res.status(500).json({ 
+      error: 'Database connection failed',
+      message: error.message 
+    });
+  }
+});
+
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -84,38 +114,17 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Initialize database connection
-let dbConnected = false;
-const initializeDB = async () => {
-  if (!dbConnected) {
-    try {
-      await connectDB();
-      dbConnected = true;
-    } catch (error) {
-      console.error('Failed to connect to database:', error);
-    }
-  }
-};
-
-// Add middleware to ensure DB connection on each request (for serverless)
-app.use(async (req, res, next) => {
-  try {
-    await initializeDB();
-    next();
-  } catch (error) {
-    console.error('Database initialization error:', error);
-    res.status(500).json({ 
-      error: 'Database connection failed',
-      message: error.message 
-    });
-  }
-});
-
 // Only start a local server when running outside Vercel serverless
 if (!process.env.VERCEL) {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server (local) running on port ${PORT}`);
-        console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
+    // Initialize database for local development
+    initializeDB().then(() => {
+        app.listen(PORT, () => {
+            console.log(`🚀 Server (local) running on port ${PORT}`);
+            console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
+        });
+    }).catch(error => {
+        console.error('Failed to start server:', error);
+        process.exit(1);
     });
 }
 

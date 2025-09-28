@@ -30,7 +30,7 @@ const allowedOrigins = [
     'http://receipe-and-diy-project.vercel.app',
     'receipe-and-diy-project.vercel.app',
     'http://localhost:5173',
-    'https://localhost:5173'
+    'https://localhost:5173',
 ];
 
 // Middleware

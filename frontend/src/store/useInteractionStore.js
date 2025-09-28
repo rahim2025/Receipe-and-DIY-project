@@ -20,7 +20,7 @@ const useInteractionStore = create((set, get) => ({
     }));
 
     try {
-      const response = await axiosInstance.post(`/interactions/${postId}/like`);
+  const response = await axiosInstance.post(`api/interactions/${postId}/like`);
       const { isLiked, likeCount } = response.data;
 
       set(state => ({
@@ -53,7 +53,7 @@ const useInteractionStore = create((set, get) => ({
     }));
 
     try {
-      const response = await axiosInstance.post(`/interactions/${postId}/bookmark`);
+  const response = await axiosInstance.post(`api/interactions/${postId}/bookmark`);
       const { isBookmarked, bookmarkCount } = response.data;
 
       set(state => ({
@@ -81,7 +81,7 @@ const useInteractionStore = create((set, get) => ({
 
   getUserBookmarks: async () => {
     try {
-      const response = await axiosInstance.get('/interactions/bookmarks');
+  const response = await axiosInstance.get('api/interactions/bookmarks');
       return response.data.posts || [];
     } catch (error) {
       console.error('Failed to load bookmarked posts:', error);
@@ -97,7 +97,7 @@ const useInteractionStore = create((set, get) => ({
     }));
 
     try {
-      const response = await axiosInstance.post(`/interactions/${postId}/comments`, {
+  const response = await axiosInstance.post(`api/interactions/${postId}/comments`, {
         text,
         parentCommentId
       });
@@ -125,7 +125,7 @@ const useInteractionStore = create((set, get) => ({
 
   getComments: async (postId, page = 1) => {
     try {
-      const response = await axiosInstance.get(`/interactions/${postId}/comments?page=${page}`);
+  const response = await axiosInstance.get(`api/interactions/${postId}/comments?page=${page}`);
       const { comments, pagination } = response.data;
 
       set(state => ({
@@ -144,7 +144,7 @@ const useInteractionStore = create((set, get) => ({
 
   toggleCommentLike: async (commentId) => {
     try {
-      const response = await axiosInstance.post(`/interactions/comments/${commentId}/like`);
+  const response = await axiosInstance.post(`api/interactions/comments/${commentId}/like`);
       const { isLiked, likeCount } = response.data;
 
       // Update comment in state
@@ -170,7 +170,7 @@ const useInteractionStore = create((set, get) => ({
 
   editComment: async (commentId, text) => {
     try {
-      const response = await axiosInstance.put(`/interactions/comments/${commentId}`, { text });
+  const response = await axiosInstance.put(`api/interactions/comments/${commentId}`, { text });
       const updatedComment = response.data.comment;
 
       // Update comment in state
@@ -197,7 +197,7 @@ const useInteractionStore = create((set, get) => ({
 
   deleteComment: async (commentId) => {
     try {
-      await axiosInstance.delete(`/interactions/comments/${commentId}`);
+  await axiosInstance.delete(`api/interactions/comments/${commentId}`);
       
       // Remove comment from state
       set(state => {
@@ -222,7 +222,7 @@ const useInteractionStore = create((set, get) => ({
     }));
 
     try {
-      const response = await axiosInstance.post(`/interactions/${postId}/share`, {
+  const response = await axiosInstance.post(`api/interactions/${postId}/share`, {
         platform,
         message,
         sharedWith
@@ -262,7 +262,7 @@ const useInteractionStore = create((set, get) => ({
   // ============ ANALYTICS ============
   incrementViews: async (postId) => {
     try {
-      await axiosInstance.post(`/interactions/${postId}/view`);
+  await axiosInstance.post(`api/interactions/${postId}/view`);
     } catch (error) {
       console.error('Failed to increment views:', error);
     }
@@ -270,7 +270,7 @@ const useInteractionStore = create((set, get) => ({
 
   getPostEngagement: async (postId) => {
     try {
-      const response = await axiosInstance.get(`/interactions/${postId}/engagement`);
+  const response = await axiosInstance.get(`api/interactions/${postId}/engagement`);
       const engagement = response.data.engagement;
 
       set(state => ({

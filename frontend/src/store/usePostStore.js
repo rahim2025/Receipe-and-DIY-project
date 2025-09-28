@@ -15,7 +15,7 @@ export const usePostStore = create((set, get) => ({
   createPost: async (postData) => {
     set({ isCreating: true });
     try {
-      const res = await axiosInstance.post('/posts', postData);
+  const res = await axiosInstance.post('api/posts', postData);
       if (res.data.success) {
         const { post } = res.data;
         
@@ -45,7 +45,7 @@ export const usePostStore = create((set, get) => ({
   updatePost: async (postId, updateData) => {
     set({ isUpdating: true });
     try {
-      const res = await axiosInstance.put(`/posts/${postId}`, updateData);
+  const res = await axiosInstance.put(`api/posts/${postId}`, updateData);
       if (res.data.success) {
         const { post } = res.data;
         
@@ -70,7 +70,7 @@ export const usePostStore = create((set, get) => ({
   publishPost: async (postId) => {
     set({ isUpdating: true });
     try {
-      const res = await axiosInstance.patch(`/posts/${postId}/publish`);
+  const res = await axiosInstance.patch(`api/posts/${postId}/publish`);
       if (res.data.success) {
         const { post } = res.data;
         
@@ -103,7 +103,7 @@ export const usePostStore = create((set, get) => ({
         }
       });
 
-      const res = await axiosInstance.get(`/posts?${params.toString()}`);
+  const res = await axiosInstance.get(`api/posts?${params.toString()}`);
       if (res.data.success) {
         set({ 
           posts: res.data.posts, 
@@ -122,7 +122,7 @@ export const usePostStore = create((set, get) => ({
   getPostById: async (postId) => {
     set({ isLoading: true });
     try {
-      const res = await axiosInstance.get(`/posts/${postId}`);
+  const res = await axiosInstance.get(`api/posts/${postId}`);
       if (res.data.success) {
         set({ 
           currentPost: res.data.post, 
@@ -141,7 +141,7 @@ export const usePostStore = create((set, get) => ({
   getUserDrafts: async () => {
     set({ isLoading: true });
     try {
-      const res = await axiosInstance.get('/posts/user/drafts');
+  const res = await axiosInstance.get('api/posts/user/drafts');
       if (res.data.success) {
         set({ 
           drafts: res.data.drafts, 
@@ -159,7 +159,7 @@ export const usePostStore = create((set, get) => ({
   // Delete post
   deletePost: async (postId) => {
     try {
-      const res = await axiosInstance.delete(`/posts/${postId}`);
+  const res = await axiosInstance.delete(`api/posts/${postId}`);
       if (res.data.success) {
         set((state) => ({
           posts: state.posts.filter(p => p._id !== postId),
@@ -182,7 +182,7 @@ export const usePostStore = create((set, get) => ({
       formData.append('media', file);
       formData.append('type', type);
 
-      const res = await axiosInstance.post('/posts/upload', formData, {
+  const res = await axiosInstance.post('api/posts/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -203,7 +203,7 @@ export const usePostStore = create((set, get) => ({
   // Like/Unlike post
   likePost: async (postId) => {
     try {
-      const res = await axiosInstance.post(`/posts/${postId}/like`);
+  const res = await axiosInstance.post(`api/posts/${postId}/like`);
       if (res.data.success) {
         set((state) => ({
           posts: state.posts.map(post => 

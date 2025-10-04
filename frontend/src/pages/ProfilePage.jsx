@@ -89,7 +89,7 @@ const ProfilePage = () => {
       <Notification notification={notification} onClose={hideNotification} />
 
       {/* Main Content */}
-      <main className="auth-main" style={{ padding: '40px 20px' }}>
+      <main className="auth-main" style={{ paddingTop: '140px', paddingBottom: '40px', paddingLeft: '20px', paddingRight: '20px' }}>
         {/* Profile Card */}
         <div className="auth-card" style={{ maxWidth: '900px', padding: '40px' }}>
           {/* Header */}

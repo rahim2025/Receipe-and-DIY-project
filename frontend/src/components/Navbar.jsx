@@ -59,8 +59,8 @@ export const Navbar = () => {
     <header className="fixed w-full top-0 z-50">
       {/* Main Navbar */}
       <div className="backdrop-blur-xl bg-white/10 border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 h-16">
-          <div className="flex items-center justify-between h-full">
+        <div className="max-w-7xl mx-auto px-6 py-3">
+          <div className="flex items-center justify-between">
             {/* Brand */}
             <Link
               to="/"
@@ -131,7 +131,7 @@ export const Navbar = () => {
                     onClick={() => setShowUserMenu(prev => !prev)}
                     aria-haspopup="true"
                     aria-expanded={showUserMenu}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-violet-500 p-0.5 hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-teal-400/50"
+                    className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-violet-500 p-0.5 hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-teal-400/50"
                   >
                     <img
                       src={
@@ -142,19 +142,16 @@ export const Navbar = () => {
                       className="w-full h-full rounded-full object-cover"
                     />
                   </button>
-                  <br />
-                  <br />
-                  <br />
-                  <br />
                   {showUserMenu && (
                     <div
-                      className="absolute right-0 mt-3 w-60 z-[200] glass-panel p-2 rounded-2xl shadow-2xl animate-fadeIn"
+                      className="fixed top-24 right-6 w-60 z-[9999] bg-gray-900 backdrop-blur-xl border-2 border-white/40 p-3 rounded-2xl shadow-2xl animate-fadeIn"
                       role="menu"
+                      style={{ backgroundColor: 'rgba(17, 24, 39, 0.98)' }}
                     >
-                      <div className="px-3 py-2 mb-2 border-b border-white/10">
-                        <p className="text-sm font-semibold text-white truncate">{authUser.username}</p>
+                      <div className="px-3 py-3 mb-2 border-b border-white/30 bg-slate-800/50 rounded-lg">
+                        <p className="text-base font-bold text-white truncate" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>{authUser.username}</p>
                         {authUser.email && (
-                          <p className="text-xs text-white/50 truncate">{authUser.email}</p>
+                          <p className="text-sm text-gray-200 font-medium truncate mt-1" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{authUser.email}</p>
                         )}
                       </div>
                       <ul className="space-y-1">
@@ -162,7 +159,7 @@ export const Navbar = () => {
                           <Link
                             to="/profile"
                             onClick={() => setShowUserMenu(false)}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white font-medium hover:bg-white/20 transition-colors"
                           >
                             <User className="w-4 h-4 text-blue-300" /> Profile
                           </Link>
@@ -172,7 +169,7 @@ export const Navbar = () => {
                             <Link
                               to="/admin"
                               onClick={() => setShowUserMenu(false)}
-                              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 transition-colors"
+                              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white font-medium hover:bg-white/20 transition-colors"
                             >
                               <Shield className="w-4 h-4 text-purple-300" /> Admin Dashboard
                             </Link>
@@ -182,7 +179,7 @@ export const Navbar = () => {
                           <Link
                             to="/ai-assistant"
                             onClick={() => setShowUserMenu(false)}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white font-medium hover:bg-white/20 transition-colors"
                           >
                             <Sparkles className="w-4 h-4 text-purple-300" /> AI Assistant
                           </Link>
@@ -191,21 +188,21 @@ export const Navbar = () => {
                           <Link
                             to="/create"
                             onClick={() => setShowUserMenu(false)}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 transition-colors"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white hover:bg-white/20 transition-colors"
                           >
                             <Plus className="w-4 h-4 text-green-300" /> 
                             <div>
                               <div className="font-semibold">Create Step-by-Step</div>
-                              <div className="text-xs text-white/50">Detailed guide with steps</div>
+                              <div className="text-xs text-white/80">Detailed guide with steps</div>
                             </div>
                           </Link>
                         </li>
         
                       </ul>
-                      <div className="my-2 h-px bg-white/10"></div>
+                      <div className="my-2 h-px bg-white/30"></div>
                       <button
                         onClick={() => { logout(); setShowUserMenu(false); }}
-                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-300 font-medium hover:bg-red-500/20 transition-colors"
                       >
                         <LogOut className="w-4 h-4" /> Logout
                       </button>

@@ -465,18 +465,18 @@ const callCohereWithFallback = async (options) => {
 };
 
 export const getAISuggestions = async (req, res) => {
-	const { ingredients, prompt = "", context = "recipe_suggestions" } = req.body || {};
+	const { ingredients, prompt = "", context = "recipe_suggestions", projectType = "recipe" } = req.body || {};
 
 	const tokens = normalizeIngredients(ingredients, prompt);
 
 	if (!tokens.length && !prompt.trim()) {
 		return res.status(400).json({
 			success: false,
-			message: "Please provide ingredients or a prompt.",
+			message: `Please provide ${projectType === 'diy' ? 'materials' : 'ingredients'} or a prompt.`,
 		});
 	}
 
-	const fallbackResponse = buildFallbackSuggestion(tokens, prompt);
+	const fallbackResponse = buildFallbackSuggestion(tokens, prompt, projectType);
 
 	if (!hasCohereCredentials()) {
 		return res.status(200).json({
@@ -489,9 +489,32 @@ export const getAISuggestions = async (req, res) => {
 
 	try {
 		const userName = req.user?.fullName || req.user?.name || req.user?.email || "community member";
-		const ingredientList = tokens.length ? tokens.join(", ") : prompt;
+		const itemList = tokens.length ? tokens.join(", ") : prompt;
+		const isDIY = projectType === 'diy';
 
-		const systemPrompt = `You are "Cora", an upbeat culinary and DIY assistant for the Recipe & DIY Hub community.
+		const systemPrompt = isDIY
+			? `You are "Cora", an upbeat DIY and crafting assistant for the Recipe & DIY Hub community.
+	- Craft imaginative yet practical DIY project ideas using the provided materials.
+	- Return strictly valid JSON without markdown code fences.
+	- JSON shape:
+		{
+			"title": string,
+			"ideas": string[${MAX_IDEAS}],
+			"nutrition": {
+				"estTime": string, // estimated time like "2-3 hours"
+				"difficulty": "beginner" | "intermediate" | "advanced",
+				"estCost": string // numeric with two decimals
+			},
+			"extras": {
+				"hero"?: string,
+				"tips"?: string[],
+				"pairings"?: string[] // alternative materials or complementary projects
+			}
+		}
+	- EstTime should be realistic (e.g., "1-2 hours", "30 minutes", "2-3 days").
+	- EstCost should be a realistic dollar amount with two decimals.
+	- Keep tone friendly and specific. Provide concrete DIY technique tips inside extras.`
+			: `You are "Cora", an upbeat culinary and DIY assistant for the Recipe & DIY Hub community.
 	- Craft imaginative yet practical food ideas using the provided ingredients.
 	- Return strictly valid JSON without markdown code fences.
 	- JSON shape:
@@ -513,9 +536,16 @@ export const getAISuggestions = async (req, res) => {
 	- EstCost should be a realistic dollar amount with two decimals.
 	- Keep tone friendly and specific. Provide concrete technique tips inside extras.`;
 
-		const userPrompt = `Community member: ${userName}.
+		const userPrompt = isDIY
+			? `Community member: ${userName}.
 Context: ${context}.
-Available ingredients: ${ingredientList || "(none specified)"}.
+Available materials: ${itemList || "(none specified)"}.
+Additional request: ${prompt.trim() || "Focus on creative and practical projects"}.
+
+Produce ${MAX_IDEAS} creative DIY project ideas that are doable at home, include quick descriptors, and vary techniques.`
+			: `Community member: ${userName}.
+Context: ${context}.
+Available ingredients: ${itemList || "(none specified)"}.
 Additional request: ${prompt.trim() || "Focus on balanced recipes"}.
 
 Produce ${MAX_IDEAS} creative recipe starters that are doable at home, include quick descriptors, and vary techniques.`;

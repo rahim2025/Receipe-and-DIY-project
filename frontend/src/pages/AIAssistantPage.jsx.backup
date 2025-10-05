@@ -161,80 +161,43 @@ export default function AIAssistantPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-500 to-blue-500">
-      {/* Ambient gradient orbs matching HomePage */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-32 h-80 w-80 bg-blue-400/30 blur-[120px] animate-pulse" />
-        <div className="absolute top-1/3 -left-28 h-96 w-96 bg-indigo-500/30 blur-[120px] animate-pulse delay-700" />
-        <div className="absolute bottom-0 right-1/4 h-80 w-80 bg-cyan-400/25 blur-[110px] animate-pulse delay-[1100ms]" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="glass-panel p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 text-white/70 hover:text-white transition font-medium"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Inspiration Hub
-            </button>
-            <div className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-white/60">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              AI Ready
+        <div className="mb-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-white/60 hover:text-white transition mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm">Back</span>
+          </button>
+          
+          <div className="flex items-center gap-4 mb-2">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-400 via-violet-500 to-pink-500 flex items-center justify-center shadow-lg">
+              <Sparkles className="w-8 h-8 text-white" />
             </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row md:items-center gap-6">
-            <div className="relative">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 flex items-center justify-center shadow-2xl">
-                <Sparkles className="w-10 h-10 text-white animate-pulse" />
-              </div>
-              <div className="absolute inset-0 rounded-3xl bg-blue-400/30 blur-lg opacity-30" />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl font-bold text-white font-['Poppins'] tracking-wide">
-                AI Recipe & DIY Assistant
+            <div>
+              <h1 className="text-3xl font-bold text-white font-['Poppins'] tracking-wide">
+                AI Recipe Assistant
               </h1>
-              <p className="text-sm sm:text-base text-white/80 mt-3 max-w-2xl">
-                Explore a world of culinary delights and creative DIY projects. Transform your ingredients into delicious meals with Cora's AI-powered assistance.
+              <p className="text-sm text-white/60 mt-1">
+                Transform your ingredients into delicious meals with Cora
               </p>
-              <div className="flex flex-wrap gap-3 mt-4">
-                <span className="px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs text-white/80 uppercase tracking-widest">
-                  Recipes & Crafts
-                </span>
-                <span className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 text-xs text-white/90 uppercase tracking-widest">
-                  Powered by Cora
-                </span>
-              </div>
             </div>
           </div>
         </div>
 
         {/* Input Section */}
-        <div className="glass-panel p-6 sm:p-8">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-2 text-white">
-                <UtensilsCrossed className="w-5 h-5 text-cyan-300" />
-                <span className="text-sm font-semibold uppercase tracking-widest text-white/80">Prompt Builder</span>
-              </div>
-              {input && (
-                <button
-                  onClick={clearAll}
-                  className="text-xs sm:text-sm text-white/60 hover:text-white transition inline-flex items-center gap-1"
-                >
-                  <X className="w-4 h-4" />
-                  Clear all
-                </button>
-              )}
-            </div>
-
+        <div className="glass-panel p-6 mb-6">
+          <div className="space-y-4">
             <div>
+              <label className="block text-sm font-medium text-white/80 mb-2">
+                Your Ingredients or Meal Request
+              </label>
               <div className="relative">
                 <textarea
-                  rows={5}
+                  rows={4}
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -242,20 +205,23 @@ export default function AIAssistantPage() {
                       handleGenerate();
                     }
                   }}
-                  placeholder="List ingredients: chicken, tomato, basil, garlic\nAdd DIY materials: wood, paint, fabric, glue\nOr describe the vibe: cozy rainy-day soup or rustic wall art"
-                  className="glass-input !min-h-[140px] text-base leading-relaxed"
+                  placeholder="e.g., chicken, tomato, basil, garlic OR describe what you want like 'cozy rainy-day soup'"
+                  className="glass-input !pr-10 !min-h-[120px] resize-none text-base"
                 />
-                <div className="absolute right-3 bottom-3 text-[10px] uppercase tracking-[0.3em] text-white/25">Ctrl + Enter</div>
+                {input && (
+                  <button
+                    onClick={clearAll}
+                    className="absolute top-3 right-3 text-white/40 hover:text-white/80 transition"
+                    aria-label="Clear"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
               </div>
-
               {ingredientTokens.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <span className="text-xs uppercase tracking-wider text-white/50 mr-2">Detected:</span>
+                <div className="flex flex-wrap gap-2 mt-3">
                   {ingredientTokens.map(tok => (
-                    <span
-                      key={tok}
-                      className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/50 text-xs font-semibold text-white/95 shadow-sm"
-                    >
+                    <span key={tok} className="price-chip text-xs tracking-wide bg-white/10 border-white/20 text-white/80">
                       {tok}
                     </span>
                   ))}
@@ -263,57 +229,59 @@ export default function AIAssistantPage() {
               )}
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <h3 className="text-xs uppercase tracking-widest text-white/60 mb-3">Quick ingredients</h3>
-                <div className="flex flex-wrap gap-2">
-                  {QUICK_INGREDIENTS.map(ing => (
-                    <button
-                      key={ing}
-                      onClick={() => handleAddIngredient(ing)}
-                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-400/60 text-sm text-white/80 hover:text-white transition-all hover:-translate-y-[1px]"
-                    >
-                      {ing}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xs uppercase tracking-widest text-white/60 mb-3">Try these prompts</h3>
-                <div className="flex flex-wrap gap-2">
-                  {QUICK_PROMPTS.map(p => (
-                    <button
-                      key={p}
-                      onClick={() => handleQuickPrompt(p)}
-                      className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 hover:border-cyan-400/60 text-sm text-white/85 hover:text-white transition-all hover:-translate-y-[1px]"
-                    >
-                      {p}
-                    </button>
-                  ))}
-                </div>
+            {/* Quick ingredient chips */}
+            <div>
+              <div className="text-xs uppercase tracking-wider text-white/40 font-medium mb-2">Quick Add</div>
+              <div className="flex flex-wrap gap-2">
+                {QUICK_INGREDIENTS.map(ing => (
+                  <button
+                    key={ing}
+                    onClick={() => handleAddIngredient(ing)}
+                    className="text-xs px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-400/40 text-white/70 hover:text-white transition"
+                  >
+                    {ing}
+                  </button>
+                ))}
               </div>
             </div>
 
+            {/* Quick prompts */}
+            <div>
+              <div className="text-xs uppercase tracking-wider text-white/40 font-medium mb-2">Try These Prompts</div>
+              <div className="flex flex-wrap gap-2">
+                {QUICK_PROMPTS.map(p => (
+                  <button
+                    key={p}
+                    onClick={() => handleQuickPrompt(p)}
+                    className="text-xs px-4 py-1.5 rounded-lg bg-gradient-to-br from-teal-500/20 to-violet-500/10 border border-white/10 hover:border-teal-400/40 hover:from-teal-500/30 hover:to-violet-500/20 text-white/80 hover:text-white transition"
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Action button */}
             <div className="pt-2">
               <button
                 onClick={handleGenerate}
                 disabled={loading || !input.trim()}
-                className="w-full glass-btn-primary justify-center disabled:opacity-40 disabled:cursor-not-allowed text-base sm:text-lg py-3 sm:py-4 font-semibold shadow-xl hover:shadow-2xl"
+                className="w-full glass-btn-primary justify-center disabled:opacity-40 disabled:cursor-not-allowed text-base py-3"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                     Cora is thinking...
                   </>
                 ) : (
                   <>
-                    <Wand2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                    Generate ideas
+                    <Wand2 className="w-5 h-5" />
+                    Generate Ideas
                   </>
                 )}
               </button>
-              <p className="text-xs text-white/40 text-center mt-3">
-                Cora blends culinary and DIY knowledge to match the rest of the experience.
+              <p className="text-xs text-white/40 text-center mt-2">
+                Press Ctrl+Enter to generate quickly
               </p>
             </div>
           </div>

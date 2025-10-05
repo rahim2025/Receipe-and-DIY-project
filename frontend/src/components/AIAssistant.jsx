@@ -355,7 +355,7 @@ export default function AIAssistant() {
               </div>
             )}
 
-            {/* Nutrition Info */}
+            {/* Stats Info - Conditional based on project type */}
             {response.nutrition && (
               <div className="px-5 pb-4">
                 <div className="text-[10px] uppercase tracking-wider text-violet-300 font-semibold flex items-center gap-2 mb-3">
@@ -364,16 +364,28 @@ export default function AIAssistant() {
                 </div>
                 
                 <div className="grid grid-cols-3 gap-2">
-                  {/* Calories */}
-                  <div className="glass-panel p-3 text-center bg-gradient-to-br from-teal-500/10 to-transparent border-teal-400/20 hover:scale-105 transition-transform">
-                    <Flame className="w-4 h-4 text-teal-300 mx-auto mb-1" />
-                    <div className="text-base font-bold text-white">
-                      {response.nutrition.estCalories}
+                  {/* First Stat - Calories for recipes, Time for DIY */}
+                  {response.nutrition.estCalories ? (
+                    <div className="glass-panel p-3 text-center bg-gradient-to-br from-teal-500/10 to-transparent border-teal-400/20 hover:scale-105 transition-transform">
+                      <Flame className="w-4 h-4 text-teal-300 mx-auto mb-1" />
+                      <div className="text-base font-bold text-white">
+                        {response.nutrition.estCalories}
+                      </div>
+                      <div className="text-[9px] text-white/60 uppercase tracking-wide mt-0.5">
+                        Calories
+                      </div>
                     </div>
-                    <div className="text-[9px] text-white/60 uppercase tracking-wide mt-0.5">
-                      Calories
+                  ) : response.nutrition.estTime ? (
+                    <div className="glass-panel p-3 text-center bg-gradient-to-br from-teal-500/10 to-transparent border-teal-400/20 hover:scale-105 transition-transform">
+                      <TrendingUp className="w-4 h-4 text-teal-300 mx-auto mb-1" />
+                      <div className="text-sm font-bold text-white capitalize leading-tight">
+                        {response.nutrition.estTime}
+                      </div>
+                      <div className="text-[9px] text-white/60 uppercase tracking-wide mt-0.5">
+                        Time
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
 
                   {/* Difficulty */}
                   <div className="glass-panel p-3 text-center bg-gradient-to-br from-violet-500/10 to-transparent border-violet-400/20 hover:scale-105 transition-transform">

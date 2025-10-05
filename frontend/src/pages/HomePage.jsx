@@ -381,8 +381,8 @@ const HomePage = () => {
                       )}
                       
                       <div className="glass-badge glass-badge-blue">
-                        <DollarSign className="w-4 h-4" />
-                        ${filteredPosts[0]?.totalCostEstimate?.toFixed(2) || '0.00'}
+                        {/* <DollarSign className="w-4 h-4" /> */}
+                        ৳{filteredPosts[0]?.totalCostEstimate?.toFixed(2) || '0.00'}
                       </div>
                       
                       <div className="glass-badge">
@@ -487,7 +487,7 @@ const HomePage = () => {
                         <div className="flex-1">
                           <div className="glass-post-author-name text-sm">{post.author?.username}</div>
                           <div className="glass-post-author-meta text-xs">
-                            ${post.totalCostEstimate?.toFixed(2) || '0.00'}
+                            ৳{post.totalCostEstimate?.toFixed(2) || '0.00'}
                           </div>
                         </div>
                       </div>

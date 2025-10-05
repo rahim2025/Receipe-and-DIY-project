@@ -127,7 +127,7 @@ const PostCard = ({ post, showDistance = false, userLocation = null, className =
             {post.totalStepCost > 0 && (
               <span className="glass-post-badge flex items-center gap-1 text-xs font-semibold">
                 <span>💰</span>
-                <span>${post.totalStepCost.toFixed(2)}</span>
+                <span>৳{post.totalStepCost.toFixed(2)}</span>
               </span>
             )}
           </div>

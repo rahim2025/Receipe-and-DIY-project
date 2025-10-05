@@ -167,7 +167,7 @@ const PriceComparisonPage = () => {
           <div className="flex flex-wrap gap-3 text-sm">
             <div className="glass-badge glass-badge-teal">Min ${priceStats.priceStats.min}</div>
             <div className="glass-badge glass-badge-violet">Max ${priceStats.priceStats.max}</div>
-            <div className="glass-badge glass-badge-blue">Avg ${priceStats.priceStats.average.toFixed(2)}</div>
+            <div className="glass-badge glass-badge-blue">Avg ৳{priceStats.priceStats.average.toFixed(2)}</div>
           </div>
         )}
       </div>
@@ -461,7 +461,7 @@ const PriceComparisonPage = () => {
                       </div>
                       <div className="glass-panel p-3">
                         <div className="text-xs text-white/60">Avg</div>
-                        <div className="text-sm font-semibold text-violet-300">${priceStats.priceStats.average.toFixed(2)}</div>
+                        <div className="text-sm font-semibold text-violet-300">৳{priceStats.priceStats.average.toFixed(2)}</div>
                       </div>
                       <div className="glass-panel p-3">
                         <div className="text-xs text-white/60">Max</div>

@@ -8,6 +8,8 @@ import postRouter from "./routers/post.router.js"
 import interactionRouter from "./routers/interaction.router.js"
 import vendorRouter from "./routers/vendor.router.js"
 import vendorItemRouter from "./routers/vendorItem.router.js"
+import vendorReviewRouter from "./routers/vendorReview.router.js"
+import vendorReportRouter from "./routers/vendorReport.router.js"
 import priceComparisonRouter from "./routers/priceComparison.router.js"
 import aiRouter from "./routers/ai.router.js"
 import adminRouter from "./routers/admin.router.js"
@@ -99,6 +101,8 @@ app.use("/api/posts", postRouter)
 app.use("/api/interactions", interactionRouter)
 app.use("/api/vendors", vendorRouter)
 app.use("/api/vendor-items", vendorItemRouter)
+app.use("/api/vendor-reviews", vendorReviewRouter)
+app.use("/api/vendor-reports", vendorReportRouter)
 app.use("/api/price-comparison", priceComparisonRouter)
 app.use("/api/ai", aiRouter)
 app.use("/api/admin", adminRouter)

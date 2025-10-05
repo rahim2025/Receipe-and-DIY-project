@@ -1,5 +1,6 @@
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import Comment from "../models/comment.model.js";
 import { uploadToCloudinary, deleteFromCloudinary } from '../lib/cloudinary.js';
 import { cleanupTempFile } from '../lib/multer.js';
 
@@ -525,11 +526,15 @@ export const deletePost = async (req, res) => {
       });
     }
 
+    // Delete all comments associated with this post
+    await Comment.deleteMany({ post: id });
+
+    // Delete the post (likes are embedded in the post, so they'll be deleted automatically)
     await Post.findByIdAndDelete(id);
 
     res.status(200).json({
       success: true,
-      message: "Post deleted successfully"
+      message: "Post and all associated data deleted successfully"
     });
 
   } catch (error) {

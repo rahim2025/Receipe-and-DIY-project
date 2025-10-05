@@ -1,67 +1,62 @@
-import React, { useState } from 'react';
-import { X, AlertTriangle, Flag, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import { XCircle, AlertTriangle, Flag, CheckCircle } from 'lucide-react';
 import { axiosInstance } from '../lib/axios';
 import toast from 'react-hot-toast';
 
-const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId = null, postTitle = null }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    category: 'spam',
-    reason: ''
-  });
+const REPORT_CATEGORIES = [
+  { value: 'incorrect-information', label: 'Incorrect Information', description: 'Wrong address, hours, or contact details' },
+  { value: 'closed-permanently', label: 'Closed Permanently', description: 'This business is no longer operating' },
+  { value: 'duplicate', label: 'Duplicate Listing', description: 'This vendor already exists in the system' },
+  { value: 'inappropriate-content', label: 'Inappropriate Content', description: 'Offensive or inappropriate information' },
+  { value: 'spam', label: 'Spam', description: 'This listing appears to be spam' },
+  { value: 'scam-fraud', label: 'Scam/Fraud', description: 'Suspected fraudulent business' },
+  { value: 'safety-concern', label: 'Safety Concern', description: 'Safety or health code violations' },
+  { value: 'other', label: 'Other', description: 'Other issues not listed above' }
+];
 
-  const categories = [
-    { value: 'spam', label: 'Spam', description: 'Posting unwanted or repetitive content' },
-    { value: 'harassment', label: 'Harassment', description: 'Bullying or harassing behavior' },
-    { value: 'inappropriate-content', label: 'Inappropriate Content', description: 'Offensive or inappropriate posts' },
-    { value: 'impersonation', label: 'Impersonation', description: 'Pretending to be someone else' },
-    { value: 'other', label: 'Other', description: 'Other violations' }
-  ];
+const VendorReportModal = ({ vendor, onClose }) => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [reason, setReason] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.reason.trim()) {
-      toast.error('Please provide a reason for reporting');
+    if (!selectedCategory) {
+      toast.error('Please select a report category');
+      return;
+    }
+    
+    if (!reason.trim()) {
+      toast.error('Please provide a reason for your report');
       return;
     }
 
-    if (formData.reason.trim().length < 10) {
-      toast.error('Please provide more details (at least 10 characters)');
+    if (reason.trim().length < 10) {
+      toast.error('Please provide a more detailed reason (at least 10 characters)');
       return;
     }
+
+    setSubmitting(true);
 
     try {
-      setIsSubmitting(true);
-      const reportData = {
-        reportedUserId: reportedUserId,
-        reason: formData.reason.trim(),
-        category: formData.category
-      };
-      
-      // Add post context if available
-      if (postId) {
-        reportData.postId = postId;
+      const response = await axiosInstance.post('/api/vendor-reports', {
+        vendorId: vendor._id,
+        category: selectedCategory,
+        reason: reason.trim()
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message || 'Report submitted successfully');
+        onClose();
       }
-      if (postTitle) {
-        reportData.postTitle = postTitle;
-      }
-      
-      await axiosInstance.post('/api/reports', reportData);
-      
-      toast.success('Report submitted successfully. Our team will review it.');
-      setFormData({ category: 'spam', reason: '' });
-      onClose();
     } catch (error) {
       console.error('Error submitting report:', error);
-      const errorMessage = error.response?.data?.message || 'Failed to submit report. Please try again.';
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || 'Failed to submit report');
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
-
-  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -80,22 +75,15 @@ const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId
               <Flag className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">Report User</h2>
-              <p className="text-sm text-white/60">
-                {reportedUser ? `@${reportedUser}` : 'Report inappropriate behavior'}
-              </p>
-              {postTitle && (
-                <p className="text-xs text-white/50 mt-1">
-                  Post: "{postTitle.substring(0, 40)}{postTitle.length > 40 ? '...' : ''}"
-                </p>
-              )}
+              <h2 className="text-xl font-bold text-white">Report Vendor</h2>
+              <p className="text-sm text-white/60">{vendor.name}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
           >
-            <X className="w-5 h-5 text-white" />
+            <XCircle className="w-5 h-5 text-white" />
           </button>
         </div>
 
@@ -122,12 +110,12 @@ const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId
               Category *
             </label>
             <div className="space-y-2">
-              {categories.map((cat) => (
+              {REPORT_CATEGORIES.map((cat) => (
                 <label
                   key={cat.value}
                   className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-                    formData.category === cat.value
-                      ? 'bg-gradient-to-r from-teal-500/20 to-violet-500/20 border-teal-400/50 shadow-lg shadow-teal-500/20'
+                    selectedCategory === cat.value
+                      ? 'bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-400/50 shadow-lg shadow-red-500/20'
                       : 'bg-white/5 border-white/10 hover:border-white/20'
                   }`}
                 >
@@ -136,16 +124,16 @@ const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId
                       type="radio"
                       name="category"
                       value={cat.value}
-                      checked={formData.category === cat.value}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      checked={selectedCategory === cat.value}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
                       className="sr-only"
                     />
                     <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                      formData.category === cat.value
-                        ? 'border-teal-400 bg-teal-500'
+                      selectedCategory === cat.value
+                        ? 'border-red-400 bg-red-500'
                         : 'border-white/40 bg-white/10'
                     }`}>
-                      {formData.category === cat.value && (
+                      {selectedCategory === cat.value && (
                         <CheckCircle className="w-4 h-4 text-white" strokeWidth={3} />
                       )}
                     </div>
@@ -165,16 +153,16 @@ const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId
               Reason for Report *
             </label>
             <textarea
-              value={formData.reason}
-              onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-              placeholder="Please provide detailed information about why you're reporting this user..."
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Please provide detailed information about your concern..."
               rows={4}
-              maxLength={500}
-              className="w-full px-4 py-3 rounded-2xl bg-slate-900/60 border border-white/30 text-white placeholder-white/40 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:bg-slate-900/80 resize-none"
+              maxLength={1000}
+              className="w-full px-4 py-3 rounded-2xl bg-slate-900/60 border border-white/30 text-white placeholder-white/40 transition-all duration-300 focus:outline-none focus:border-red-300 focus:bg-slate-900/80 resize-none"
               required
             />
             <p className="text-xs text-white/50 mt-1">
-              {formData.reason.length}/500 characters (minimum 10)
+              {reason.length}/1000 characters (minimum 10)
             </p>
           </div>
 
@@ -184,16 +172,16 @@ const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId
               type="button"
               onClick={onClose}
               className="flex-1 px-4 py-3 rounded-xl border border-white/20 text-white hover:bg-white/10 transition-all font-medium"
-              disabled={isSubmitting}
+              disabled={submitting}
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || formData.reason.trim().length < 10}
+              disabled={submitting || !selectedCategory || reason.trim().length < 10}
               className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 text-white font-medium hover:shadow-xl hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              {isSubmitting ? (
+              {submitting ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Submitting...
@@ -209,4 +197,4 @@ const ReportUserModal = ({ isOpen, onClose, reportedUser, reportedUserId, postId
   );
 };
 
-export default ReportUserModal;
+export default VendorReportModal;

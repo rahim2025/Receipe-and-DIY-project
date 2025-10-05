@@ -123,7 +123,7 @@ const StepCard = ({
               </div>
               <div>
                 <label className="block text-sm font-semibold text-white/90 mb-2">
-                  <DollarSign className="w-4 h-4 inline mr-1" /> Estimated Cost ($)
+                   Estimated Cost (৳)
                 </label>
                 <input
                   type="number"
@@ -184,8 +184,8 @@ const StepCard = ({
                       type="number"
                       value={material.estimatedCost || 0}
                       onChange={(e) => handleMaterialUpdate(matIndex, 'estimatedCost', parseFloat(e.target.value) || 0)}
-                      placeholder="$0"
-                      step="0.01"
+                      placeholder="Cost"
+                      step="1"
                       className="w-24 px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-emerald-300"
                     />
                     <button
@@ -303,8 +303,8 @@ const StepCard = ({
               )}
               {step.estimatedCost > 0 && (
                 <span className="glass-badge glass-badge-green flex items-center gap-1">
-                  <DollarSign className="h-3 w-3" />
-                  ${step.estimatedCost.toFixed(2)}
+                
+                  ৳{step.estimatedCost.toFixed(2)}
                 </span>
               )}
             </div>
@@ -332,7 +332,7 @@ const StepCard = ({
                     </span>
                     {material.estimatedCost > 0 && (
                       <span className="text-teal-300 font-semibold readable">
-                        ${material.estimatedCost.toFixed(2)}
+                        ৳{material.estimatedCost.toFixed(2)}
                       </span>
                     )}
                   </div>

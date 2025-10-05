@@ -2,6 +2,7 @@
 
 export const getCurrencySymbol = (currency) => {
   const symbols = {
+    BDT: '৳',
     USD: '$',
     EUR: '€',
     GBP: '£',
@@ -11,10 +12,10 @@ export const getCurrencySymbol = (currency) => {
     JPY: '¥',
     CNY: '¥'
   };
-  return symbols[currency] || '$';
+  return symbols[currency] || '৳';
 };
 
-export const formatCurrency = (amount, currency = 'USD', options = {}) => {
+export const formatCurrency = (amount, currency = 'BDT', options = {}) => {
   const {
     showDecimals = true,
     compact = false
@@ -42,6 +43,7 @@ export const formatCurrency = (amount, currency = 'USD', options = {}) => {
 
 export const getCurrencyName = (currency) => {
   const names = {
+    BDT: 'Bangladeshi Taka',
     USD: 'US Dollar',
     EUR: 'Euro',
     GBP: 'British Pound',
@@ -51,5 +53,5 @@ export const getCurrencyName = (currency) => {
     JPY: 'Japanese Yen',
     CNY: 'Chinese Yuan'
   };
-  return names[currency] || 'US Dollar';
+  return names[currency] || 'Bangladeshi Taka';
 };

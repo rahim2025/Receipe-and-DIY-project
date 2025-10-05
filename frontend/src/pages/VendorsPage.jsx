@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapPin, Search, Filter, Store, Clock, Phone, ExternalLink, Plus, Heart, Star, Navigation, Map, Calendar, CheckCircle, XCircle, Package, DollarSign, Sparkles, TrendingUp } from 'lucide-react';
+import { MapPin, Search, Filter, Store, Clock, Phone, ExternalLink, Plus, Heart, Star, Navigation, Map, Calendar, CheckCircle, XCircle, Package, DollarSign, Sparkles, TrendingUp, MessageSquare, Mail, Flag } from 'lucide-react';
 import { axiosInstance } from '../lib/axios';
 import { getCurrentLocation, formatDistance, calculateDistance, VENDOR_TYPES, VENDOR_CATEGORIES } from '../lib/location';
 import { useAuthStore } from '../store/useAuthStore';
@@ -7,6 +7,8 @@ import LocationSelector from '../components/LocationSelector';
 import MapboxMap from '../components/MapboxMap';
 import VendorErrorBoundary from '../components/VendorErrorBoundary';
 import VendorItems from '../components/VendorItems';
+import VendorReviews from '../components/VendorReviews';
+import VendorReportModal from '../components/VendorReportModal';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 
@@ -24,6 +26,8 @@ const VendorsPage = () => {
   const [showAddVendor, setShowAddVendor] = useState(false);
   const [showMapView, setShowMapView] = useState(false);
   const [selectedVendorForItems, setSelectedVendorForItems] = useState(null);
+  const [selectedVendorForReviews, setSelectedVendorForReviews] = useState(null);
+  const [selectedVendorForReport, setSelectedVendorForReport] = useState(null);
   const [newVendor, setNewVendor] = useState({
     name: '',
     type: '',
@@ -279,12 +283,8 @@ const VendorsPage = () => {
       followers: Array.isArray(vendor.followers) ? vendor.followers : []
     };
 
-    const distance = userLocation && safeVendor.address?.coordinates ? calculateDistance(
-      userLocation.latitude,
-      userLocation.longitude,
-      safeVendor.address.coordinates[1],
-      safeVendor.address.coordinates[0]
-    ) : null;
+  const actionButtonClasses = "glass-post-interaction flex items-center justify-center gap-1 px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap rounded-lg min-w-[68px]";
+  const primaryActionButtonClasses = `${actionButtonClasses} bg-gradient-to-r from-teal-400/60 to-violet-500/60 border border-white/30 text-white`;
 
     return (
       <div className="glass-post-card group glass-fade-in">
@@ -310,13 +310,6 @@ const VendorsPage = () => {
                 <Store className="h-4 w-4" />
                 <span>{VENDOR_TYPES.find(t => t.value === safeVendor.type)?.label || safeVendor.type}</span>
               </div>
-              
-              {distance && (
-                <div className="flex items-center gap-2 text-sm text-white/70 mb-2">
-                  <Navigation className="h-4 w-4" />
-                  <span>{formatDistance(distance)} away</span>
-                </div>
-              )}
             </div>
             
             {authUser && (
@@ -379,24 +372,51 @@ const VendorsPage = () => {
 
         {/* Actions */}
         <div className="glass-post-actions">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 flex-1 min-w-[220px]">
               <button
                 onClick={() => setSelectedVendorForItems(safeVendor)}
-                className="glass-post-interaction flex items-center gap-1 px-3 py-2 rounded-lg"
+                className={actionButtonClasses}
               >
-                <Package className="w-4 h-4" />
-                <span className="text-xs font-medium">Items</span>
+                <Package className="w-3.5 h-3.5" />
+                <span>Items</span>
+              </button>
+              
+              <button
+                onClick={() => setSelectedVendorForReviews(safeVendor)}
+                className={actionButtonClasses}
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Reviews ({safeVendor.reviewCount || 0})</span>
               </button>
               
               {safeVendor.phone && (
                 <a
                   href={`tel:${safeVendor.phone}`}
-                  className="glass-post-interaction flex items-center gap-1 px-3 py-2 rounded-lg"
+                  className={actionButtonClasses}
                 >
-                  <Phone className="w-4 h-4" />
-                  <span className="text-xs font-medium">Call</span>
+                  <Phone className="w-3 h-3" />
+                  <span>Call</span>
                 </a>
+              )}
+              {safeVendor.email && (
+                <a
+                  href={`mailto:${safeVendor.email}`}
+                  className={actionButtonClasses}
+                >
+                  <Mail className="w-3 h-3" />
+                  <span>Email</span>
+                </a>
+              )}
+              {authUser && (
+                <button
+                  onClick={() => setSelectedVendorForReport(safeVendor)}
+                  className={`${actionButtonClasses} text-orange-300 hover:text-orange-200`}
+                  title="Report this vendor"
+                >
+                  <Flag className="w-3 h-3" />
+                  <span>Report</span>
+                </button>
               )}
             </div>
             
@@ -405,7 +425,7 @@ const VendorsPage = () => {
                 href={safeVendor.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass-post-button text-xs px-4 py-2 rounded-lg flex items-center gap-1"
+                className={`${primaryActionButtonClasses} ml-auto`}
               >
                 <ExternalLink className="w-3 h-3" />
                 Visit
@@ -852,37 +872,53 @@ const VendorsPage = () => {
 
         {/* Add Vendor Modal */}
         {showAddVendor && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Add New Vendor</h2>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="backdrop-blur-xl bg-gradient-to-br from-indigo-900/40 via-purple-900/40 to-pink-900/40 border-2 border-white/20 rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden relative">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowAddVendor(false)}
+                className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full backdrop-blur-lg bg-white/10 border border-white/20 hover:bg-white/20 hover:rotate-90 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Close modal"
+              >
+                <XCircle className="w-6 h-6 text-white/80 group-hover:text-white transition-colors" />
+              </button>
+
+              <div className="p-8 overflow-y-auto max-h-[90vh]">
+                <h2 className="text-3xl font-bold text-white mb-6 font-['Poppins'] flex items-center gap-3 pr-12">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-400 to-violet-500 flex items-center justify-center shadow-lg">
+                    <Plus className="w-7 h-7 text-white" />
+                  </div>
+                  Add New Vendor
+                </h2>
                 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
                       Vendor Name *
                     </label>
                     <input
                       type="text"
                       value={newVendor.name}
                       onChange={(e) => setNewVendor({...newVendor, name: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/50 transition-all"
                       placeholder="Enter vendor name"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
                       Type *
                     </label>
                     <select
                       value={newVendor.type}
                       onChange={(e) => setNewVendor({...newVendor, type: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/50 transition-all"
                     >
-                      <option value="">Select type</option>
+                      <option value="" className="bg-gray-900">Select type</option>
                       {VENDOR_TYPES.map((type) => (
-                        <option key={type.value} value={type.value}>
+                        <option key={type.value} value={type.value} className="bg-gray-900">
                           {type.icon} {type.label}
                         </option>
                       ))}
@@ -890,13 +926,14 @@ const VendorsPage = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                       Description
                     </label>
                     <textarea
                       value={newVendor.description}
                       onChange={(e) => setNewVendor({...newVendor, description: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 transition-all resize-none"
                       rows="3"
                       placeholder="Describe what this vendor offers"
                     />
@@ -904,7 +941,8 @@ const VendorsPage = () => {
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
                         Street Address *
                       </label>
                       <input
@@ -914,13 +952,14 @@ const VendorsPage = () => {
                           ...newVendor,
                           address: {...newVendor.address, street: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/50 transition-all"
                         placeholder="Street address"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
                         City *
                       </label>
                       <input
@@ -930,7 +969,7 @@ const VendorsPage = () => {
                           ...newVendor,
                           address: {...newVendor.address, city: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/50 transition-all"
                         placeholder="City"
                       />
                     </div>
@@ -938,7 +977,8 @@ const VendorsPage = () => {
                   
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
                         State *
                       </label>
                       <input
@@ -948,13 +988,14 @@ const VendorsPage = () => {
                           ...newVendor,
                           address: {...newVendor.address, state: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/50 transition-all"
                         placeholder="State"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
                         Country *
                       </label>
                       <input
@@ -964,13 +1005,14 @@ const VendorsPage = () => {
                           ...newVendor,
                           address: {...newVendor.address, country: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/50 transition-all"
                         placeholder="Country"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
                         Zip Code
                       </label>
                       <input
@@ -980,7 +1022,7 @@ const VendorsPage = () => {
                           ...newVendor,
                           address: {...newVendor.address, zipCode: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/50 transition-all"
                         placeholder="Zip code"
                       />
                     </div>
@@ -988,7 +1030,8 @@ const VendorsPage = () => {
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                         Phone
                       </label>
                       <input
@@ -998,13 +1041,14 @@ const VendorsPage = () => {
                           ...newVendor,
                           contact: {...newVendor.contact, phone: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/50 transition-all"
                         placeholder="Phone number"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                         Website
                       </label>
                       <input
@@ -1014,7 +1058,7 @@ const VendorsPage = () => {
                           ...newVendor,
                           contact: {...newVendor.contact, website: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/50 transition-all"
                         placeholder="https://..."
                       />
                     </div>
@@ -1022,15 +1066,17 @@ const VendorsPage = () => {
                   
                   {/* Business Hours Section */}
                   <div>
-                    <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
-                      <Clock className="h-4 w-4 mr-2" />
+                    <label className="flex items-center text-sm font-medium text-white/90 mb-3 gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                        <Clock className="h-4 w-4 text-white" />
+                      </div>
                       Business Hours
                     </label>
-                    <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
+                    <div className="space-y-3 backdrop-blur-lg bg-white/5 border border-white/10 p-5 rounded-2xl">
                       {Object.entries(newVendor.businessHours).map(([day, schedule]) => (
-                        <div key={day} className="flex items-center space-x-3 p-2 rounded border border-gray-200">
-                          <div className="w-20 text-sm font-medium text-gray-700 capitalize flex items-center">
-                            <Calendar className="h-3 w-3 mr-1" />
+                        <div key={day} className="flex items-center space-x-3 p-3 rounded-xl backdrop-blur-lg bg-white/5 border border-white/10 hover:border-white/20 transition-all">
+                          <div className="w-24 text-sm font-medium text-white capitalize flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-teal-400" />
                             {day}
                           </div>
                           
@@ -1047,10 +1093,10 @@ const VendorsPage = () => {
                                   }
                                 }
                               })}
-                              className={`flex items-center space-x-1 px-2 py-1 rounded text-xs font-medium ${
+                              className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-xs font-medium transition-all shadow-md ${
                                 !schedule.closed 
-                                  ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                                  : 'bg-red-100 text-red-700 hover:bg-red-200'
+                                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:scale-105' 
+                                  : 'bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-lg hover:scale-105'
                               }`}
                             >
                               {!schedule.closed ? (
@@ -1070,7 +1116,7 @@ const VendorsPage = () => {
                           {!schedule.closed && (
                             <div className="flex items-center space-x-3 ml-4">
                               <div className="flex items-center space-x-2">
-                                <label className="text-sm text-gray-600 font-medium">From:</label>
+                                <label className="text-sm text-white/80 font-medium">From:</label>
                                 <input
                                   type="time"
                                   value={schedule.open}
@@ -1084,14 +1130,14 @@ const VendorsPage = () => {
                                       }
                                     }
                                   })}
-                                  className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                  className="px-3 py-2 backdrop-blur-lg bg-white/10 border border-white/20 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 transition-all"
                                 />
                               </div>
                               
-                              <span className="text-gray-400">—</span>
+                              <span className="text-white/40 font-bold">—</span>
                               
                               <div className="flex items-center space-x-2">
-                                <label className="text-sm text-gray-600 font-medium">To:</label>
+                                <label className="text-sm text-white/80 font-medium">To:</label>
                                 <input
                                   type="time"
                                   value={schedule.close}
@@ -1105,15 +1151,15 @@ const VendorsPage = () => {
                                       }
                                     }
                                   })}
-                                  className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                  className="px-3 py-2 backdrop-blur-lg bg-white/10 border border-white/20 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 transition-all"
                                 />
                               </div>
                             </div>
                           )}
                           
                           {schedule.closed && (
-                            <span className="text-sm text-gray-500 italic ml-4 flex items-center">
-                              <XCircle className="h-3 w-3 mr-1" />
+                            <span className="text-sm text-white/60 italic ml-4 flex items-center gap-2">
+                              <XCircle className="h-4 w-4 text-red-400" />
                               Closed all day
                             </span>
                           )}
@@ -1121,7 +1167,7 @@ const VendorsPage = () => {
                       ))}
                       
                       {/* Quick Actions */}
-                      <div className="flex space-x-2 pt-2 border-t border-gray-200">
+                      <div className="flex flex-wrap gap-2 pt-3 border-t border-white/10">
                         <button
                           type="button"
                           onClick={() => {
@@ -1138,7 +1184,7 @@ const VendorsPage = () => {
                               businessHours: updatedHours
                             });
                           }}
-                          className="text-xs px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                          className="text-xs px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:shadow-lg hover:scale-105 transition-all font-medium"
                         >
                           Set All 9 AM - 5 PM
                         </button>
@@ -1159,7 +1205,7 @@ const VendorsPage = () => {
                               businessHours: updatedHours
                             });
                           }}
-                          className="text-xs px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200"
+                          className="text-xs px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg hover:shadow-lg hover:scale-105 transition-all font-medium"
                         >
                           Mon-Sat 9-5
                         </button>
@@ -1180,7 +1226,7 @@ const VendorsPage = () => {
                               businessHours: updatedHours
                             });
                           }}
-                          className="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                          className="text-xs px-4 py-2 backdrop-blur-lg bg-white/10 border border-white/20 text-white rounded-lg hover:bg-white/20 hover:scale-105 transition-all font-medium"
                         >
                           Close All
                         </button>
@@ -1189,18 +1235,19 @@ const VendorsPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex justify-end space-x-4 mt-6">
+                <div className="flex justify-end space-x-4 mt-8 pt-6 border-t border-white/10">
                   <button
                     onClick={() => setShowAddVendor(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="px-6 py-3 backdrop-blur-lg bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 hover:scale-105 transition-all font-medium shadow-lg"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={addVendor}
                     disabled={!newVendor.name || !newVendor.type || !newVendor.address.street}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-3 bg-gradient-to-r from-teal-500 via-blue-500 to-violet-500 text-white rounded-xl hover:shadow-2xl hover:scale-105 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center gap-2"
                   >
+                    <Plus className="w-5 h-5" />
                     Add Vendor
                   </button>
                 </div>
@@ -1214,6 +1261,22 @@ const VendorsPage = () => {
           <VendorItems
             vendor={selectedVendorForItems}
             onClose={() => setSelectedVendorForItems(null)}
+          />
+        )}
+
+        {/* Vendor Reviews Modal */}
+        {selectedVendorForReviews && (
+          <VendorReviews
+            vendor={selectedVendorForReviews}
+            onClose={() => setSelectedVendorForReviews(null)}
+          />
+        )}
+
+        {/* Vendor Report Modal */}
+        {selectedVendorForReport && (
+          <VendorReportModal
+            vendor={selectedVendorForReport}
+            onClose={() => setSelectedVendorForReport(null)}
           />
         )}
       </div>

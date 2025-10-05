@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Plus, X, Upload, Save, Send, ChefHat, Hammer, Clock, Star, Users, DollarSign, Package } from 'lucide-react';
 import { usePostStore } from '../store/usePostStore';
 import { useAuthStore } from '../store/useAuthStore';
 import StepCard from '../components/StepCard';
 import toast from 'react-hot-toast';
 
-const PostCreate = ({ editMode = false, postId = null }) => {
+const PostCreate = ({ editMode = false }) => {
   const navigate = useNavigate();
+  const { postId } = useParams(); // Get postId from URL params
   const { authUser } = useAuthStore();
   const { createPost, updatePost, publishPost, getPostById, currentPost, isCreating, isUpdating, isUploading, uploadMedia } = usePostStore();
 
@@ -558,7 +559,7 @@ const PostCreate = ({ editMode = false, postId = null }) => {
               <div className="bg-gradient-to-br from-emerald-400/30 to-teal-400/30 p-5 rounded-2xl border-2 border-white/40 backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-2">
                   <DollarSign className="w-10 h-10 text-emerald-500 drop-shadow-lg" />
-                  <span className="text-lg font-bold text-white drop-shadow">${calculateTotalCost().toFixed(2)}</span>
+                  <span className="text-lg font-bold text-white drop-shadow">৳{calculateTotalCost().toFixed(2)}</span>
                 </div>
                 <p className="text-sm text-white/80 font-medium">Total cost</p>
               </div>
@@ -614,8 +615,8 @@ const PostCreate = ({ editMode = false, postId = null }) => {
                 </div>
                 <div className="bg-white/60 p-4 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
-                    <DollarSign className="w-7 h-7 text-emerald-600" />
-                    <span className="font-semibold text-emerald-900">${calculateTotalCost().toFixed(2)}</span>
+          
+                    <span className="font-semibold text-emerald-900">৳{calculateTotalCost().toFixed(2)}</span>
                   </div>
                   <p className="text-xs text-gray-600">Estimated total cost including materials</p>
                 </div>

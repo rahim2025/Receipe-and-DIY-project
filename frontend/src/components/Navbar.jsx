@@ -245,12 +245,12 @@ export const Navbar = () => {
               </button>
             ))}
           </div>
-          <Link
+          {/* <Link
             to="/create"
             className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-teal-400 to-violet-500 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all"
           >
             <Plus className="w-4 h-4" /> Share
-          </Link>
+          </Link> */}
         </div>
       </div>
 

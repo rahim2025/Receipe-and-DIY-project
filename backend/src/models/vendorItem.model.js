@@ -48,8 +48,8 @@ const vendorItemSchema = new mongoose.Schema({
     },
     currency: {
       type: String,
-      default: 'USD',
-      enum: ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR', 'MXN']
+      default: 'BDT',
+      enum: ['BDT', 'USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR', 'MXN']
     },
     unit: {
       type: String,
@@ -157,7 +157,8 @@ vendorItemSchema.virtual('formattedPrice').get(function() {
   }
   
   const formatPrice = (amount) => {
-    const symbol = this.price.currency === 'USD' ? '$' : 
+    const symbol = this.price.currency === 'BDT' ? '৳' :
+                   this.price.currency === 'USD' ? '$' : 
                    this.price.currency === 'EUR' ? '€' : 
                    this.price.currency === 'GBP' ? '£' : 
                    this.price.currency;

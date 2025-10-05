@@ -15,6 +15,7 @@ import SearchAndDiscovery from "./pages/SearchAndDiscovery"
 import AIAssistantPage from "./pages/AIAssistantPage"
 import EmailVerificationPage from "./pages/EmailVerificationPage"
 import AdminDashboard from "./pages/AdminDashboard"
+import VendorReportsAdmin from "./pages/VendorReportsAdmin"
 import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import { Loader } from "lucide-react"
@@ -72,6 +73,7 @@ const App = () => {
         
         {/* Admin routes */}
         <Route path="/admin" element={authUser?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/" />} />
+        <Route path="/admin/vendor-reports" element={authUser?.role === 'admin' ? <VendorReportsAdmin /> : <Navigate to="/" />} />
         
       </Routes>
       

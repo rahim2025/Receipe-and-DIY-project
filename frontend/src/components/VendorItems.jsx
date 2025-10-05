@@ -35,6 +35,8 @@ const VendorItems = ({ vendor, onClose }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showAddItem, setShowAddItem] = useState(false);
+  const [showEditItem, setShowEditItem] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -48,7 +50,7 @@ const VendorItems = ({ vendor, onClose }) => {
     price: {
       min: '',
       max: '',
-      currency: 'USD',
+      currency: 'BDT',
       unit: 'each'
     },
     availability: {
@@ -114,7 +116,7 @@ const VendorItems = ({ vendor, onClose }) => {
         category: '',
         type: 'ingredient',
         description: '',
-        price: { min: '', max: '', currency: 'USD', unit: 'each' },
+        price: { min: '', max: '', currency: 'BDT', unit: 'each' },
         availability: { inStock: true, seasonal: false, notes: '' },
         tags: []
       });
@@ -123,6 +125,61 @@ const VendorItems = ({ vendor, onClose }) => {
     } catch (error) {
       console.error('Error adding item:', error);
       toast.error(error.response?.data?.message || 'Failed to add item');
+    }
+  };
+
+  const handleEditClick = (item) => {
+    setEditingItem({
+      ...item,
+      price: {
+        min: item.price?.min || '',
+        max: item.price?.max || '',
+        currency: item.price?.currency || 'BDT',
+        unit: item.price?.unit || 'each'
+      },
+      availability: {
+        inStock: item.availability?.inStock ?? true,
+        seasonal: item.availability?.seasonal ?? false,
+        notes: item.availability?.notes || ''
+      },
+      tags: item.tags || []
+    });
+    setShowEditItem(true);
+  };
+
+  const updateItem = async () => {
+    try {
+      if (!editingItem.name || !editingItem.category || !editingItem.type) {
+        toast.error('Please fill in all required fields');
+        return;
+      }
+
+      const itemData = {
+        ...editingItem,
+        name: editingItem.name.trim(),
+        description: editingItem.description?.trim() || '',
+        price: {
+          ...editingItem.price,
+          min: editingItem.price.min ? parseFloat(editingItem.price.min) : undefined,
+          max: editingItem.price.max ? parseFloat(editingItem.price.max) : undefined
+        }
+      };
+
+      const response = await axiosInstance.put(
+        `/api/vendor-items/items/${editingItem._id}`,
+        itemData
+      );
+      
+      setItems(prev => prev.map(item => 
+        item._id === editingItem._id ? response.data.item : item
+      ));
+      
+      setShowEditItem(false);
+      setEditingItem(null);
+      toast.success('Item updated successfully!');
+    } catch (error) {
+      console.error('Error updating item:', error);
+      toast.error(error.response?.data?.message || 'Failed to update item');
     }
   };
 
@@ -172,11 +229,11 @@ const VendorItems = ({ vendor, onClose }) => {
         <div>
           {item.price && (item.price.min || item.price.max) ? (
             <div className="flex items-center text-green-400 font-semibold">
-              <DollarSign className="h-4 w-4" />
+              
               <span>
                 {item.price.min && item.price.max && item.price.min !== item.price.max
-                  ? `$${item.price.min} - $${item.price.max}`
-                  : `$${item.price.min || item.price.max}`}
+                  ? `৳${item.price.min} - ৳${item.price.max}`
+                  : `৳${item.price.min || item.price.max}`}
                 {item.price.unit && item.price.unit !== 'each' && (
                   <span className="text-base text-white/80 ml-1">/{item.price.unit}</span>
                 )}
@@ -218,12 +275,22 @@ const VendorItems = ({ vendor, onClose }) => {
         </div>
       )}
 
-      <div className="mt-3 pt-3 border-t border-white/20">
+      <div className="mt-3 pt-3 border-t border-white/20 flex items-center justify-between">
         <QuickCompareButton 
           itemName={item.name}
           category={item.category}
           type={item.type}
         />
+        
+        {authUser && item.addedBy?._id === authUser._id && (
+          <button
+            onClick={() => handleEditClick(item)}
+            className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all text-xs font-medium shadow-md hover:shadow-lg hover:scale-105"
+          >
+            <Edit className="h-3 w-3" />
+            Edit
+          </button>
+        )}
       </div>
     </div>
   );
@@ -509,6 +576,194 @@ const VendorItems = ({ vendor, onClose }) => {
                     style={{ textShadow: '0 2px 4px rgba(0,0,0,0.85)' }}
                   >
                     ✓ Add Item
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Item Modal */}
+        {showEditItem && editingItem && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="glass-panel w-full max-w-5xl max-h-[80vh] flex flex-col overflow-hidden rounded-2xl shadow-2xl border border-white/15 relative">
+              <div className="p-6 flex-1 overflow-y-auto overscroll-contain pb-48">
+                <h3 className="text-xl font-bold text-ultra-readable mb-4 flex items-center gap-2">
+                  <Edit className="h-5 w-5" />
+                  Edit Item
+                </h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium readable-strong mb-2">
+                      Item Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={editingItem.name}
+                      onChange={(e) => setEditingItem({...editingItem, name: e.target.value})}
+                      className="w-full px-4 py-3 bg-blue-900/30 border-2 border-blue-400/50 rounded-xl text-white font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-300 backdrop-blur-sm placeholder-blue-200"
+                      placeholder="Enter item name"
+                      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium readable-strong mb-2">
+                        Type *
+                      </label>
+                      <select
+                        value={editingItem.type}
+                        onChange={(e) => setEditingItem({...editingItem, type: e.target.value, category: ''})}
+                        className="glass-input w-full"
+                      >
+                        <option value="ingredient">🥘 Ingredient</option>
+                        <option value="material">🔨 Material</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium readable-strong mb-2">
+                        Category *
+                      </label>
+                      <select
+                        value={editingItem.category}
+                        onChange={(e) => setEditingItem({...editingItem, category: e.target.value})}
+                        className="glass-input w-full"
+                      >
+                        <option value="">Select category</option>
+                        {Object.entries(ITEM_CATEGORIES[editingItem.type] || {}).map(([key, label]) => (
+                          <option key={key} value={key}>{label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium readable-strong mb-2">
+                      Description
+                    </label>
+                    <textarea
+                      value={editingItem.description}
+                      onChange={(e) => setEditingItem({...editingItem, description: e.target.value})}
+                      className="glass-input w-full"
+                      rows="3"
+                      placeholder="Describe the item..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium readable-strong mb-2">
+                      Price (Optional)
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={editingItem.price.min}
+                        onChange={(e) => setEditingItem({
+                          ...editingItem,
+                          price: {...editingItem.price, min: e.target.value}
+                        })}
+                        className="px-3 py-3 bg-green-900/30 border-2 border-green-400/50 rounded-xl text-white font-medium focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-300 backdrop-blur-sm placeholder-green-200"
+                        placeholder="Min price"
+                        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={editingItem.price.max}
+                        onChange={(e) => setEditingItem({
+                          ...editingItem,
+                          price: {...editingItem.price, max: e.target.value}
+                        })}
+                        className="px-3 py-3 bg-green-900/30 border-2 border-green-400/50 rounded-xl text-white font-medium focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-300 backdrop-blur-sm placeholder-green-200"
+                        placeholder="Max price"
+                        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
+                      />
+                      <select
+                        value={editingItem.price.unit}
+                        onChange={(e) => setEditingItem({
+                          ...editingItem,
+                          price: {...editingItem.price, unit: e.target.value}
+                        })}
+                        className="px-3 py-3 bg-green-900/30 border-2 border-green-400/50 rounded-xl text-white font-medium focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-300 backdrop-blur-sm"
+                        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
+                      >
+                        {PRICE_UNITS.map(unit => (
+                          <option key={unit} value={unit}>{unit}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={editingItem.availability.inStock}
+                        onChange={(e) => setEditingItem({
+                          ...editingItem,
+                          availability: {...editingItem.availability, inStock: e.target.checked}
+                        })}
+                        className="rounded border-white/30 text-blue-500 focus:ring-blue-500 bg-white/10"
+                      />
+                      <span className="text-sm readable-secondary">Currently in stock</span>
+                    </label>
+
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={editingItem.availability.seasonal}
+                        onChange={(e) => setEditingItem({
+                          ...editingItem,
+                          availability: {...editingItem.availability, seasonal: e.target.checked}
+                        })}
+                        className="rounded border-white/30 text-blue-500 focus:ring-blue-500 bg-white/10"
+                      />
+                      <span className="text-sm readable-secondary">Seasonal item</span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium readable-strong mb-2">
+                      Availability Notes
+                    </label>
+                    <input
+                      type="text"
+                      value={editingItem.availability.notes}
+                      onChange={(e) => setEditingItem({
+                        ...editingItem,
+                        availability: {...editingItem.availability, notes: e.target.value}
+                      })}
+                      className="glass-input w-full"
+                      placeholder="e.g., Available weekends only"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Fixed Footer with Buttons */}
+              <div className="absolute left-0 right-0 bottom-6 sm:bottom-6 px-6 z-30">
+                <div className="w-full rounded-xl bg-gray-900/90 backdrop-blur-2xl border border-white/15 shadow-xl p-4 flex justify-end gap-4">
+                  <button
+                    onClick={() => {
+                      setShowEditItem(false);
+                      setEditingItem(null);
+                    }}
+                    className="px-6 py-2.5 rounded-lg bg-gradient-to-br from-red-600 to-red-500 text-white font-semibold shadow-lg hover:from-red-500 hover:to-red-400 focus:outline-none focus:ring-2 focus:ring-red-400/70 transition-all text-sm"
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.85)' }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={updateItem}
+                    disabled={!editingItem.name || !editingItem.category || !editingItem.type}
+                    className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white font-semibold shadow-lg hover:from-blue-500 hover:via-indigo-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-blue-400/70 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm"
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.85)' }}
+                  >
+                    ✓ Update Item
                   </button>
                 </div>
               </div>

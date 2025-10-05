@@ -13,7 +13,8 @@ import {
   Bookmark,
   Play,
   Tag,
-  Flag
+  Flag,
+  Trash2
 } from 'lucide-react';
 import { formatCurrency } from '../lib/currency';
 import toast from 'react-hot-toast';
@@ -28,7 +29,7 @@ const PostDetail = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
   const { authUser } = useAuthStore();
-  const { currentPost, getPostById, likePost, isLoading } = usePostStore();
+  const { currentPost, getPostById, likePost, deletePost, isLoading } = usePostStore();
   
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
@@ -69,6 +70,18 @@ const PostDetail = () => {
       // Fallback to clipboard
       navigator.clipboard.writeText(window.location.href);
       toast.success('Link copied to clipboard!');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this post? This action cannot be undone and will delete all comments and likes associated with this post.')) {
+      try {
+        await deletePost(postId);
+        toast.success('Post deleted successfully!');
+        navigate('/');
+      } catch (error) {
+        // Error is already handled in the store
+      }
     }
   };
 
@@ -141,7 +154,7 @@ const PostDetail = () => {
   const isLiked = authUser && currentPost.likes?.includes(authUser._id);
 
   return (
-    <div className="min-h-screen pt-24 pb-8">
+    <div className="min-h-screen pb-8" style={{ paddingTop: '140px' }}>
       <div className="max-w-6xl mx-auto px-4 lg:px-6">
         {/* Header Actions */}
         <div className="flex items-center justify-between mb-6">
@@ -163,13 +176,22 @@ const PostDetail = () => {
             </button>
             
             {isOwner && (
-              <Link
-                to={`/edit/${currentPost._id}`}
-                className="glass-btn-primary text-sm px-4 py-2"
-              >
-                <Edit3 className="w-4 h-4" />
-                Edit
-              </Link>
+              <>
+                <Link
+                  to={`/edit/${currentPost._id}`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border-2 border-blue-400/40 text-white font-medium hover:from-blue-500/30 hover:to-purple-500/30 hover:border-blue-400/60 hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40"
+                >
+                  <Edit3 className="w-4 h-4" />
+                  Edit Post
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border-2 border-red-400/40 text-white font-medium hover:from-red-500/30 hover:to-pink-500/30 hover:border-red-400/60 hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/20 hover:shadow-red-500/40"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Post
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -484,7 +506,7 @@ const PostDetail = () => {
                     <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
                       <div className="text-xl font-bold text-green-400 mb-1 readable">$</div>
                       <div className="text-sm font-bold text-white mb-1 readable">
-                        ${currentPost.totalStepCost.toFixed(2)}
+                        ৳{currentPost.totalStepCost.toFixed(2)}
                       </div>
                       <div className="text-xs text-white/90 readable">Total Cost</div>
                     </div>
@@ -531,7 +553,7 @@ const PostDetail = () => {
                         </span>
                         {material.estimatedCost > 0 && (
                           <span className="text-green-400 font-bold readable">
-                            ${material.estimatedCost.toFixed(2)}
+                            ৳{material.estimatedCost.toFixed(2)}
                           </span>
                         )}
                       </div>
@@ -540,7 +562,7 @@ const PostDetail = () => {
                   <div className="mt-4 pt-4 border-t border-white/20 flex justify-between items-center">
                     <span className="text-white font-semibold readable">Total Estimated Cost:</span>
                     <span className="text-2xl font-bold text-green-400 readable">
-                      ${currentPost.allStepMaterials.reduce((sum, m) => sum + (m.estimatedCost || 0), 0).toFixed(2)}
+                      ৳{currentPost.allStepMaterials.reduce((sum, m) => sum + (m.estimatedCost || 0), 0).toFixed(2)}
                     </span>
                   </div>
                 </div>

@@ -418,16 +418,87 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Reduce transform effects on mobile for better performance */
   .liquid-glass:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-2px);
   }
   
   .liquid-btn:hover {
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-1px);
   }
   
   .liquid-hover-lift:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-2px);
+  }
+  
+  /* Mobile-optimized glass effects */
+  .liquid-glass {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 12px;
+  }
+  
+  /* Mobile navigation adjustments */
+  .liquid-navbar {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  
+  /* Mobile-friendly buttons */
+  .liquid-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    min-height: 44px;
+    border-radius: 10px;
+  }
+  
+  /* Mobile input fields */
+  .liquid-input,
+  .liquid-select {
+    padding: 12px 14px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    border-radius: 12px;
+  }
+  
+  /* Mobile search bar */
+  .liquid-search {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 10px 14px;
+  }
+  
+  /* Mobile category buttons */
+  .liquid-category {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 16px;
+  }
+}
+
+/* Extra small devices (phones in portrait) */
+@media (max-width: 480px) {
+  /* Further reduce effects for small phones */
+  .liquid-glass:hover {
+    transform: none;
+  }
+  
+  .liquid-btn:hover {
+    transform: none;
+  }
+  
+  /* Smaller glass card borders */
+  .liquid-glass {
+    border-radius: 10px;
+  }
+  
+  /* Compact buttons */
+  .liquid-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  /* Optimize spacing */
+  .liquid-glass-strong {
+    border-radius: 20px;
   }
 }
 

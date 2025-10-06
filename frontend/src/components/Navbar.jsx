@@ -59,17 +59,17 @@ export const Navbar = () => {
     <header className="fixed w-full top-0 z-50">
       {/* Main Navbar */}
       <div className="backdrop-blur-xl bg-white/10 border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-3">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3">
+          <div className="flex items-center justify-between gap-2 sm:gap-3">
             {/* Brand */}
             <Link
               to="/"
-              className="flex items-center gap-3 hover:scale-105 transition-transform duration-300"
+              className="flex items-center gap-2 sm:gap-3 hover:scale-105 transition-transform duration-300"
             >
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-400 to-violet-500 flex items-center justify-center shadow-md">
-                <ChefHat className="w-6 h-6 text-white" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-br from-teal-400 to-violet-500 flex items-center justify-center shadow-md">
+                <ChefHat className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
               </div>
-              <h1 className="text-xl font-extrabold text-white tracking-wide font-['Poppins']">
+              <h1 className="text-base sm:text-lg md:text-xl font-extrabold text-white tracking-wide font-['Poppins']">
                 CraftyCook
               </h1>
             </Link>
@@ -101,16 +101,16 @@ export const Navbar = () => {
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+                className="lg:hidden min-w-[44px] min-h-[44px] w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-300 touch-target"
               >
                 {isMobileMenuOpen ? (
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-white" />
                 ) : (
-                  <Menu className="w-5 h-5 text-white" />
+                  <Menu className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-white" />
                 )}
               </button>
 
@@ -131,7 +131,7 @@ export const Navbar = () => {
                     onClick={() => setShowUserMenu(prev => !prev)}
                     aria-haspopup="true"
                     aria-expanded={showUserMenu}
-                    className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-violet-500 p-0.5 hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-teal-400/50"
+                    className="min-w-[44px] min-h-[44px] w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-teal-400 to-violet-500 p-0.5 hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-teal-400/50 touch-target"
                   >
                     <img
                       src={
@@ -144,7 +144,7 @@ export const Navbar = () => {
                   </button>
                   {showUserMenu && (
                     <div
-                      className="fixed top-24 right-6 w-60 z-[9999] bg-gray-900 backdrop-blur-xl border-2 border-white/40 p-3 rounded-2xl shadow-2xl animate-fadeIn"
+                      className="fixed top-20 sm:top-24 right-3 sm:right-6 w-64 sm:w-72 md:w-80 z-[9999] bg-gray-900 backdrop-blur-xl border-2 border-white/40 p-3 sm:p-4 rounded-2xl shadow-2xl animate-fadeIn"
                       role="menu"
                       style={{ backgroundColor: 'rgba(17, 24, 39, 0.98)' }}
                     >
@@ -210,13 +210,13 @@ export const Navbar = () => {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
-                  <Link to="/login" className="nav-link px-4">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <Link to="/login" className="nav-link px-3 sm:px-4 text-sm sm:text-base touch-target">
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-5 py-2 rounded-full bg-gradient-to-r from-teal-400 to-violet-500 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                    className="px-3 sm:px-4 md:px-5 py-2 rounded-full bg-gradient-to-r from-teal-400 to-violet-500 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base touch-target"
                   >
                     Sign Up
                   </Link>
@@ -229,13 +229,13 @@ export const Navbar = () => {
 
       {/* Category Bar */}
       <div className="backdrop-blur-xl bg-white/5 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-          <div className="flex gap-3 overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 flex items-center justify-between">
+          <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
             {["all", "recipe", "diy"].map((cat) => (
               <button
                 key={cat}
                 onClick={() => handleCategoryChange(cat)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap touch-target ${
                   activeCategory === cat
                     ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md"
                     : "text-white/70 hover:text-white hover:bg-white/10"
@@ -257,18 +257,18 @@ export const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden backdrop-blur-xl bg-white/5 border-t border-white/10 animate-slideDown">
-          <div className="max-w-7xl mx-auto px-6 py-4 space-y-3">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 space-y-2 sm:space-y-3">
             <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search recipes, crafts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none"
+                className="w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none text-sm sm:text-base"
               />
             </form>
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-1.5 sm:gap-2">
               <Link to="/" className="mobile-link">
                 <Home className="w-5 h-5" /> Home
               </Link>

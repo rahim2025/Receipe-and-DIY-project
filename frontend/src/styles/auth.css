@@ -767,55 +767,483 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* Navigation */
     .auth-nav-content {
         flex-direction: column;
-        gap: 15px;
-        padding: 20px;
+        gap: 12px;
+        padding: 15px 16px;
     }
     
+    .nav-brand {
+        font-size: 1.35rem;
+    }
+    
+    .nav-brand svg {
+        font-size: 1.6rem;
+        margin-right: 8px;
+    }
+    
+    .nav-links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-link {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+    }
+    
+    /* Main Content */
     .auth-main {
-        padding: 20px;
+        padding: 20px 12px;
+        gap: 30px;
     }
     
+    /* Auth Card */
     .auth-card {
-        padding: 30px 25px;
+        padding: 28px 22px 26px;
+        border-radius: 20px;
+        max-width: 100%;
     }
     
+    .auth-header h1 {
+        font-size: 1.85rem;
+        margin-bottom: 8px;
+    }
+    
+    .auth-header p {
+        font-size: 0.88rem;
+    }
+    
+    /* Forms */
     .form-row {
         grid-template-columns: 1fr;
         gap: 0;
     }
     
+    .form-group {
+        margin-bottom: 18px;
+    }
+    
+    .form-label {
+        font-size: 0.85rem;
+        margin-bottom: 7px;
+    }
+    
+    .form-input {
+        padding: 13px 16px 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 14px;
+    }
+    
+    /* Password toggle */
+    .toggle-password {
+        padding: 5px;
+        border-radius: 10px;
+    }
+    
+    /* Buttons */
+    .auth-btn {
+        padding: 13px 18px;
+        font-size: 15px;
+        border-radius: 12px;
+        min-height: 48px; /* Better touch target */
+    }
+    
+    /* Social Login */
     .social-login {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
+    .social-btn {
+        padding: 12px 16px;
+        min-height: 48px; /* Better touch target */
+        border-radius: 12px;
+    }
+    
+    /* Interest Tags */
     .interest-tags {
-        justify-content: center;
+        justify-content: flex-start;
+        gap: 8px;
     }
     
+    .interest-tag span {
+        padding: 8px 14px;
+        font-size: 0.82rem;
+    }
+    
+    /* Features/Benefits */
     .feature-list,
     .benefit-list {
-        padding: 20px;
+        padding: 20px 18px;
+        border-radius: 16px;
+    }
+    
+    .feature-item,
+    .benefit-item {
+        margin-bottom: 18px;
+        font-size: 0.9rem;
+    }
+    
+    .benefit-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+    }
+    
+    .benefit-content h4 {
+        font-size: 1rem;
+    }
+    
+    .benefit-content p {
+        font-size: 0.85rem;
+    }
+    
+    /* Divider */
+    .divider {
+        margin: 20px 0;
+        font-size: 0.85rem;
+    }
+    
+    .divider span {
+        padding: 5px 16px;
+    }
+    
+    /* Notification */
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: calc(100% - 20px);
+        padding: 14px 18px;
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 480px) {
-    .auth-header h1 {
-        font-size: 1.6rem;
-    }
-    
-    .auth-card {
-        padding: 25px 20px;
-        border-radius: 16px;
-    }
-    
+    /* Navigation */
     .nav-brand {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
     .nav-brand svg {
+        font-size: 1.4rem;
+        margin-right: 6px;
+    }
+    
+    .nav-links {
+        gap: 8px;
+    }
+    
+    .nav-link {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        border-radius: 16px;
+    }
+    
+    /* Auth Card */
+    .auth-card {
+        padding: 22px 18px 20px;
+        border-radius: 18px;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+    }
+    
+    .auth-header p {
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+    
+    /* Forms */
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    .form-label {
+        font-size: 0.82rem;
+        margin-bottom: 6px;
+        gap: 6px;
+    }
+    
+    .form-label svg {
+        font-size: 0.85rem;
+    }
+    
+    .form-input {
+        padding: 12px 14px 11px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 12px;
+    }
+    
+    .password-input .form-input {
+        padding-right: 42px;
+    }
+    
+    /* Buttons */
+    .auth-btn {
+        padding: 12px 16px;
+        font-size: 14px;
+        border-radius: 11px;
+        min-height: 46px;
+        gap: 6px;
+    }
+    
+    /* Social Login */
+    .social-login {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .social-btn {
+        padding: 11px 14px;
+        min-height: 46px;
+        font-size: 13px;
+        border-radius: 11px;
+        gap: 5px;
+    }
+    
+    /* Interest Tags */
+    .interest-tags {
+        gap: 6px;
+    }
+    
+    .interest-tag span {
+        padding: 7px 12px;
+        font-size: 0.78rem;
+        border-radius: 16px;
+    }
+    
+    /* Form Options */
+    .form-options {
+        margin: 20px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .checkbox-label {
+        font-size: 0.82rem;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .checkmark {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .forgot-password {
+        font-size: 0.82rem;
+        margin-left: 0;
+    }
+    
+    /* Password Strength */
+    .strength-bar {
+        height: 5px;
+    }
+    
+    .strength-text {
+        font-size: 0.7rem;
+        margin-top: 5px;
+    }
+    
+    /* Features/Benefits */
+    .features-preview h3,
+    .benefits-preview h3 {
+        font-size: 1.3rem;
+        margin-bottom: 16px;
+    }
+    
+    .feature-list,
+    .benefit-list {
+        padding: 16px 14px;
+        border-radius: 14px;
+    }
+    
+    .feature-item {
+        font-size: 0.85rem;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .feature-item svg {
+        font-size: 1.1rem;
+        width: 18px;
+    }
+    
+    .benefit-item {
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .benefit-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+    }
+    
+    .benefit-icon svg {
+        font-size: 1.15rem;
+    }
+    
+    .benefit-content h4 {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+    
+    .benefit-content p {
+        font-size: 0.8rem;
+        line-height: 1.35;
+    }
+    
+    /* Divider */
+    .divider {
+        margin: 18px 0;
+        font-size: 0.8rem;
+    }
+    
+    .divider span {
+        padding: 4px 14px;
+    }
+    
+    /* Auth Footer */
+    .auth-footer {
+        font-size: 0.82rem;
+        padding: 0 8px;
+    }
+    
+    /* Error Messages */
+    .error-message {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        border-radius: 11px;
+        gap: 6px;
+    }
+    
+    /* Profile Photo Upload */
+    .profile-photo-upload {
+        min-height: 110px;
+        border-radius: 10px;
+    }
+    
+    .upload-icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 10px;
+    }
+    
+    .upload-placeholder p {
+        font-size: 0.85rem;
+    }
+    
+    .upload-placeholder small {
+        font-size: 0.72rem;
+    }
+    
+    .profile-preview {
+        height: 110px;
+    }
+    
+    .preview-image {
+        width: 70px;
+        height: 70px;
+        border-width: 2px;
+    }
+    
+    .remove-image {
+        width: 22px;
+        height: 22px;
+        top: 12px;
+        right: 12px;
+    }
+    
+    /* Notification */
+    .notification {
+        padding: 12px 16px;
+        font-size: 0.85rem;
+        border-radius: 10px;
+    }
+}
+
+/* Extra small devices (< 375px) */
+@media (max-width: 374px) {
+    .auth-card {
+        padding: 18px 14px 16px;
+        border-radius: 16px;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .form-input {
+        padding: 11px 12px 10px;
+        font-size: 16px;
+    }
+    
+    .auth-btn {
+        padding: 11px 14px;
+        font-size: 13px;
+        min-height: 44px;
+    }
+    
+    .interest-tag span {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .auth-main {
+        padding: 12px 8px;
+    }
+    
+    .auth-card {
+        padding: 20px 18px;
+    }
+    
+    .auth-header h1 {
         font-size: 1.5rem;
+        margin-bottom: 6px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .features-preview,
+    .benefits-preview {
+        display: none;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .auth-btn,
+    .social-btn,
+    .toggle-password,
+    .nav-link {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Disable hover effects on touch devices */
+    .liquid-glass:hover,
+    .liquid-btn:hover,
+    .liquid-hover-lift:hover {
+        transform: none;
+    }
+    
+    /* Simplified animations for better performance */
+    .auth-card:after {
+        animation: none;
     }
 }
 

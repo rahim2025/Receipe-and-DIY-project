@@ -325,19 +325,19 @@ const PostCreate = ({ editMode = false }) => {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-8 sm:pb-12 px-3 sm:px-4">
       <div className="container mx-auto max-w-5xl">
         {/* Header with Liquid Glass Effect */}
-        <div className=" p-8 mb-8 animate-fadeIn">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-400 to-violet-500 flex items-center justify-center shadow-lg">
-              {postType === 'recipe' ? <ChefHat className="w-8 h-8 text-white" /> : <Hammer className="w-8 h-8 text-white" />}
+        <div className=" p-4 sm:p-6 md:p-8 mb-6 md:mb-8 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-teal-400 to-violet-500 flex items-center justify-center shadow-lg">
+              {postType === 'recipe' ? <ChefHat className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" /> : <Hammer className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />}
             </div>
             <div>
-              <h1 className="text-4xl font-extrabold text-white drop-shadow-lg">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
                 {editMode ? '✏️ Edit Post' : '✨ Create New Post'}
               </h1>
-              <p className="text-white/90 text-lg mt-1 font-medium drop-shadow">
+              <p className="text-white/90 text-sm sm:text-base md:text-lg mt-1 font-medium drop-shadow">
                 Share your {postType === 'recipe' ? 'delicious recipe' : 'creative DIY project'} step-by-step
               </p>
             </div>
@@ -345,12 +345,12 @@ const PostCreate = ({ editMode = false }) => {
         </div>
 
         {/* Post Type Selection */}
-        <div className=" p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white drop-shadow-lg mb-6 flex items-center gap-3">
-            <span className="text-3xl">🎯</span>
+        <div className=" p-4 sm:p-6 md:p-8 mb-6 md:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+            <span className="text-2xl sm:text-3xl">🎯</span>
             What are you sharing?
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
             <button
               onClick={() => handleTypeChange('recipe')}
               className={`p-6 rounded-2xl border-2 transition-all duration-300 group relative overflow-hidden ${
@@ -391,13 +391,13 @@ const PostCreate = ({ editMode = false }) => {
         </div>
 
         {/* Basic Information */}
-        <div className="p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white drop-shadow-lg mb-6 flex items-center gap-3">
-            <span className="text-3xl">📝</span>
+        <div className="p-4 sm:p-6 md:p-8 mb-6 md:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+            <span className="text-2xl sm:text-3xl">📝</span>
             Basic Information
           </h2>
           
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-5 md:space-y-6">
             <div>
               <label className="block text-base font-bold text-white drop-shadow mb-3">
                 ✨ Title *
@@ -424,15 +424,15 @@ const PostCreate = ({ editMode = false }) => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               <div>
-                <label className="block text-base font-bold text-white drop-shadow mb-3">
+                <label className="block text-sm sm:text-base font-bold text-white drop-shadow mb-2 sm:mb-3">
                   🏷️ Category *
                 </label>
                 <select
                   value={formData.category}
                   onChange={(e) => handleInputChange('category', e.target.value)}
-                  className="w-full px-5 py-4 rounded-2xl bg-indigo-950/40 border border-white/40 text-white font-medium transition-all duration-300 focus:outline-none focus:border-purple-300 focus:bg-indigo-900/60 focus:shadow-xl cursor-pointer"
+                  className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-indigo-950/40 border border-white/40 text-white font-medium transition-all duration-300 focus:outline-none focus:border-purple-300 focus:bg-indigo-900/60 focus:shadow-xl cursor-pointer text-sm sm:text-base"
                 >
                   <option value="" className="bg-slate-900 text-white">Select category</option>
                   {(postType === 'recipe' ? recipeCategories : diyCategories).map(cat => (
@@ -480,12 +480,12 @@ const PostCreate = ({ editMode = false }) => {
         </div>
 
         {/* Cover Image Section */}
-        <div className=" p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white drop-shadow-lg mb-4 flex items-center gap-3">
-            <span className="text-3xl">📸</span>
+        <div className=" p-4 sm:p-6 md:p-8 mb-6 md:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+            <span className="text-2xl sm:text-3xl">📸</span>
             Cover Image
           </h2>
-          <p className="text-base text-white/90 mb-6 font-medium drop-shadow">
+          <p className="text-sm sm:text-base text-white/90 mb-4 sm:mb-6 font-medium drop-shadow">
             Upload a stunning main image for your {postType}. This will be the first thing people see! ✨
           </p>
           
@@ -505,41 +505,41 @@ const PostCreate = ({ editMode = false }) => {
           </div>
           
           {formData.coverImage && (
-            <div className="relative mt-6 group">
-              <div className="overflow-hidden rounded-3xl border-4 border-white/50 shadow-2xl">
+            <div className="relative mt-4 sm:mt-6 group">
+              <div className="overflow-hidden rounded-2xl sm:rounded-3xl border-2 sm:border-4 border-white/50 shadow-2xl">
                 <img 
                   src={formData.coverImage} 
                   alt="Cover" 
-                  className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-48 sm:h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <button
                 onClick={removeCoverImage}
-                className="absolute -top-3 -right-3 w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-pink-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center font-bold"
+                className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 min-w-[44px] min-h-[44px] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-red-500 to-pink-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center font-bold touch-target"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
           )}
         </div>
 
         {/* Steps Section - PRIMARY FOCUS */}
-        <div className=" p-8 mb-8 border-4 border-gradient-to-r from-orange-400/50 to-pink-400/50">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="px-5 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-full text-sm font-bold shadow-lg animate-pulse">
+        <div className=" p-4 sm:p-6 md:p-8 mb-6 md:mb-8 border-2 sm:border-4 border-gradient-to-r from-orange-400/50 to-pink-400/50">
+          <div className="mb-6 md:mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+              <span className="px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-full text-xs sm:text-sm font-bold shadow-lg animate-pulse">
                 ⭐ PRIMARY
               </span>
-              <h2 className="text-3xl font-extrabold text-white drop-shadow-lg flex items-center gap-3">
-                <span className="text-4xl">📋</span>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white drop-shadow-lg flex items-center gap-2 sm:gap-3">
+                <span className="text-2xl sm:text-3xl md:text-4xl">📋</span>
                 Step-by-Step Guide
               </h2>
             </div>
-            <p className="text-white/90 mb-6 text-lg font-medium drop-shadow">
+            <p className="text-white/90 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg font-medium drop-shadow">
               Break down your {postType} into clear, easy-to-follow steps. Add materials/ingredients needed for each step,
               include photos or videos, and estimate time and cost. 🚀
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               <div className="bg-gradient-to-br from-blue-400/30 to-indigo-400/30 p-5 rounded-2xl border-2 border-white/40 backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-lg">
@@ -635,13 +635,13 @@ const PostCreate = ({ editMode = false }) => {
         </div>
 
         {/* Tags Section */}
-        <div className=" p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white drop-shadow-lg mb-6 flex items-center gap-3">
-            <span className="text-3xl">🏷️</span>
+        <div className=" p-4 sm:p-6 md:p-8 mb-6 md:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+            <span className="text-2xl sm:text-3xl">🏷️</span>
             Tags
           </h2>
           
-          <div className="flex gap-3 mb-6">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-6">
             <input
               type="text"
               value={tagInput}
@@ -677,11 +677,11 @@ const PostCreate = ({ editMode = false }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className=" p-8">
-          <div className="flex flex-col sm:flex-row gap-4 justify-end">
+        <div className=" p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-end">
             <button
               onClick={() => navigate(-1)}
-              className="px-8 py-4 rounded-2xl bg-white/20 border-2 border-white/40 text-white font-bold backdrop-blur-sm hover:bg-white/30 transition-all duration-300 hover:scale-105 shadow-lg"
+              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/20 border-2 border-white/40 text-white font-bold backdrop-blur-sm hover:bg-white/30 transition-all duration-300 hover:scale-105 shadow-lg text-sm sm:text-base touch-target"
             >
               ❌ Cancel
             </button>
@@ -689,18 +689,18 @@ const PostCreate = ({ editMode = false }) => {
             <button
               onClick={handleSaveDraft}
               disabled={isCreating || isUpdating}
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base touch-target"
             >
-              <Save className="w-5 h-5" />
+              <Save className="w-4 h-4 sm:w-5 sm:h-5" />
               {isCreating || isUpdating ? 'Saving...' : '💾 Save as Draft'}
             </button>
             
             <button
               onClick={handlePublish}
               disabled={isCreating || isUpdating}
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base touch-target"
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               {isCreating || isUpdating ? 'Publishing...' : (isDraft ? '🚀 Publish' : '✨ Update')}
             </button>
           </div>

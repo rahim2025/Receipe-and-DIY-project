@@ -160,18 +160,18 @@ const HomePage = () => {
   }, [filteredPosts, authUser, interactions, setInteraction]);
 
   return (
-    <div className="min-h-screen pt-40 pb-8">
-      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+    <div className="min-h-screen pt-32 md:pt-40 pb-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* Hero Section with Search */}
-        <div className="mb-8 glass-fade-in">
-          <div className="glass-panel p-8 text-center">
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 font-['Poppins']">
+        <div className="mb-6 md:mb-8 glass-fade-in">
+          <div className="glass-panel p-4 sm:p-6 md:p-8 text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4 font-['Poppins'] leading-tight">
               Discover Amazing
-              <span className="bg-gradient-to-r from-teal-400 to-violet-400 bg-clip-text text-transparent ml-3">
+              <span className="block sm:inline bg-gradient-to-r from-teal-400 to-violet-400 bg-clip-text text-transparent sm:ml-3 mt-1 sm:mt-0">
                 Recipes & Crafts
               </span>
             </h1>
-            <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto font-light">
+            <p className="text-sm sm:text-base md:text-lg text-white/80 mb-6 md:mb-8 max-w-2xl mx-auto font-light px-2">
               Explore a world of culinary delights and creative DIY projects shared by our passionate community
             </p>
             
@@ -181,8 +181,8 @@ const HomePage = () => {
             className="relative max-w-lg mx-auto flex items-center backdrop-blur-lg bg-white/10 border border-white/20 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
             >
   {/* Search Icon inside left */}
-  <span className="absolute left-4 text-gray-300">
-    <Search className="w-5 h-5" />
+  <span className="absolute left-3 sm:left-4 text-gray-300">
+    <Search className="w-4 h-4 sm:w-5 sm:h-5" />
   </span>
 
   {/* Input */}
@@ -191,25 +191,25 @@ const HomePage = () => {
     placeholder="Search recipes or crafts..."
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
-    className="w-full pl-12 pr-16 py-3 bg-transparent text-center text-gray-500 placeholder-gray-400 focus:outline-none font-medium"
+    className="w-full pl-10 sm:pl-12 pr-14 sm:pr-16 py-2.5 sm:py-3 bg-transparent text-center text-gray-500 placeholder-gray-400 focus:outline-none font-medium text-sm sm:text-base"
   />
 
   {/* Button */}
   <button
     type="submit"
-    className="absolute right-3 p-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 hover:opacity-90 transition-all duration-300 shadow-md"
+    className="absolute right-2 sm:right-3 p-1.5 sm:p-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 hover:opacity-90 transition-all duration-300 shadow-md touch-target"
   >
-    <Search className="w-4 h-4 text-white" />
+    <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
   </button>
 </form>
 
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
           {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-32 space-y-6">
+          <div className="lg:col-span-1 order-2 lg:order-1">
+            <div className="lg:sticky lg:top-32 space-y-4 md:space-y-6">
               {/* Filters */}
               <div className="glass-sidebar p-6">
                 <div className="flex items-center gap-2 mb-6">
@@ -311,63 +311,63 @@ const HomePage = () => {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 order-1 lg:order-2">
             {/* Featured Today Section */}
             {filteredPosts.length > 0 && (
-              <div className="mb-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <TrendingUp className="w-6 h-6 text-teal-400" />
-                  <h2 className="text-2xl font-bold text-white font-['Poppins']">Featured Today</h2>
+              <div className="mb-6 md:mb-8">
+                <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
+                  <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-teal-400" />
+                  <h2 className="text-xl md:text-2xl font-bold text-white font-['Poppins']">Featured Today</h2>
                 </div>
                 
                 <div className="glass-featured glass-hover-lift">
-                  <div className="relative overflow-hidden rounded-t-3xl">
+                  <div className="relative overflow-hidden rounded-t-2xl md:rounded-t-3xl">
                     <img
                       src={filteredPosts[0]?.images?.[0] || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=300&fit=crop"}
                       alt={filteredPosts[0]?.title || "Featured Post"}
-                      className="w-full h-80 object-cover transition-transform duration-700 hover:scale-105"
+                      className="w-full h-48 sm:h-64 md:h-80 object-cover transition-transform duration-700 hover:scale-105"
                     />
                     
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                     
                     {/* Badges */}
-                    <div className="absolute top-6 right-6 flex gap-2">
-                      <span className={`glass-badge ${filteredPosts[0]?.type === 'recipe' ? 'glass-badge-teal' : 'glass-badge-violet'}`}>
+                    <div className="absolute top-3 sm:top-4 md:top-6 right-3 sm:right-4 md:right-6 flex gap-1.5 sm:gap-2">
+                      <span className={`glass-badge text-xs sm:text-sm ${filteredPosts[0]?.type === 'recipe' ? 'glass-badge-teal' : 'glass-badge-violet'}`}>
                         {filteredPosts[0]?.type === 'recipe' ? '🍳 Recipe' : '🎨 DIY Craft'}
                       </span>
                     </div>
                     
                     {/* Featured Badge */}
-                    <div className="absolute top-6 left-6">
-                      <div className="glass-badge glass-badge-blue">
-                        <Sparkles className="w-3 h-3" />
-                        Featured
+                    <div className="absolute top-3 sm:top-4 md:top-6 left-3 sm:left-4 md:left-6">
+                      <div className="glass-badge glass-badge-blue text-xs sm:text-sm">
+                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                        <span className="hidden xs:inline">Featured</span>
                       </div>
                     </div>
                     
                     {/* Floating Action */}
-                    <div className="absolute bottom-6 right-6">
+                    <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 right-3 sm:right-4 md:right-6">
                       <Link 
                         to={`/post/${filteredPosts[0]._id}`}
-                        className="glass-btn-primary"
+                        className="glass-btn-primary text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2"
                       >
-                        <Eye className="w-4 h-4" />
-                        View Recipe
+                        <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="hidden xs:inline">View</span>
                       </Link>
                     </div>
                   </div>
                   
-                  <div className="p-8">
-                    <h3 className="text-3xl font-bold text-white mb-4 font-['Poppins']">
+                  <div className="p-4 sm:p-6 md:p-8">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 md:mb-4 font-['Poppins'] line-clamp-2">
                       {filteredPosts[0]?.title || "Featured Post"}
                     </h3>
-                    <p className="text-white/80 mb-6 text-lg leading-relaxed">
+                    <p className="text-white/80 mb-4 md:mb-6 text-sm sm:text-base md:text-lg leading-relaxed line-clamp-2 sm:line-clamp-3">
                       {filteredPosts[0]?.description || "Discover amazing content from our community!"}
                     </p>
                     
                     {/* Stats */}
-                    <div className="flex flex-wrap items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4">
                       <div className="glass-badge glass-badge-teal">
                         <Clock className="w-4 h-4" />
                         {filteredPosts[0]?.cookingTime || filteredPosts[0]?.duration || '30 min'}
@@ -396,7 +396,7 @@ const HomePage = () => {
             )}
 
             {/* Content Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {isLoading ? (
                 <div className="col-span-full glass-panel p-12 text-center">
                   <div className="glass-loading mx-auto mb-6"></div>

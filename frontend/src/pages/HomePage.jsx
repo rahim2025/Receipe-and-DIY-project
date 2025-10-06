@@ -12,7 +12,7 @@ const HomePage = () => {
   const { authUser } = useAuthStore();
   const { posts, isLoading, getPosts } = usePostStore();
   const { interactions, toggleLike, toggleBookmark, setInteraction } = useInteractionStore();
-  const [priceRange, setPriceRange] = useState(50);
+  const [priceRange, setPriceRange] = useState(5000);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     difficulty: [],
@@ -135,7 +135,7 @@ const HomePage = () => {
     }
 
     // Price filter
-    if (priceRange < 100) {
+    if (priceRange < 5000) {
       filtered = filtered.filter(post => 
         (post.totalCostEstimate || 0) <= priceRange
       );
@@ -289,16 +289,16 @@ const HomePage = () => {
                       <input
                         type="range"
                         min="0"
-                        max="100"
+                        max="5000"
                         value={priceRange}
                         onChange={(e) => setPriceRange(e.target.value)}
                         className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
                         style={{
-                          background: `linear-gradient(to right, #ec4899 0%, #ec4899 ${priceRange}%, rgba(255,255,255,0.2) ${priceRange}%, rgba(255,255,255,0.2) 100%)`
+                          background: `linear-gradient(to right, #ec4899 0%, #ec4899 ${(priceRange/5000)*100}%, rgba(255,255,255,0.2) ${(priceRange/5000)*100}%, rgba(255,255,255,0.2) 100%)`
                         }}
                       />
                       <div className="text-center text-sm text-white/80 mt-3">
-                        $0 - ${priceRange}
+                        $0 - ${priceRange.toLocaleString()}
                       </div>
                     </div>
                   </div>

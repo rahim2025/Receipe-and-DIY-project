@@ -194,38 +194,33 @@ const DraftsPage = () => {
                       )}
                     </div>
                     {/* Actions */}
-                    <div className="mt-auto">
-                      <div className="flex items-stretch gap-2">
+                    <div className="mt-auto space-y-2">
+                      <div className="flex items-center gap-2">
                         <Link
                           to={`/edit/${draft._id}`}
-                          className="flex-1 glass-btn-secondary text-xs justify-center relative group !py-2"
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 hover:border-blue-400/50 text-blue-100 hover:text-white text-sm font-semibold transition-all duration-300 group backdrop-blur-sm shadow-lg hover:shadow-blue-500/20"
                         >
-                          <Edit3 className="w-4 h-4 group-hover:rotate-3 transition-transform" />
+                          <Edit3 className="w-4 h-4 group-hover:rotate-12 group-hover:scale-110 transition-transform" />
                           <span>Edit</span>
                         </Link>
                         <button
                           onClick={() => handlePublish(draft._id)}
                           disabled={isUpdating}
-                          className="flex-1 glass-btn-primary text-xs justify-center relative group disabled:opacity-40 disabled:cursor-not-allowed !py-2"
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500/20 to-emerald-500/20 hover:from-teal-500/30 hover:to-emerald-500/30 border border-teal-400/30 hover:border-teal-400/50 text-teal-100 hover:text-white text-sm font-semibold transition-all duration-300 group backdrop-blur-sm shadow-lg hover:shadow-teal-500/20 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:from-teal-500/20 disabled:hover:to-emerald-500/20"
                           title="Publish Draft"
                         >
-                          <Send className="w-4 h-4 group-hover:translate-y-[-2px] transition-transform" />
+                          <Send className="w-4 h-4 group-hover:-rotate-12 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                           <span>Publish</span>
                         </button>
-                        <button
-                          onClick={() => handleDelete(draft._id)}
-                          className="w-10 glass-post-interaction rounded-lg text-red-300/80 hover:text-red-200 hover:bg-red-500/15 border border-red-400/20 hover:border-red-400/40 transition flex items-center justify-center"
-                          title="Delete Draft"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
                       </div>
-                      <div className="flex gap-2 mt-2 text-[10px] text-white/35 tracking-wide uppercase">
-                        <span className="px-2 py-1 rounded bg-white/5 border border-white/10">Actions</span>
-                        {progress === 100 && (
-                          <span className="px-2 py-1 rounded bg-teal-500/15 border border-teal-400/30 text-teal-200/80">Ready</span>
-                        )}
-                      </div>
+                      <button
+                        onClick={() => handleDelete(draft._id)}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-500/15 to-rose-500/15 hover:from-red-500/25 hover:to-rose-500/25 border border-red-400/25 hover:border-red-400/40 text-red-200/90 hover:text-red-100 text-sm font-medium transition-all duration-300 group backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/10"
+                        title="Delete Draft"
+                      >
+                        <Trash2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                        <span>Delete Draft</span>
+                      </button>
                     </div>
                   </div>
                 </div>

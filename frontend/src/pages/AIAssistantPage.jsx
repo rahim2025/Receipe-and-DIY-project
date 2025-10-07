@@ -161,15 +161,8 @@ export default function AIAssistantPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-500 to-blue-500">
-      {/* Ambient gradient orbs matching HomePage */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-32 h-80 w-80 bg-blue-400/30 blur-[120px] animate-pulse" />
-        <div className="absolute top-1/3 -left-28 h-96 w-96 bg-indigo-500/30 blur-[120px] animate-pulse delay-700" />
-        <div className="absolute bottom-0 right-1/4 h-80 w-80 bg-cyan-400/25 blur-[110px] animate-pulse delay-[1100ms]" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="min-h-screen pt-40 pb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
         <div className="glass-panel p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -194,17 +187,17 @@ export default function AIAssistantPage() {
               <div className="absolute inset-0 rounded-3xl bg-blue-400/30 blur-lg opacity-30" />
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl font-bold text-white font-['Poppins'] tracking-wide">
+              <h1 className="text-3xl sm:text-4xl font-bold text-white font-['Poppins'] tracking-wide" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
                 AI Recipe & DIY Assistant
               </h1>
-              <p className="text-sm sm:text-base text-white/80 mt-3 max-w-2xl">
+              <p className="text-sm sm:text-base text-white mt-3 max-w-2xl font-medium" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>
                 Explore a world of culinary delights and creative DIY projects. Transform your ingredients into delicious meals with Cora's AI-powered assistance.
               </p>
               <div className="flex flex-wrap gap-3 mt-4">
-                <span className="px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs text-white/80 uppercase tracking-widest">
+                <span className="px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs text-white font-semibold uppercase tracking-widest" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                   Recipes & Crafts
                 </span>
-                <span className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 text-xs text-white/90 uppercase tracking-widest">
+                <span className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 text-xs text-white font-semibold uppercase tracking-widest" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                   Powered by Cora
                 </span>
               </div>
@@ -218,12 +211,13 @@ export default function AIAssistantPage() {
             <div className="flex items-center justify-between flex-wrap gap-3">
               <div className="flex items-center gap-2 text-white">
                 <UtensilsCrossed className="w-5 h-5 text-cyan-300" />
-                <span className="text-sm font-semibold uppercase tracking-widest text-white/80">Prompt Builder</span>
+                <span className="text-sm font-bold uppercase tracking-widest text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Prompt Builder</span>
               </div>
               {input && (
                 <button
                   onClick={clearAll}
-                  className="text-xs sm:text-sm text-white/60 hover:text-white transition inline-flex items-center gap-1"
+                  className="text-xs sm:text-sm text-white hover:text-white transition inline-flex items-center gap-1 font-semibold"
+                  style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
                 >
                   <X className="w-4 h-4" />
                   Clear all
@@ -250,11 +244,12 @@ export default function AIAssistantPage() {
 
               {ingredientTokens.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-4">
-                  <span className="text-xs uppercase tracking-wider text-white/50 mr-2">Detected:</span>
+                  <span className="text-xs uppercase tracking-wider text-white font-bold mr-2" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Detected:</span>
                   {ingredientTokens.map(tok => (
                     <span
                       key={tok}
-                      className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/50 text-xs font-semibold text-white/95 shadow-sm"
+                      className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/50 text-xs font-bold text-white shadow-sm"
+                      style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
                     >
                       {tok}
                     </span>
@@ -265,13 +260,14 @@ export default function AIAssistantPage() {
 
             <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <h3 className="text-xs uppercase tracking-widest text-white/60 mb-3">Quick ingredients</h3>
+                <h3 className="text-xs uppercase tracking-widest text-white font-bold mb-3" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Quick ingredients</h3>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_INGREDIENTS.map(ing => (
                     <button
                       key={ing}
                       onClick={() => handleAddIngredient(ing)}
-                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-400/60 text-sm text-white/80 hover:text-white transition-all hover:-translate-y-[1px]"
+                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-400/60 text-sm text-white hover:text-white transition-all hover:-translate-y-[1px] font-semibold"
+                      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
                     >
                       {ing}
                     </button>
@@ -279,13 +275,14 @@ export default function AIAssistantPage() {
                 </div>
               </div>
               <div>
-                <h3 className="text-xs uppercase tracking-widest text-white/60 mb-3">Try these prompts</h3>
+                <h3 className="text-xs uppercase tracking-widest text-white font-bold mb-3" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Try these prompts</h3>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_PROMPTS.map(p => (
                     <button
                       key={p}
                       onClick={() => handleQuickPrompt(p)}
-                      className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 hover:border-cyan-400/60 text-sm text-white/85 hover:text-white transition-all hover:-translate-y-[1px]"
+                      className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 hover:border-cyan-400/60 text-sm text-white hover:text-white transition-all hover:-translate-y-[1px] font-semibold"
+                      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}
                     >
                       {p}
                     </button>
@@ -298,21 +295,24 @@ export default function AIAssistantPage() {
               <button
                 onClick={handleGenerate}
                 disabled={loading || !input.trim()}
-                className="w-full glass-btn-primary justify-center disabled:opacity-40 disabled:cursor-not-allowed text-base sm:text-lg py-3 sm:py-4 font-semibold shadow-xl hover:shadow-2xl"
+                className="group relative w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 hover:from-teal-400 hover:via-cyan-400 hover:to-blue-400 text-white text-base sm:text-lg font-bold transition-all duration-300 shadow-[0_0_30px_rgba(20,184,166,0.4)] hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none overflow-hidden"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 {loading ? (
                   <>
-                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
-                    Cora is thinking...
+                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin relative z-10" />
+                    <span className="relative z-10">Cora is thinking...</span>
                   </>
                 ) : (
                   <>
-                    <Wand2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                    Generate ideas
+                    <Wand2 className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 group-hover:scale-110 transition-transform relative z-10" />
+                    <span className="relative z-10">Generate Ideas with AI</span>
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform relative z-10" />
                   </>
                 )}
               </button>
-              <p className="text-xs text-white/40 text-center mt-3">
+              <p className="text-xs text-white font-semibold text-center mt-3" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                 Cora blends culinary and DIY knowledge to match the rest of the experience.
               </p>
             </div>
@@ -387,10 +387,10 @@ export default function AIAssistantPage() {
                     <ChefHat className="w-7 h-7 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    <h1 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
                       {selectedRecipe.title}
                     </h1>
-                    <p className="text-base text-white/80 leading-relaxed">
+                    <p className="text-base text-white leading-relaxed font-medium" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>
                       {selectedRecipe.description}
                     </p>
                   </div>
@@ -402,29 +402,29 @@ export default function AIAssistantPage() {
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-teal-300" />
                   <div>
-                    <div className="text-xs text-white/50">Total Time</div>
-                    <div className="text-sm font-semibold text-white">{selectedRecipe.totalTime}</div>
+                    <div className="text-xs text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Total Time</div>
+                    <div className="text-sm font-bold text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{selectedRecipe.totalTime}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-violet-300" />
                   <div>
-                    <div className="text-xs text-white/50">Servings</div>
-                    <div className="text-sm font-semibold text-white">{selectedRecipe.servings}</div>
+                    <div className="text-xs text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Servings</div>
+                    <div className="text-sm font-bold text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{selectedRecipe.servings}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <ChefHat className="w-5 h-5 text-blue-300" />
                   <div>
-                    <div className="text-xs text-white/50">Difficulty</div>
-                    <div className="text-sm font-semibold text-white capitalize">{selectedRecipe.difficulty}</div>
+                    <div className="text-xs text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Difficulty</div>
+                    <div className="text-sm font-bold text-white capitalize" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{selectedRecipe.difficulty}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Flame className="w-5 h-5 text-orange-300" />
                   <div>
-                    <div className="text-xs text-white/50">Calories</div>
-                    <div className="text-sm font-semibold text-white">{selectedRecipe.nutrition.calories}</div>
+                    <div className="text-xs text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Calories</div>
+                    <div className="text-sm font-bold text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{selectedRecipe.nutrition.calories}</div>
                   </div>
                 </div>
               </div>
@@ -437,19 +437,19 @@ export default function AIAssistantPage() {
                 <div className="glass-panel p-6 sticky top-24">
                   <div className="flex items-center gap-3 mb-4">
                     <ShoppingCart className="w-6 h-6 text-teal-300" />
-                    <h2 className="text-xl font-bold text-white uppercase tracking-wider">Ingredients</h2>
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Ingredients</h2>
                   </div>
                   <ul className="space-y-3">
                     {selectedRecipe.ingredients.map((ing, index) => (
-                      <li key={index} className="flex gap-3 items-start text-white/90">
+                      <li key={index} className="flex gap-3 items-start text-white">
                         <span className="w-2 h-2 rounded-full bg-teal-400 mt-2 flex-shrink-0"></span>
                         <div className="flex-1">
-                          <div className="flex items-baseline gap-2">
-                            <span className="font-semibold text-white">{ing.amount}</span>
+                          <div className="flex items-baseline gap-2 font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                            <span className="font-bold text-white">{ing.amount}</span>
                             <span>{ing.item}</span>
                           </div>
                           {ing.notes && (
-                            <div className="text-xs text-white/60 mt-1">{ing.notes}</div>
+                            <div className="text-xs text-white font-medium mt-1" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}>{ing.notes}</div>
                           )}
                         </div>
                       </li>
@@ -458,23 +458,23 @@ export default function AIAssistantPage() {
 
                   {/* Nutrition Details */}
                   <div className="mt-6 pt-6 border-t border-white/10">
-                    <h3 className="text-sm uppercase tracking-wider text-white/60 font-bold mb-3">Nutrition (per serving)</h3>
+                    <h3 className="text-sm uppercase tracking-wider text-white font-bold mb-3" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Nutrition (per serving)</h3>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="text-center p-3 rounded-lg bg-white/5">
-                        <div className="text-sm text-white/60">Protein</div>
-                        <div className="text-lg font-bold text-white">{selectedRecipe.nutrition.protein}</div>
+                        <div className="text-sm text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Protein</div>
+                        <div className="text-lg font-bold text-white" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>{selectedRecipe.nutrition.protein}</div>
                       </div>
                       <div className="text-center p-3 rounded-lg bg-white/5">
-                        <div className="text-sm text-white/60">Carbs</div>
-                        <div className="text-lg font-bold text-white">{selectedRecipe.nutrition.carbs}</div>
+                        <div className="text-sm text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Carbs</div>
+                        <div className="text-lg font-bold text-white" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>{selectedRecipe.nutrition.carbs}</div>
                       </div>
                       <div className="text-center p-3 rounded-lg bg-white/5">
-                        <div className="text-sm text-white/60">Fat</div>
-                        <div className="text-lg font-bold text-white">{selectedRecipe.nutrition.fat}</div>
+                        <div className="text-sm text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Fat</div>
+                        <div className="text-lg font-bold text-white" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>{selectedRecipe.nutrition.fat}</div>
                       </div>
                       <div className="text-center p-3 rounded-lg bg-white/5">
-                        <div className="text-sm text-white/60">Calories</div>
-                        <div className="text-lg font-bold text-white">{selectedRecipe.nutrition.calories}</div>
+                        <div className="text-sm text-white font-bold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Calories</div>
+                        <div className="text-lg font-bold text-white" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>{selectedRecipe.nutrition.calories}</div>
                       </div>
                     </div>
                   </div>
@@ -487,7 +487,7 @@ export default function AIAssistantPage() {
                 <div className="glass-panel p-6">
                   <div className="flex items-center gap-3 mb-6">
                     <BookOpen className="w-6 h-6 text-violet-300" />
-                    <h2 className="text-xl font-bold text-white uppercase tracking-wider">Instructions</h2>
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Instructions</h2>
                   </div>
                   <div className="space-y-5">
                     {selectedRecipe.instructions.map((inst, index) => (
@@ -496,13 +496,13 @@ export default function AIAssistantPage() {
                           {inst.step}
                         </div>
                         <div className="flex-1">
-                          <p className="text-base text-white/95 leading-relaxed mb-2">
+                          <p className="text-base text-white leading-relaxed mb-2 font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                             {inst.instruction}
                           </p>
                           {inst.tips && (
                             <div className="flex items-start gap-2 mt-2 p-3 rounded-lg bg-violet-500/10 border border-violet-400/20">
                               <Lightbulb className="w-4 h-4 text-violet-300 flex-shrink-0 mt-0.5" />
-                              <p className="text-sm text-white/80 italic">{inst.tips}</p>
+                              <p className="text-sm text-white italic font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}>{inst.tips}</p>
                             </div>
                           )}
                         </div>
@@ -516,13 +516,13 @@ export default function AIAssistantPage() {
                   <div className="glass-panel p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Lightbulb className="w-6 h-6 text-yellow-300" />
-                      <h2 className="text-xl font-bold text-white uppercase tracking-wider">Chef Tips</h2>
+                      <h2 className="text-xl font-bold text-white uppercase tracking-wider" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Chef Tips</h2>
                     </div>
                     <ul className="space-y-3">
                       {selectedRecipe.tips.map((tip, index) => (
-                        <li key={index} className="flex gap-3 items-start text-white/90">
+                        <li key={index} className="flex gap-3 items-start text-white">
                           <span className="w-2 h-2 rounded-full bg-yellow-400 mt-2 flex-shrink-0"></span>
-                          <span className="text-base leading-relaxed">{tip}</span>
+                          <span className="text-base leading-relaxed font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{tip}</span>
                         </li>
                       ))}
                     </ul>
@@ -534,13 +534,13 @@ export default function AIAssistantPage() {
                   <div className="glass-panel p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Wand2 className="w-6 h-6 text-pink-300" />
-                      <h2 className="text-xl font-bold text-white uppercase tracking-wider">Variations</h2>
+                      <h2 className="text-xl font-bold text-white uppercase tracking-wider" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Variations</h2>
                     </div>
                     <ul className="space-y-3">
                       {selectedRecipe.variations.map((variation, index) => (
-                        <li key={index} className="flex gap-3 items-start text-white/90">
+                        <li key={index} className="flex gap-3 items-start text-white">
                           <span className="w-2 h-2 rounded-full bg-pink-400 mt-2 flex-shrink-0"></span>
-                          <span className="text-base leading-relaxed">{variation}</span>
+                          <span className="text-base leading-relaxed font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{variation}</span>
                         </li>
                       ))}
                     </ul>
@@ -553,8 +553,8 @@ export default function AIAssistantPage() {
                     <div className="flex items-start gap-3">
                       <AlertCircle className="w-5 h-5 text-blue-300 flex-shrink-0 mt-0.5" />
                       <div>
-                        <h3 className="text-sm uppercase tracking-wider text-blue-300 font-bold mb-2">Storage</h3>
-                        <p className="text-base text-white/90 leading-relaxed">{selectedRecipe.storage}</p>
+                        <h3 className="text-sm uppercase tracking-wider text-blue-200 font-bold mb-2" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Storage</h3>
+                        <p className="text-base text-white leading-relaxed font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{selectedRecipe.storage}</p>
                       </div>
                     </div>
                   </div>
@@ -602,9 +602,9 @@ export default function AIAssistantPage() {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-[3px] bg-gradient-to-r from-teal-400 to-transparent rounded" />
-                <h3 className="text-lg uppercase tracking-wider text-teal-300 font-bold">Ideas</h3>
+                <h3 className="text-lg uppercase tracking-wider text-teal-200 font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Ideas</h3>
               </div>
-              <p className="text-sm text-white/50 mb-4">Click any recipe to see full instructions and ingredients</p>
+              <p className="text-sm text-white font-semibold mb-4" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>Click any recipe to see full instructions and ingredients</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {response.ideas.map((idea, index) => (
                   <button 
@@ -618,10 +618,10 @@ export default function AIAssistantPage() {
                         {index + 1}
                       </div>
                       <div className="flex-1">
-                        <p className="text-base text-white/95 leading-relaxed font-medium group-hover:text-white transition-colors">
+                        <p className="text-base text-white leading-relaxed font-semibold group-hover:text-white transition-colors" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>
                           {idea}
                         </p>
-                        <div className="flex items-center gap-2 mt-2 text-xs text-teal-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center gap-2 mt-2 text-xs text-teal-200 font-bold opacity-0 group-hover:opacity-100 transition-opacity" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                           <BookOpen className="w-3 h-3" />
                           <span>View full recipe</span>
                         </div>
@@ -637,27 +637,27 @@ export default function AIAssistantPage() {
               <div>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-[3px] bg-gradient-to-r from-violet-400 to-transparent rounded" />
-                  <h3 className="text-lg uppercase tracking-wider text-violet-300 font-bold">Quick Stats</h3>
+                  <h3 className="text-lg uppercase tracking-wider text-violet-200 font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Quick Stats</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
     
 
                   <div className="glass-panel p-6 text-center bg-gradient-to-br from-violet-500/10 to-transparent border-violet-400/30">
                     <ChefHat className="w-8 h-8 text-violet-300 mx-auto mb-3" />
-                    <div className="text-2xl font-bold text-white capitalize">
+                    <div className="text-2xl font-bold text-white capitalize" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
                       {response.nutrition.difficulty}
                     </div>
-                    <div className="text-sm text-white/60 uppercase tracking-wide mt-1">
+                    <div className="text-sm text-white font-bold uppercase tracking-wide mt-1" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                       Level
                     </div>
                   </div>
 
                   <div className="glass-panel p-6 text-center bg-gradient-to-br from-blue-500/10 to-transparent border-blue-400/30">
                     <DollarSign className="w-8 h-8 text-blue-300 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-white">
+                    <div className="text-3xl font-bold text-white" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
                       ${response.nutrition.estCost}
                     </div>
-                    <div className="text-sm text-white/60 uppercase tracking-wide mt-1">
+                    <div className="text-sm text-white font-bold uppercase tracking-wide mt-1" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                       Estimated Cost
                     </div>
                   </div>
@@ -672,13 +672,13 @@ export default function AIAssistantPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-8 h-[3px] bg-gradient-to-r from-violet-400 to-transparent rounded" />
-                      <h3 className="text-lg uppercase tracking-wider text-violet-300 font-bold">Tips</h3>
+                      <h3 className="text-lg uppercase tracking-wider text-violet-200 font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Tips</h3>
                     </div>
                     <div className="space-y-3">
                       {response.extras.tips.map((tip, index) => (
                         <div key={index} className="glass-panel p-4 flex items-start gap-3">
                           <Lightbulb className="w-5 h-5 text-violet-300 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm text-white/85 leading-relaxed">{tip}</p>
+                          <p className="text-sm text-white font-medium leading-relaxed" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{tip}</p>
                         </div>
                       ))}
                     </div>
@@ -689,13 +689,13 @@ export default function AIAssistantPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-8 h-[3px] bg-gradient-to-r from-teal-400 to-transparent rounded" />
-                      <h3 className="text-lg uppercase tracking-wider text-teal-300 font-bold">Pairing Ideas</h3>
+                      <h3 className="text-lg uppercase tracking-wider text-teal-200 font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Pairing Ideas</h3>
                     </div>
                     <div className="space-y-3">
                       {response.extras.pairings.map((pairing, index) => (
                         <div key={index} className="glass-panel p-4 flex items-start gap-3">
                           <BookOpen className="w-5 h-5 text-teal-300 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm text-white/85 leading-relaxed">{pairing}</p>
+                          <p className="text-sm text-white font-medium leading-relaxed" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{pairing}</p>
                         </div>
                       ))}
                     </div>
@@ -706,12 +706,13 @@ export default function AIAssistantPage() {
 
             {/* Footer */}
             <div className="glass-panel p-4 flex items-center justify-between">
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-white font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                 {response.fallback ? 'Generated with the offline recipe engine.' : `Powered by ${response.provider?.name === 'cohere' ? 'Cohere' : 'our AI service'}.`}
               </p>
               <button
                 onClick={clearAll}
-                className="glass-btn text-sm"
+                className="glass-btn text-sm font-semibold"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}
               >
                 Generate New Ideas
               </button>
@@ -724,7 +725,7 @@ export default function AIAssistantPage() {
           <div className="mt-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-[3px] bg-gradient-to-r from-pink-400 to-transparent rounded" />
-              <h3 className="text-lg uppercase tracking-wider text-pink-300 font-bold">Recent Searches</h3>
+              <h3 className="text-lg uppercase tracking-wider text-pink-200 font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Recent Searches</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {history.map(item => (
@@ -733,10 +734,10 @@ export default function AIAssistantPage() {
                   onClick={() => handleHistoryClick(item)}
                   className="glass-panel p-4 text-left hover:scale-[1.02] transition-transform"
                 >
-                  <div className="font-semibold text-white/90 mb-1 truncate">{item.query}</div>
-                  <div className="text-sm text-white/60 truncate">{item.title}</div>
+                  <div className="font-bold text-white mb-1 truncate" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>{item.query}</div>
+                  <div className="text-sm text-white font-semibold truncate" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>{item.title}</div>
                   {item.extras?.hero && (
-                    <div className="text-xs text-white/40 mt-2 line-clamp-2">{item.extras.hero}</div>
+                    <div className="text-xs text-white font-medium mt-2 line-clamp-2" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}>{item.extras.hero}</div>
                   )}
                 </button>
               ))}

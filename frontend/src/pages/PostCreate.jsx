@@ -556,13 +556,6 @@ const PostCreate = ({ editMode = false }) => {
                 </div>
                 <p className="text-sm text-white/80 font-medium">Total time</p>
               </div>
-              <div className="bg-gradient-to-br from-emerald-400/30 to-teal-400/30 p-5 rounded-2xl border-2 border-white/40 backdrop-blur-sm">
-                <div className="flex items-center gap-3 mb-2">
-                  <DollarSign className="w-10 h-10 text-emerald-500 drop-shadow-lg" />
-                  <span className="text-lg font-bold text-white drop-shadow">৳{calculateTotalCost().toFixed(2)}</span>
-                </div>
-                <p className="text-sm text-white/80 font-medium">Total cost</p>
-              </div>
             </div>
           </div>
 
@@ -615,19 +608,19 @@ const PostCreate = ({ editMode = false }) => {
                 </div>
                 <div className="bg-white/60 p-4 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
-          
-                    <span className="font-semibold text-emerald-900">৳{calculateTotalCost().toFixed(2)}</span>
-                  </div>
-                  <p className="text-xs text-gray-600">Estimated total cost including materials</p>
-                </div>
-                <div className="bg-white/60 p-4 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
                     <Package className="w-7 h-7 text-purple-600" />
                     <span className="font-semibold text-purple-900">
                       {formData.steps.reduce((sum, s) => sum + (s.materials?.length || 0), 0)} items
                     </span>
                   </div>
                   <p className="text-xs text-gray-600">Total materials/ingredients needed</p>
+                </div>
+                <div className="bg-white/60 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    
+                    <span className="font-semibold text-emerald-900">৳{calculateTotalCost().toFixed(2)}</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Estimated total cost from materials</p>
                 </div>
               </div>
             </div>

@@ -157,12 +157,12 @@ const PostDetail = () => {
     <div className="min-h-screen pb-8" style={{ paddingTop: '140px' }}>
       <div className="max-w-6xl mx-auto px-4 lg:px-6">
         {/* Header Actions */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 mt-4">
           <button
             onClick={() => navigate(-1)}
             className="glass-btn text-sm px-4 py-2 text-white/90 hover:text-white"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4 " />
             Back
           </button>
           
@@ -171,7 +171,7 @@ const PostDetail = () => {
               onClick={handleShare}
               className="glass-btn text-sm px-4 py-2 text-white/90 hover:text-white"
             >
-              <Share2 className="w-4 h-4" />
+              <Share2 className="w-4 h-4 " />
               Share
             </button>
             
@@ -181,14 +181,14 @@ const PostDetail = () => {
                   to={`/edit/${currentPost._id}`}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border-2 border-blue-400/40 text-white font-medium hover:from-blue-500/30 hover:to-purple-500/30 hover:border-blue-400/60 hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40"
                 >
-                  <Edit3 className="w-4 h-4" />
+                  <Edit3 className="w-4 h-4 " />
                   Edit Post
                 </Link>
                 <button
                   onClick={handleDelete}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border-2 border-red-400/40 text-white font-medium hover:from-red-500/30 hover:to-pink-500/30 hover:border-red-400/60 hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/20 hover:shadow-red-500/40"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4 " />
                   Delete Post
                 </button>
               </>
@@ -371,7 +371,11 @@ const PostDetail = () => {
               </div>
 
               {/* Meta Information */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+              <div className={`grid gap-4 mb-8 ${
+                currentPost.type === 'recipe' 
+                  ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-5' 
+                  : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+              }`}>
                 <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
                   <Star className={`w-6 h-6 mx-auto mb-2 ${getDifficultyColor(currentPost.difficulty)}`} />
                   <div className="text-sm font-bold text-white mb-1 readable contrast-on-glass">{getDifficultyStars(currentPost.difficulty)}</div>
@@ -408,9 +412,9 @@ const PostDetail = () => {
                 {/* Cost Estimation */}
                 {currentPost.totalCostEstimate > 0 && (
                   <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
-                    <div className="w-6 h-6 mx-auto mb-2 text-green-400 font-bold flex items-center justify-center text-lg">$</div>
+                    <div className="w-6 h-6 mx-auto mb-2 text-green-400 font-bold flex items-center justify-center text-lg"></div>
                     <div className="text-sm font-bold text-white mb-1 readable contrast-on-glass">
-                      {formatCurrency(currentPost.totalCostEstimate, currentPost.costCurrency)}
+                      {formatCurrency(currentPost.totalCostEstimate)}
                     </div>
                     <div className="text-xs text-white/90 readable">Est. Cost</div>
                   </div>

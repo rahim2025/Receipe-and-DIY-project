@@ -106,35 +106,19 @@ const StepCard = ({
               />
             </div>
 
-            {/* Time & Cost */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-white/90 mb-2">
-                  <Clock className="w-4 h-4 inline mr-1" /> Estimated Time (minutes)
-                </label>
-                <input
-                  type="number"
-                  value={step.estimatedTime || 0}
-                  onChange={(e) => handleUpdate('estimatedTime', parseInt(e.target.value) || 0)}
-                  placeholder="0"
-                  min="0"
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-900/60 border border-white/30 text-white placeholder-white/40 transition-all duration-300 focus:outline-none focus:border-emerald-300 focus:bg-slate-900/80"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-white/90 mb-2">
-                   Estimated Cost (৳)
-                </label>
-                <input
-                  type="number"
-                  value={step.estimatedCost || 0}
-                  onChange={(e) => handleUpdate('estimatedCost', parseFloat(e.target.value) || 0)}
-                  placeholder="0.00"
-                  min="0"
-                  step="0.01"
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-900/60 border border-white/30 text-white placeholder-white/40 transition-all duration-300 focus:outline-none focus:border-emerald-300 focus:bg-slate-900/80"
-                />
-              </div>
+            {/* Time */}
+            <div>
+              <label className="block text-sm font-semibold text-white/90 mb-2">
+                <Clock className="w-4 h-4 inline mr-1" /> Estimated Time (minutes)
+              </label>
+              <input
+                type="number"
+                value={step.estimatedTime || 0}
+                onChange={(e) => handleUpdate('estimatedTime', parseInt(e.target.value) || 0)}
+                placeholder="0"
+                min="0"
+                className="w-full px-4 py-3 rounded-2xl bg-slate-900/60 border border-white/30 text-white placeholder-white/40 transition-all duration-300 focus:outline-none focus:border-emerald-300 focus:bg-slate-900/80"
+              />
             </div>
 
             {/* Notes */}
@@ -156,44 +140,62 @@ const StepCard = ({
               <label className="block text-sm font-semibold text-white/90 mb-3">
                 <Package className="w-4 h-4 inline mr-1" /> Materials/Ingredients for this Step
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {(step.materials || []).map((material, matIndex) => (
-                  <div key={matIndex} className="flex flex-wrap gap-2 items-center bg-slate-900/60 border border-white/20 p-3 rounded-2xl">
-                    <input
-                      type="text"
-                      value={material.name || ''}
-                      onChange={(e) => handleMaterialUpdate(matIndex, 'name', e.target.value)}
-                      placeholder="Item name"
-                      className="flex-1 min-w-[150px] px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-purple-300"
-                    />
-                    <input
-                      type="text"
-                      value={material.quantity || ''}
-                      onChange={(e) => handleMaterialUpdate(matIndex, 'quantity', e.target.value)}
-                      placeholder="Qty"
-                      className="w-20 px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-purple-300"
-                    />
-                    <input
-                      type="text"
-                      value={material.unit || ''}
-                      onChange={(e) => handleMaterialUpdate(matIndex, 'unit', e.target.value)}
-                      placeholder="Unit"
-                      className="w-20 px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-purple-300"
-                    />
-                    <input
-                      type="number"
-                      value={material.estimatedCost || 0}
-                      onChange={(e) => handleMaterialUpdate(matIndex, 'estimatedCost', parseFloat(e.target.value) || 0)}
-                      placeholder="Cost"
-                      step="1"
-                      className="w-24 px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-emerald-300"
-                    />
-                    <button
-                      onClick={() => removeMaterial(matIndex)}
-                      className="inline-flex items-center justify-center px-3 py-2 rounded-xl border border-red-400/40 text-red-200 hover:bg-red-500/20 transition-all duration-300"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+                  <div key={matIndex} className="bg-slate-900/60 border border-white/20 p-4 rounded-2xl space-y-3">
+                    <div className="flex flex-wrap gap-2 items-center">
+                      <div className="flex-1 min-w-[200px]">
+                        <label className="block text-xs text-white/70 mb-1 font-semibold">Item Name *</label>
+                        <input
+                          type="text"
+                          value={material.name || ''}
+                          onChange={(e) => handleMaterialUpdate(matIndex, 'name', e.target.value)}
+                          placeholder="e.g., Tomatoes"
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-purple-300"
+                        />
+                      </div>
+                      <div className="w-24">
+                        <label className="block text-xs text-white/70 mb-1 font-semibold">Quantity</label>
+                        <input
+                          type="text"
+                          value={material.quantity || ''}
+                          onChange={(e) => handleMaterialUpdate(matIndex, 'quantity', e.target.value)}
+                          placeholder="2"
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-purple-300"
+                        />
+                      </div>
+                      <div className="w-24">
+                        <label className="block text-xs text-white/70 mb-1 font-semibold">Unit</label>
+                        <input
+                          type="text"
+                          value={material.unit || ''}
+                          onChange={(e) => handleMaterialUpdate(matIndex, 'unit', e.target.value)}
+                          placeholder="kg"
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900/70 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-purple-300"
+                        />
+                      </div>
+                      <div className="w-32">
+                        <label className="block text-xs text-emerald-300 mb-1 font-bold flex items-center gap-1">
+                        
+                          Cost (৳) *
+                        </label>
+                        <input
+                          type="number"
+                          value={material.estimatedCost || ''}
+                          onChange={(e) => handleMaterialUpdate(matIndex, 'estimatedCost', parseFloat(e.target.value) || 0)}
+                          placeholder="0.00"
+                          step="0.01"
+                          min="0"
+                          className="w-full px-3 py-2 rounded-xl bg-emerald-900/40 border-2 border-emerald-400/50 text-white placeholder-white/40 focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/30"
+                        />
+                      </div>
+                      <button
+                        onClick={() => removeMaterial(matIndex)}
+                        className="self-end inline-flex items-center justify-center px-3 py-2 rounded-xl border border-red-400/40 text-red-200 hover:bg-red-500/20 transition-all duration-300"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 ))}
                 <button
@@ -229,11 +231,14 @@ const StepCard = ({
                     className="hidden"
                   />
                   {step.image && (
-                    <img
-                      src={step.image}
-                      alt={`Step ${step.stepNumber}`}
-                      className="w-full h-40 object-cover rounded-xl border border-white/20"
-                    />
+                    <div className="w-full bg-slate-950/60 rounded-xl border border-white/20 flex items-center justify-center p-2" style={{ minHeight: '160px', maxHeight: '200px' }}>
+                      <img
+                        src={step.image}
+                        alt={`Step ${step.stepNumber}`}
+                        className="max-w-full h-auto object-contain rounded-lg max-h-48"
+                        loading="lazy"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
@@ -260,11 +265,13 @@ const StepCard = ({
                     className="hidden"
                   />
                   {step.video && (
-                    <video
-                      src={step.video}
-                      className="w-full h-40 object-cover rounded-xl border border-white/20"
-                      controls
-                    />
+                    <div className="w-full bg-slate-950/60 rounded-xl border border-white/20 flex items-center justify-center p-2" style={{ minHeight: '160px', maxHeight: '200px' }}>
+                      <video
+                        src={step.video}
+                        className="max-w-full h-auto object-contain rounded-lg max-h-48"
+                        controls
+                      />
+                    </div>
                   )}
                 </div>
               </div>
@@ -292,21 +299,13 @@ const StepCard = ({
             </h3>
           )}
 
-          {/* Time and Cost Badges */}
-          {(step.estimatedTime > 0 || step.estimatedCost > 0) && (
+          {/* Time Badge */}
+          {step.estimatedTime > 0 && (
             <div className="flex flex-wrap gap-2 mb-3">
-              {step.estimatedTime > 0 && (
-                <span className="glass-badge glass-badge-teal flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {step.estimatedTime} min
-                </span>
-              )}
-              {step.estimatedCost > 0 && (
-                <span className="glass-badge glass-badge-green flex items-center gap-1">
-                
-                  ৳{step.estimatedCost.toFixed(2)}
-                </span>
-              )}
+              <span className="glass-badge glass-badge-teal flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                {step.estimatedTime} min
+              </span>
             </div>
           )}
 
@@ -357,21 +356,22 @@ const StepCard = ({
           {(step.image || step.video) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {step.image && (
-                <div className="glass-card rounded-xl overflow-hidden">
+                <div className="glass-card rounded-xl overflow-hidden bg-slate-950/60 flex items-center justify-center" style={{ minHeight: '250px', maxHeight: '400px' }}>
                   <img
                     src={step.image}
                     alt={step.title || `Step ${step.stepNumber}`}
-                    className="w-full h-48 object-cover hover:scale-110 transition-transform duration-500"
+                    className="w-full h-auto object-contain max-h-96 hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               )}
               
               {step.video && (
-                <div className="glass-card rounded-xl overflow-hidden">
+                <div className="glass-card rounded-xl overflow-hidden bg-slate-950/60 flex items-center justify-center" style={{ minHeight: '250px', maxHeight: '400px' }}>
                   <video
                     src={step.video}
                     controls
-                    className="w-full h-48 object-cover"
+                    className="w-full h-auto object-contain max-h-96"
                   />
                 </div>
               )}

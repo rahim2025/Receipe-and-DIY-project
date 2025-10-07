@@ -677,18 +677,7 @@ const VendorsPage = () => {
                         </div>
                       )}
                       
-                      {userLocation && filteredVendors[0]?.address?.coordinates && (
-                        <div className="glass-badge glass-badge-blue">
-                          <Navigation className="w-4 h-4" />
-                          {formatDistance(calculateDistance(
-                            userLocation.latitude,
-                            userLocation.longitude,
-                            filteredVendors[0].address.coordinates[1],
-                            filteredVendors[0].address.coordinates[0]
-                          ))} away
-                        </div>
-                      )}
-                      
+   
                       <div className="glass-badge">
                         <Heart className="w-4 h-4" />
                         {filteredVendors[0]?.followers?.length || 0} followers

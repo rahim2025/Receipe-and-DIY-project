@@ -91,7 +91,7 @@ export const Navbar = () => {
                     <Sparkles className="w-4 h-4" /> AI Assistant
                   </Link>
                   <Link to="/bookmarks" className="nav-link">
-                    <Bookmark className="w-4 h-4" /> Saved
+                    <Bookmark className="w-4 h-4" /> Bookmarked
                   </Link>
                   <Link to="/drafts" className="nav-link">
                     <FileText className="w-4 h-4" /> Drafts
@@ -229,7 +229,7 @@ export const Navbar = () => {
 
       {/* Category Bar */}
       <div className="backdrop-blur-xl bg-white/5 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-1 flex items-center justify-between">
           <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
             {["all", "recipe", "diy"].map((cat) => (
               <button
@@ -245,12 +245,7 @@ export const Navbar = () => {
               </button>
             ))}
           </div>
-          {/* <Link
-            to="/create"
-            className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-teal-400 to-violet-500 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all"
-          >
-            <Plus className="w-4 h-4" /> Share
-          </Link> */}
+
         </div>
       </div>
 

@@ -298,7 +298,7 @@ const HomePage = () => {
                         }}
                       />
                       <div className="text-center text-sm text-white/80 mt-3">
-                        $0 - ${priceRange.toLocaleString()}
+                        0 - {priceRange.toLocaleString()}
                       </div>
                     </div>
                   </div>
@@ -350,10 +350,10 @@ const HomePage = () => {
                     <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 right-3 sm:right-4 md:right-6">
                       <Link 
                         to={`/post/${filteredPosts[0]._id}`}
-                        className="glass-btn-primary text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2"
+                        className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-teal-400 via-blue-500 to-violet-500 text-white font-bold text-sm sm:text-base shadow-[0_8px_24px_rgba(59,130,246,0.4)] hover:shadow-[0_12px_32px_rgba(59,130,246,0.6)] transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20"
                       >
-                        <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span className="hidden xs:inline">View</span>
+                        <Eye className="w-4 h-4 sm:w-5 sm:h-5 drop-shadow" />
+                        <span>View Recipe</span>
                       </Link>
                     </div>
                   </div>

@@ -1,5 +1,14 @@
 // Currency formatting utilities
 
+// Approximate exchange rates (update periodically)
+const EXCHANGE_RATES = {
+  USD_TO_BDT: 120, // 1 USD = 120 BDT (approximate)
+};
+
+export const convertUSDtoBDT = (usdAmount) => {
+  return Math.round(parseFloat(usdAmount) * EXCHANGE_RATES.USD_TO_BDT);
+};
+
 export const getCurrencySymbol = (currency) => {
   const symbols = {
     BDT: '৳',

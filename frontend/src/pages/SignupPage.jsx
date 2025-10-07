@@ -553,22 +553,9 @@ const SignUpPage = () => {
             </button>
 
             {/* Divider */}
-            <div className="divider">
-              <span>Or sign up with</span>
-            </div>
+  
 
-            {/* Social Login */}
-            <div className="social-login">
-              <button type="button" className="social-btn google">
-                <Chrome />
-              </button>
-              <button type="button" className="social-btn facebook">
-                <Facebook />
-              </button>
-              <button type="button" className="social-btn apple">
-                <Apple />
-              </button>
-            </div>
+            
               </form>
 
               {/* Footer */}

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Clock, DollarSign, AlertCircle, Package, X, Image as ImageIcon, Video } from 'lucide-react';
+import { Clock, DollarSign, AlertCircle, Package, X, Image as ImageIcon, Video, Flame } from 'lucide-react';
 
 const StepCard = ({ 
   step, 
@@ -8,7 +8,8 @@ const StepCard = ({
   onUpdate = null, 
   onRemove = null,
   onMediaUpload = null,
-  isUploading = false 
+  isUploading = false,
+  postType = 'recipe' // default to recipe for backward compatibility
 }) => {
   const handleUpdate = (field, value) => {
     if (onUpdate) {
@@ -42,7 +43,7 @@ const StepCard = ({
   };
 
   const addMaterial = () => {
-    const updatedMaterials = [...(step.materials || []), { name: '', quantity: '', unit: '', estimatedCost: 0 }];
+    const updatedMaterials = [...(step.materials || []), { name: '', quantity: '', unit: '', estimatedCost: 0, calories: 0 }];
     handleUpdate('materials', updatedMaterials);
   };
 
@@ -189,6 +190,22 @@ const StepCard = ({
                           className="w-full px-3 py-2 rounded-xl bg-emerald-900/40 border-2 border-emerald-400/50 text-white placeholder-white/40 focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/30"
                         />
                       </div>
+                      {postType === 'recipe' && (
+                        <div className="w-32">
+                          <label className="block text-xs text-orange-300 mb-1 font-bold flex items-center gap-1">
+                            Calories
+                          </label>
+                          <input
+                            type="number"
+                            value={material.calories || ''}
+                            onChange={(e) => handleMaterialUpdate(matIndex, 'calories', parseFloat(e.target.value) || 0)}
+                            placeholder="0"
+                            step="1"
+                            min="0"
+                            className="w-full px-3 py-2 rounded-xl bg-orange-900/40 border-2 border-orange-400/50 text-white placeholder-white/40 focus:outline-none focus:border-orange-300 focus:ring-2 focus:ring-orange-400/30"
+                          />
+                        </div>
+                      )}
                       <button
                         onClick={() => removeMaterial(matIndex)}
                         className="self-end inline-flex items-center justify-center px-3 py-2 rounded-xl border border-red-400/40 text-red-200 hover:bg-red-500/20 transition-all duration-300"
@@ -328,6 +345,11 @@ const StepCard = ({
                       {material.quantity && `${material.quantity} `}
                       {material.unit && `${material.unit} `}
                       <span className="font-medium">{material.name}</span>
+                      {material.calories > 0 && (
+                        <span className="text-orange-300 text-xs ml-2">
+                          ({material.calories} cal)
+                        </span>
+                      )}
                     </span>
                     {material.estimatedCost > 0 && (
                       <span className="text-teal-300 font-semibold readable">

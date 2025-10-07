@@ -8,8 +8,7 @@ const LocationSelector = ({
   initialLocation = null, 
   showManualEntry = true,
   showCurrentLocation = true,
-  className = "",
-  forceLightTheme = true // ensures readable dark text on light / white panels
+  className = ""
 }) => {
   const [location, setLocation] = useState(initialLocation);
   const [isDetecting, setIsDetecting] = useState(false);
@@ -225,187 +224,200 @@ const LocationSelector = ({
     setError('');
   };
 
-  const lightTextClasses = forceLightTheme ? 'text-gray-800' : '';
-  const lightInputClasses = forceLightTheme ? 'bg-white text-gray-900 placeholder-gray-400' : '';
-  const lightButtonText = forceLightTheme ? 'text-gray-700' : '';
-
   return (
-<div className={`space-y-4 `}>
-  <div className="flex items-center justify-between">
-    <label
-      className={`block text-sm font-semibold tracking-wide text-ultra-readable ${
-        forceLightTheme ? "text-gray-700" : ""
-      }`}
-    >
-      📍 Location (Optional)
-    </label>
+<div className={`space-y-3 relative ${className}`}>
+  {/* Header with subtle design */}
+  <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center gap-2">
+      <div className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 via-purple-500 to-fuchsia-500"></div>
+      <label
+        className="text-sm font-bold tracking-tight text-gray-800"
+      >
+        Location Filter
+      </label>
+      <span className="text-xs px-2 py-0.5 rounded-full bg-violet-100 text-violet-600">
+        Optional
+      </span>
+    </div>
     {location && (
       <button
         type="button"
         onClick={clearLocation}
-        className={`text-xs font-medium transition-colors ${
-          forceLightTheme
-            ? "text-red-500 hover:text-red-700"
-            : "text-red-300 hover:text-red-200"
-        }`}
+        className={`text-xs font-semibold px-3 py-1 rounded-lg transition-all hover:scale-105 `}
       >
         Clear
       </button>
     )}
   </div>
 
-  {/* Current Location Display */}
+  {/* Current Location Display - Compact & Modern */}
 {location && (
   <div
-    className={`flex items-center gap-3 p-4 rounded-xl shadow-md transition 
-      ${
-        forceLightTheme
-          ? "bg-green-600 border border-green-700"
-          : "bg-green-800 border border-green-600 backdrop-blur-sm"
-      }`}
+    className="group relative overflow-hidden rounded-2xl transition-all duration-300 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 border-2 border-emerald-200 hover:border-emerald-300 shadow-sm hover:shadow-md"
   >
-    <MapPin
-      className="h-5 w-5 text-white drop-shadow-lg"
-    />
-    <div className="flex-1">
-      <p className="text-sm font-semibold text-white text-ultra-readable">
-        {location.displayLocation}
-      </p>
-      {location.isCurrentLocation && (
-        <p className="text-xs text-green-100 readable-secondary">Current location detected</p>
-      )}
+    {/* Decorative background pattern */}
+    <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0" style={{
+        backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)',
+        backgroundSize: '24px 24px'
+      }}></div>
+    </div>
+    
+    <div className="relative flex items-center gap-3 p-3.5">
+      <div className="flex-shrink-0 p-2 rounded-xl bg-emerald-100">
+        <MapPin className="h-5 w-5 text-emerald-600" />
+      </div>
+      
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold truncate text-gray-900">
+          {location.displayLocation}
+        </p>
+        {location.isCurrentLocation && (
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-emerald-600"></div>
+            <p className="text-xs font-medium text-emerald-700">
+              Current Location
+            </p>
+          </div>
+        )}
+      </div>
+      
+      {/* Success checkmark */}
+      <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center bg-emerald-600">
+        <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
     </div>
   </div>
 )}
 
 
 
-  {/* Error Display */}
+  {/* Error Display - Modern Alert */}
   {error && (
-    <div className="flex items-center gap-3 p-4 bg-red-900/30 backdrop-blur-sm border border-red-500/50 rounded-xl shadow-sm">
-      <AlertCircle className="h-5 w-5 text-red-400" />
-      <p className="text-sm font-medium text-red-100 readable-strong">{error}</p>
+    <div className="flex items-center gap-3 p-3 rounded-xl border-l-4 bg-red-50 border-red-500 text-red-800">
+      <AlertCircle className="h-4 w-4 flex-shrink-0 text-red-500" />
+      <p className="text-xs font-medium flex-1">{error}</p>
     </div>
   )}
 
-  {/* Location Options */}
+  {/* Location Options - Smart Layout */}
   {!location && (
-    <div className="space-y-3">
-      {/* Current Location Button */}
+    <div className="space-y-2.5">
+      {/* Current Location Button - Premium Design */}
       {showCurrentLocation && (
         <button
           type="button"
           onClick={detectCurrentLocation}
           disabled={isDetecting || permissionStatus === "denied"}
-          className={`w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium transition-all transform text-ultra-readable ${
-            isDetecting
-              ? "bg-gray-500/50 text-white/70"
-              : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:scale-[1.02]"
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+          className={`group w-full relative overflow-hidden rounded-xl font-semibold transition-all duration-300 ${
+            isDetecting || permissionStatus === "denied"
+              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] shadow-md"
+          }`}
         >
-          {isDetecting ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : (
-            <MapPin className="h-5 w-5" />
+          {/* Animated background shimmer */}
+          {!isDetecting && permissionStatus !== "denied" && (
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+            </div>
           )}
-          {isDetecting ? "Detecting..." : "Use Current Location"}
+          
+          <div className="relative flex items-center justify-center gap-2.5 px-5 py-3.5">
+            <div className={`flex items-center justify-center w-8 h-8 rounded-lg ${
+              isDetecting || permissionStatus === "denied"
+                ? 'bg-gray-200'
+                : 'bg-white/20 backdrop-blur-sm'
+            }`}>
+              {isDetecting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <MapPin className="h-4 w-4" />
+              )}
+            </div>
+            <span className="text-sm font-bold tracking-wide">
+              {isDetecting ? "Detecting Location..." : "Use My Current Location"}
+            </span>
+          </div>
         </button>
       )}
 
-      {/* Common Locations Dropdown */}
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => setShowDropdown(!showDropdown)}
-          className="w-full flex items-center justify-between px-5 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm text-sm font-medium hover:bg-white/15 transition text-ultra-readable"
-        >
-          <span>🌍 Choose from common locations</span>
-          <ChevronDown className="h-4 w-4" />
-        </button>
+      {/* Divider with "OR" */}
+      {showCurrentLocation && showManualEntry && (
+        <div className="relative flex items-center gap-3 py-2">
+          <div className="flex-1 h-px bg-gray-200"></div>
+          <span className="text-xs font-semibold text-gray-400">
+            OR
+          </span>
+          <div className="flex-1 h-px bg-gray-200"></div>
+        </div>
+      )}
 
-        {showDropdown && (
-          <div className="absolute z-10 w-full mt-2 bg-gray-900/95 backdrop-blur-md border border-white/20 rounded-xl shadow-lg max-h-64 overflow-y-auto">
-            <div className="p-3">
-              <h4 className="text-xs font-bold text-white/80 readable-strong uppercase mb-2">
-                US Cities
-              </h4>
-              {Object.entries(COMMON_LOCATIONS.US).map(([key, value]) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => selectCommonLocation(key, value)}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm text-white readable-secondary"
-                >
-                  {key}
-                </button>
-              ))}
-            </div>
-
-            <div className="border-t border-white/10 p-3">
-              <h4 className="text-xs font-bold text-white/80 readable-strong uppercase mb-2">
-                International
-              </h4>
-              {Object.entries(COMMON_LOCATIONS.INTERNATIONAL).map(
-                ([key, value]) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => selectCommonLocation(key, value)}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm text-white readable-secondary"
-                  >
-                    {key}
-                  </button>
-                )
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Manual Entry */}
+      {/* Manual Entry - Smart Search Box */}
       {showManualEntry && (
-        <div className="relative">
+        <div className="relative z-10">
           {!showManualInput ? (
             <button
               type="button"
               onClick={() => setShowManualInput(true)}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15 text-sm font-medium transition text-ultra-readable"
+              className="group w-full relative overflow-hidden rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-violet-300 via-purple-300 to-fuchsia-300 border-2 border-violet-400 hover:border-violet-500 text-violet-900 hover:text-violet-950 shadow-md hover:shadow-lg"
             >
-              <Search className="h-4 w-4" />
-              {isMapboxEnabled ? "Search for location" : "Enter manually"}
+              <div className="relative flex items-center justify-center gap-2.5 px-5 py-3.5">
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/30 text-violet-900 group-hover:bg-violet-500/40">
+                  <Search className="h-4 w-4" />
+                </div>
+                <span className="text-sm font-bold tracking-wide">
+                  {isMapboxEnabled ? "Search by City or Address" : "Enter Location Manually"}
+                </span>
+              </div>
             </button>
           ) : (
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    value={manualAddress}
-                    onChange={handleAddressInputChange}
-                    placeholder={
-                      isMapboxEnabled
-                        ? "Search for city, state or address..."
-                        : "Enter city, state or address"
-                    }
-                    className="w-full px-4 py-2 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8 text-sm text-ultra-readable"
-                    onKeyPress={(e) =>
-                      e.key === "Enter" && handleManualAddress()
-                    }
-                  />
-                  {isSearching && (
-                    <Loader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-gray-400" />
-                  )}
+            <div className="rounded-2xl p-4 space-y-3 bg-gradient-to-br from-violet-200 via-purple-200 to-fuchsia-200 border-2 border-violet-300 shadow-xl">
+              {/* Search Input with Icon */}
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Search className="h-5 w-5 text-violet-400" />
                 </div>
+                <input
+                  type="text"
+                  value={manualAddress}
+                  onChange={handleAddressInputChange}
+                  placeholder={
+                    isMapboxEnabled
+                      ? "Type a city, state, or full address..."
+                      : "Enter city, state or address..."
+                  }
+                  autoFocus
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium text-sm transition-all bg-violet-100/80 border-2 border-violet-300 focus:border-violet-500 focus:bg-violet-100 text-gray-900 placeholder-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-200"
+                  onKeyPress={(e) => e.key === "Enter" && handleManualAddress()}
+                />
+                {isSearching && (
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                    <Loader2 className="h-5 w-5 animate-spin text-violet-500" />
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={handleManualAddress}
                   disabled={isSearching || !manualAddress.trim()}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:scale-[1.02] transition disabled:opacity-50"
+                  className={`flex-1 px-4 py-2.5 rounded-lg font-bold text-sm transition-all ${
+                    isSearching || !manualAddress.trim()
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]'
+                  }`}
                 >
                   {isSearching ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Searching...
+                    </span>
                   ) : (
-                    "Add"
+                    "Set Location"
                   )}
                 </button>
                 <button
@@ -417,37 +429,44 @@ const LocationSelector = ({
                     setSearchSuggestions([]);
                     if (searchTimeout.current) clearTimeout(searchTimeout.current);
                   }}
-                  className="px-4 py-2 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/15 text-sm font-medium text-ultra-readable"
+                  className="px-4 py-2.5 rounded-lg font-semibold text-sm transition-all border-2 border-violet-200 text-violet-700 hover:bg-violet-50 hover:border-violet-300"
                 >
                   Cancel
                 </button>
               </div>
-
-              {/* Suggestions */}
+              
+              {/* Suggestions Dropdown - Smart Design */}
               {showSuggestions && searchSuggestions.length > 0 && (
-                <div className="absolute z-20 w-full mt-2 bg-gray-900/95 backdrop-blur-md border border-white/20 rounded-xl shadow-lg max-h-64 overflow-y-auto">
-                  {searchSuggestions.map((suggestion, index) => (
-                    <button
-                      key={suggestion.id || index}
-                      type="button"
-                      onClick={() => selectSuggestion(suggestion)}
-                      className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-white/10 border-b border-white/10 last:border-b-0 transition text-sm"
-                    >
-                      <MapPin className="h-4 w-4 text-white/60 mt-0.5" />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white readable-strong truncate">
-                          {suggestion.place_name}
-                        </p>
-                        {suggestion.city && (
-                          <p className="text-xs text-white/70 readable-secondary">
-                            {[suggestion.city, suggestion.state, suggestion.country]
-                              .filter(Boolean)
-                              .join(", ")}
+                <div className="rounded-xl overflow-hidden border-2 bg-gradient-to-br from-violet-800 via-purple-800 to-fuchsia-800 border-violet-500 shadow-2xl">
+                  <div className="px-3 py-2 border-b text-xs font-bold bg-violet-900/70 text-white border-violet-600">
+                    {searchSuggestions.length} {searchSuggestions.length === 1 ? 'Result' : 'Results'} Found
+                  </div>
+                  <div className="max-h-64 overflow-y-auto">
+                    {searchSuggestions.map((suggestion, index) => (
+                      <button
+                        key={suggestion.id || index}
+                        type="button"
+                        onClick={() => selectSuggestion(suggestion)}
+                        className="w-full text-left px-3.5 py-3 flex items-start gap-3 transition-all border-b last:border-b-0 bg-violet-800/40 hover:bg-violet-700/60 active:bg-violet-700 border-violet-700"
+                      >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-violet-900/40">
+                          <MapPin className="h-4 w-4 text-violet-200" />
+                        </div>
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <p className="text-sm font-bold break-words text-white">
+                            {suggestion.place_name}
                           </p>
-                        )}
-                      </div>
-                    </button>
-                  ))}
+                          {suggestion.city && (
+                            <p className="text-xs mt-0.5 break-words text-violet-200">
+                              {[suggestion.city, suggestion.state, suggestion.country]
+                                .filter(Boolean)
+                                .join(", ")}
+                            </p>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -457,12 +476,20 @@ const LocationSelector = ({
     </div>
   )}
 
-  {/* Permission Help */}
-  {permissionStatus === "denied" && showCurrentLocation && (
-    <div className="p-3 bg-yellow-900/30 border border-yellow-500/50 rounded-xl shadow-sm backdrop-blur-sm">
-      <p className="text-xs font-medium text-yellow-100 readable-strong">
-        ⚠️ Location access is disabled. Enable it in your browser settings.
-      </p>
+  {/* Permission Help - Informative Banner */}
+  {permissionStatus === "denied" && showCurrentLocation && !location && (
+    <div className="flex items-start gap-3 p-3.5 rounded-xl border-l-4 bg-amber-50 border-amber-500 text-amber-900">
+      <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100">
+        <AlertCircle className="h-4 w-4 text-amber-600" />
+      </div>
+      <div className="flex-1">
+        <p className="text-xs font-bold mb-1 text-amber-900">
+          Location Access Denied
+        </p>
+        <p className="text-xs text-amber-700">
+          Enable location permissions in your browser settings to use this feature.
+        </p>
+      </div>
     </div>
   )}
 </div>

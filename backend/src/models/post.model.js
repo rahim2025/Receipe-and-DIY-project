@@ -410,12 +410,14 @@ postSchema.virtual('allStepMaterials').get(function() {
           const newQty = parseFloat(material.quantity) || 0;
           existing.quantity = (existingQty + newQty).toString();
           existing.estimatedCost = (existing.estimatedCost || 0) + (material.estimatedCost || 0);
+          existing.calories = (existing.calories || 0) + (material.calories || 0);
         } else {
           materialsMap.set(key, {
             name: material.name,
             quantity: material.quantity,
             unit: material.unit,
-            estimatedCost: material.estimatedCost || 0
+            estimatedCost: material.estimatedCost || 0,
+            calories: material.calories || 0
           });
         }
       });

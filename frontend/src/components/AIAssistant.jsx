@@ -3,6 +3,7 @@ import { Sparkles, Loader2, X, Wand2, ChefHat, Flame, TrendingUp, DollarSign, Li
 import { axiosInstance } from '../lib/axios';
 import { useAuthStore } from '../store/useAuthStore';
 import useNotification from '../hooks/useNotification';
+import { convertUSDtoBDT } from '../lib/currency';
 
 
 
@@ -402,10 +403,10 @@ export default function AIAssistant() {
                   <div className="glass-panel p-3 text-center bg-gradient-to-br from-indigo-500/25 via-[#291257]/85 to-transparent border-indigo-400/50 hover:scale-105 transition-transform">
                     <DollarSign className="w-4 h-4 text-indigo-200 mx-auto mb-1" />
                     <div className="text-base font-bold text-white">
-                      ${response.nutrition.estCost}
+                      ৳{convertUSDtoBDT(response.nutrition.estCost)}
                     </div>
                     <div className="text-[9px] text-violet-100/80 uppercase tracking-wide mt-0.5">
-                      Cost
+                      Cost (BDT)
                     </div>
                   </div>
                 </div>

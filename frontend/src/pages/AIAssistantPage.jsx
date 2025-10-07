@@ -4,6 +4,7 @@ import { axiosInstance } from '../lib/axios';
 import { useAuthStore } from '../store/useAuthStore';
 import useNotification from '../hooks/useNotification';
 import { useNavigate } from 'react-router-dom';
+import { convertUSDtoBDT } from '../lib/currency';
 
 const QUICK_INGREDIENTS = ['tomato', 'chicken', 'cheese', 'basil', 'garlic', 'onion', 'flour', 'eggs', 'pasta', 'rice', 'beans', 'yogurt'];
 const QUICK_PROMPTS = [
@@ -655,10 +656,10 @@ export default function AIAssistantPage() {
                   <div className="glass-panel p-6 text-center bg-gradient-to-br from-blue-500/10 to-transparent border-blue-400/30">
                     <DollarSign className="w-8 h-8 text-blue-300 mx-auto mb-3" />
                     <div className="text-3xl font-bold text-white" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
-                      ${response.nutrition.estCost}
+                      ৳{convertUSDtoBDT(response.nutrition.estCost)}
                     </div>
                     <div className="text-sm text-white font-bold uppercase tracking-wide mt-1" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                      Estimated Cost
+                      Estimated Cost (BDT)
                     </div>
                   </div>
                 </div>

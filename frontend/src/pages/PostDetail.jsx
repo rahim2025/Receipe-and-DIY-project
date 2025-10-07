@@ -14,7 +14,8 @@ import {
   Play,
   Tag,
   Flag,
-  Trash2
+  Trash2,
+  Flame
 } from 'lucide-react';
 import { formatCurrency } from '../lib/currency';
 import toast from 'react-hot-toast';
@@ -152,6 +153,34 @@ const PostDetail = () => {
 
   const isOwner = authUser && currentPost.author && authUser._id === currentPost.author._id;
   const isLiked = authUser && currentPost.likes?.includes(authUser._id);
+
+  // Calculate total calories from all materials in all steps (for recipes only)
+  const calculateTotalCalories = () => {
+    if (currentPost?.type !== 'recipe') return 0;
+    
+    // Try to calculate from steps first
+    if (currentPost?.steps && currentPost.steps.length > 0) {
+      return currentPost.steps.reduce((total, step) => {
+        const stepCalories = (step.materials || []).reduce(
+          (sum, material) => sum + (material.calories || 0),
+          0
+        );
+        return total + stepCalories;
+      }, 0);
+    }
+    
+    // Fallback to aggregated materials if available
+    if (currentPost?.allStepMaterials && currentPost.allStepMaterials.length > 0) {
+      return currentPost.allStepMaterials.reduce(
+        (total, material) => total + (material.calories || 0),
+        0
+      );
+    }
+    
+    return 0;
+  };
+
+  const totalCalories = calculateTotalCalories();
 
   return (
     <div className="min-h-screen pb-8" style={{ paddingTop: '140px' }}>
@@ -373,7 +402,7 @@ const PostDetail = () => {
               {/* Meta Information */}
               <div className={`grid gap-4 mb-8 ${
                 currentPost.type === 'recipe' 
-                  ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-5' 
+                  ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-6' 
                   : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
               }`}>
                 <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
@@ -394,6 +423,15 @@ const PostDetail = () => {
                       <div className="text-sm font-bold text-white mb-1 readable contrast-on-glass">{currentPost.servings || 'N/A'}</div>
                       <div className="text-xs text-white/90 readable">Servings</div>
                     </div>
+                    {currentPost.type === 'recipe' && (
+                      <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
+                        <Flame className="w-6 h-6 mx-auto mb-2 text-orange-400" />
+                        <div className="text-sm font-bold text-white mb-1 readable contrast-on-glass">
+                          {totalCalories > 0 ? `${totalCalories} cal` : 'N/A'}
+                        </div>
+                        <div className="text-xs text-white/90 readable">Total Calories</div>
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
@@ -490,7 +528,9 @@ const PostDetail = () => {
 
               {/* Summary Cards */}
               {currentPost.steps && currentPost.steps.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className={`grid gap-4 mb-6 ${
+                  currentPost.type === 'recipe' ? 'grid-cols-2 md:grid-cols-5' : 'grid-cols-2 md:grid-cols-4'
+                }`}>
                   <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
                     <div className="text-2xl font-bold text-teal-400 mb-1 readable">
                       {currentPost.steps.length}
@@ -523,6 +563,15 @@ const PostDetail = () => {
                       <div className="text-xs text-white/90 readable">Materials</div>
                     </div>
                   )}
+                  {currentPost.type === 'recipe' && (
+                    <div className="glass-card text-center p-4" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
+                      <Flame className="w-5 h-5 mx-auto mb-1 text-orange-400" />
+                      <div className="text-sm font-bold text-white mb-1 readable">
+                        {totalCalories > 0 ? `${totalCalories} cal` : 'N/A'}
+                      </div>
+                      <div className="text-xs text-white/90 readable">Total Calories</div>
+                    </div>
+                  )}
                 </div>
               )}
               
@@ -532,7 +581,7 @@ const PostDetail = () => {
                   ? currentPost.steps 
                   : (currentPost.type === 'recipe' ? currentPost.cookingSteps : currentPost.instructions) || []
                 ).map((step, index) => (
-                  <StepCard key={index} step={step} index={index} isEditing={false} />
+                  <StepCard key={index} step={step} index={index} isEditing={false} postType={currentPost.type} />
                 ))}
               </div>
 
@@ -550,24 +599,42 @@ const PostDetail = () => {
                         className="flex justify-between items-center p-3 glass-card hover:scale-[1.02] transition-all"
                         style={{ background: 'rgba(0, 0, 0, 0.15)' }}
                       >
-                        <span className="text-white readable">
+                        <span className="text-white readable flex-1">
                           <span className="font-semibold">{material.name}</span>
                           {material.quantity && ` - ${material.quantity}`}
                           {material.unit && ` ${material.unit}`}
+                          {material.calories > 0 && currentPost.type === 'recipe' && (
+                            <span className="text-orange-300 text-xs ml-2">
+                              ({material.calories} cal)
+                            </span>
+                          )}
                         </span>
                         {material.estimatedCost > 0 && (
-                          <span className="text-green-400 font-bold readable">
+                          <span className="text-green-400 font-bold readable ml-2">
                             ৳{material.estimatedCost.toFixed(2)}
                           </span>
                         )}
                       </div>
                     ))}
                   </div>
-                  <div className="mt-4 pt-4 border-t border-white/20 flex justify-between items-center">
-                    <span className="text-white font-semibold readable">Total Estimated Cost:</span>
-                    <span className="text-2xl font-bold text-green-400 readable">
-                      ৳{currentPost.allStepMaterials.reduce((sum, m) => sum + (m.estimatedCost || 0), 0).toFixed(2)}
-                    </span>
+                  <div className="mt-4 pt-4 border-t border-white/20 space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold readable">Total Estimated Cost:</span>
+                      <span className="text-2xl font-bold text-green-400 readable">
+                        ৳{currentPost.allStepMaterials.reduce((sum, m) => sum + (m.estimatedCost || 0), 0).toFixed(2)}
+                      </span>
+                    </div>
+                    {currentPost.type === 'recipe' && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-white font-semibold readable flex items-center gap-2">
+                          <Flame className="w-5 h-5 text-orange-400" />
+                          Total Calories:
+                        </span>
+                        <span className="text-2xl font-bold text-orange-400 readable">
+                          {totalCalories > 0 ? `${totalCalories} cal` : 'Not specified'}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

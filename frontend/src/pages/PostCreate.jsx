@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Plus, X, Upload, Save, Send, ChefHat, Hammer, Clock, Star, Users, DollarSign, Package } from 'lucide-react';
+import { Plus, X, Upload, Save, Send, ChefHat, Hammer, Clock, Star, Users, DollarSign, Package, Flame } from 'lucide-react';
 import { usePostStore } from '../store/usePostStore';
 import { useAuthStore } from '../store/useAuthStore';
 import StepCard from '../components/StepCard';
@@ -143,6 +143,18 @@ const PostCreate = ({ editMode = false }) => {
         0
       );
       return sum + stepCost + materialsCost;
+    }, 0);
+  };
+
+  // Calculate total calories from all materials (optional - only for recipes)
+  const calculateTotalCalories = () => {
+    if (postType !== 'recipe') return 0;
+    return formData.steps.reduce((sum, step) => {
+      const materialsCalories = (step.materials || []).reduce(
+        (calSum, mat) => calSum + (mat.calories || 0),
+        0
+      );
+      return sum + materialsCalories;
     }, 0);
   };
 
@@ -570,6 +582,7 @@ const PostCreate = ({ editMode = false }) => {
                 onRemove={removeStep}
                 onMediaUpload={handleMediaUpload}
                 isUploading={isUploading}
+                postType={postType}
               />
             ))}
           </div>
@@ -622,6 +635,15 @@ const PostCreate = ({ editMode = false }) => {
                   </div>
                   <p className="text-xs text-gray-600">Estimated total cost from materials</p>
                 </div>
+                {postType === 'recipe' && calculateTotalCalories() > 0 && (
+                  <div className="bg-white/60 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Flame className="w-7 h-7 text-orange-600" />
+                      <span className="font-semibold text-orange-900">{calculateTotalCalories()} cal</span>
+                    </div>
+                    <p className="text-xs text-gray-600">Total calories from all ingredients</p>
+                  </div>
+                )}
               </div>
             </div>
           )}

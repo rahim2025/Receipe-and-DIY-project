@@ -50,6 +50,20 @@ button {
   text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
 }
 
+/* Shimmer animation for location selector */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
 /* Global liquid glass theme overrides */
 /* We can't use @apply for custom non-Tailwind classes here because Tailwind doesn't know them; duplicate core styles instead. */
 @layer components {

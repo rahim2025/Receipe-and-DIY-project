@@ -165,8 +165,8 @@ const PriceComparisonPage = () => {
         </div>
         {priceStats && priceStats.itemName.toLowerCase() === item.itemName.toLowerCase() && (
           <div className="flex flex-wrap gap-3 text-sm">
-            <div className="glass-badge glass-badge-teal">Min ${priceStats.priceStats.min}</div>
-            <div className="glass-badge glass-badge-violet">Max ${priceStats.priceStats.max}</div>
+            <div className="glass-badge glass-badge-teal">Min ৳{priceStats.priceStats.min}</div>
+            <div className="glass-badge glass-badge-violet">Max ৳{priceStats.priceStats.max}</div>
             <div className="glass-badge glass-badge-blue">Avg ৳{priceStats.priceStats.average.toFixed(2)}</div>
           </div>
         )}
@@ -451,7 +451,7 @@ const PriceComparisonPage = () => {
                 {priceStats && (
                   <div className="glass-sidebar p-6">
                     <div className="flex items-center gap-2 mb-4">
-                      <DollarSign className="w-5 h-5 text-violet-400" />
+                     
                       <h3 className="text-lg font-semibold text-white font-['Poppins']">Price Stats</h3>
                     </div>
                     <div className="grid grid-cols-3 gap-3 text-center">
@@ -497,7 +497,7 @@ const PriceComparisonPage = () => {
                       <div className="flex items-center justify-between text-[11px] text-white/60">
                         <span>{item.vendorCount} vendors</span>
                         {item.avgPrice && (
-                          <span className="text-teal-300 font-semibold">Avg ${item.avgPrice}</span>
+                          <span className="text-teal-300 font-semibold">Avg ৳{item.avgPrice}</span>
                         )}
                       </div>
                     </button>

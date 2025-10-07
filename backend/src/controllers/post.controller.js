@@ -427,7 +427,7 @@ export const getPosts = async (req, res) => {
 
     // Transform posts to include virtual fields and proper format
     const transformedPosts = posts.map(post => ({
-      ...post.toObject(),
+      ...post.toObject({ virtuals: true }),
       likeCount: post.likes.length,
       commentCount: post.comments.length,
       bookmarkCount: post.bookmarks.length
@@ -486,7 +486,7 @@ export const getPostById = async (req, res) => {
 
     // Transform post to include virtual fields
     const transformedPost = {
-      ...post.toObject(),
+      ...post.toObject({ virtuals: true }),
       likeCount: post.likes.length,
       commentCount: post.comments.length,
       bookmarkCount: post.bookmarks.length
@@ -696,7 +696,7 @@ export const getUserDrafts = async (req, res) => {
 
     // Transform drafts to include virtual fields
     const transformedDrafts = drafts.map(draft => ({
-      ...draft.toObject(),
+      ...draft.toObject({ virtuals: true }),
       likeCount: draft.likes.length,
       commentCount: draft.comments.length,
       bookmarkCount: draft.bookmarks.length
@@ -785,7 +785,7 @@ export const getPostsByLocation = async (req, res) => {
       }
 
       return {
-        ...post.toObject(),
+        ...post.toObject({ virtuals: true }),
         likeCount: post.likes.length,
         commentCount: post.comments.length,
         bookmarkCount: post.bookmarks.length,

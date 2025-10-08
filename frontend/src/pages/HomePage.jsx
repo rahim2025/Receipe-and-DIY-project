@@ -381,7 +381,7 @@ const HomePage = () => {
                       )}
                       
                       <div className="glass-badge glass-badge-blue">
-                        {/* <DollarSign className="w-4 h-4" /> */}
+                        
                         ৳{filteredPosts[0]?.totalCostEstimate?.toFixed(2) || '0.00'}
                       </div>
                       

@@ -46,6 +46,17 @@ const PriceComparisonPage = () => {
     loadPopularItems();
   }, []);
 
+  // Auto-search when filters change (if there's already a search query)
+  useEffect(() => {
+    if (searchQuery.trim() && comparisonResults.length > 0) {
+      const timeoutId = setTimeout(() => {
+        applyFilters();
+      }, 300); // Debounce for 300ms
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [filters.category, filters.type, filters.inStockOnly, filters.minPrice, filters.maxPrice, filters.sortBy]);
+
   const loadPopularItems = async () => {
     try {
       const response = await axiosInstance.get('/api/price-comparison/popular');
@@ -57,17 +68,30 @@ const PriceComparisonPage = () => {
     }
   };
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) {
+  const applyFilters = async () => {
+    if (!searchQuery.trim()) return;
+    await performSearch();
+  };
+
+  const performSearch = async (query = searchQuery, searchFilters = filters) => {
+    if (!query.trim()) {
       toast.error('Please enter a search term');
       return;
     }
 
     setLoading(true);
     try {
+      // Filter out empty values from filters
+      const filteredParams = Object.entries(searchFilters).reduce((acc, [key, value]) => {
+        if (value !== '' && value !== false && value !== null && value !== undefined) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+
       const params = new URLSearchParams({
-        name: searchQuery,
-        ...filters,
+        name: query,
+        ...filteredParams,
         ...(userLocation ? { userLocation: `${userLocation.lng},${userLocation.lat}` } : {})
       });
 
@@ -96,6 +120,10 @@ const PriceComparisonPage = () => {
     }
   };
 
+  const handleSearch = async () => {
+    await performSearch();
+  };
+
   const loadPriceStats = async () => {
     try {
       const params = new URLSearchParams({
@@ -118,6 +146,11 @@ const PriceComparisonPage = () => {
       ...prev,
       [key]: value
     }));
+    
+    // Show loading state briefly to indicate filter is being applied
+    if (searchQuery.trim() && comparisonResults.length > 0) {
+      setLoading(true);
+    }
   };
 
   const clearFilters = () => {
@@ -130,6 +163,11 @@ const PriceComparisonPage = () => {
       sortBy: 'price',
       priceUnit: ''
     });
+    
+    // Re-search with cleared filters if there's a search query
+    if (searchQuery.trim() && comparisonResults.length > 0) {
+      setLoading(true);
+    }
   };
 
   const formatPrice = (price) => {
@@ -360,9 +398,14 @@ const PriceComparisonPage = () => {
             <div className={`lg:col-span-1 ${showFilters ? '' : 'hidden lg:block'}`}>
               <div className="sticky top-32 space-y-6">
                 <div className="glass-sidebar p-6">
-                  <div className="flex items-center gap-2 mb-6">
-                    <Filter className="w-5 h-5 text-teal-400" />
-                    <h3 className="text-lg font-semibold text-white font-['Poppins']">Filters</h3>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                      <Filter className="w-5 h-5 text-teal-400" />
+                      <h3 className="text-lg font-semibold text-white font-['Poppins']">Filters</h3>
+                    </div>
+                    {(filters.category || filters.type || filters.inStockOnly || filters.minPrice || filters.maxPrice) && (
+                      <span className="text-xs bg-teal-500/20 text-teal-300 px-2 py-1 rounded-full">Active</span>
+                    )}
                   </div>
                   <div className="space-y-6">
                     <div>
@@ -489,6 +532,10 @@ const PriceComparisonPage = () => {
                       onClick={() => {
                         setSearchQuery(item.name);
                         setFilters(prev => ({ ...prev, category: item.category, type: item.type }));
+                        // Trigger search with the new values
+                        setTimeout(() => {
+                          performSearch(item.name, { ...filters, category: item.category, type: item.type });
+                        }, 100);
                       }}
                       className="glass-post-card p-4 text-left hover:scale-[1.02] transition-transform"
                     >

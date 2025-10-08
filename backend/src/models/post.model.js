@@ -71,6 +71,10 @@ const stepSchema = new mongoose.Schema({
     estimatedCost: {
       type: Number,
       default: 0
+    },
+    calories: {
+      type: Number,
+      default: 0
     }
   }]
 });
@@ -189,6 +193,13 @@ const postSchema = new mongoose.Schema({
     type: String,
     trim: true,
     maxlength: 200
+  },
+  
+  // Nutrition Information
+  totalCalories: {
+    type: Number, // total calories for recipes
+    default: 0,
+    min: 0
   },
   
   // Location and Regional Information

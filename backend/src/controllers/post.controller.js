@@ -57,6 +57,15 @@ export const createPost = async (req, res) => {
       return sum + stepCost + materialsCost;
     }, 0);
 
+    // Calculate total calories from materials (for recipes only)
+    const totalCalories = type === 'recipe' ? steps.reduce((sum, step) => {
+      const materialsCalories = (step.materials || []).reduce(
+        (calSum, mat) => calSum + (mat.calories || 0),
+        0
+      );
+      return sum + materialsCalories;
+    }, 0) : 0;
+
     const totalTime = steps.reduce((sum, step) => sum + (step.estimatedTime || 0), 0);
 
     // Calculate total time string
@@ -82,6 +91,7 @@ export const createPost = async (req, res) => {
       status,
       steps: steps || [],
       totalCostEstimate,
+      totalCalories,
       costCurrency: 'USD',
       // Extract unique ingredients/materials from all steps for compatibility
       ingredients: type === 'recipe' ? extractIngredientsFromSteps(steps) : [],
@@ -198,6 +208,15 @@ export const updatePost = async (req, res) => {
         return sum + stepCost + materialsCost;
       }, 0);
 
+      // Calculate total calories from materials (for recipes only)
+      const totalCalories = post.type === 'recipe' ? updateData.steps.reduce((sum, step) => {
+        const materialsCalories = (step.materials || []).reduce(
+          (calSum, mat) => calSum + (mat.calories || 0),
+          0
+        );
+        return sum + materialsCalories;
+      }, 0) : 0;
+
       const totalTime = updateData.steps.reduce((sum, step) => sum + (step.estimatedTime || 0), 0);
 
       // Calculate total time string
@@ -206,6 +225,7 @@ export const updatePost = async (req, res) => {
         : `${totalTime} minutes`;
 
       updateData.totalCostEstimate = totalCostEstimate;
+      updateData.totalCalories = totalCalories;
       
       if (post.type === 'recipe') {
         updateData.cookingTime = timeString;
@@ -548,10 +568,6 @@ export const deletePost = async (req, res) => {
 
 export const uploadMedia = async (req, res) => {
   try {
-    console.log('=== UPLOAD MEDIA DEBUG ===');
-    console.log('User:', req.user ? req.user._id : 'No user');
-    console.log('File:', req.file ? req.file.originalname : 'No file');
-    console.log('Body:', req.body);
 
     if (!req.user) {
       return res.status(401).json({ 

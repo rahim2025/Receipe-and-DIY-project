@@ -154,33 +154,8 @@ const PostDetail = () => {
   const isOwner = authUser && currentPost.author && authUser._id === currentPost.author._id;
   const isLiked = authUser && currentPost.likes?.includes(authUser._id);
 
-  // Calculate total calories from all materials in all steps (for recipes only)
-  const calculateTotalCalories = () => {
-    if (currentPost?.type !== 'recipe') return 0;
-    
-    // Try to calculate from steps first
-    if (currentPost?.steps && currentPost.steps.length > 0) {
-      return currentPost.steps.reduce((total, step) => {
-        const stepCalories = (step.materials || []).reduce(
-          (sum, material) => sum + (material.calories || 0),
-          0
-        );
-        return total + stepCalories;
-      }, 0);
-    }
-    
-    // Fallback to aggregated materials if available
-    if (currentPost?.allStepMaterials && currentPost.allStepMaterials.length > 0) {
-      return currentPost.allStepMaterials.reduce(
-        (total, material) => total + (material.calories || 0),
-        0
-      );
-    }
-    
-    return 0;
-  };
-
-  const totalCalories = calculateTotalCalories();
+  // Get total calories directly from DB
+  const totalCalories = currentPost?.totalCalories || 0;
 
   return (
     <div className="min-h-screen pb-8" style={{ paddingTop: '140px' }}>
